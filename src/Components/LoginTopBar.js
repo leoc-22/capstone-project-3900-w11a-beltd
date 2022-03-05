@@ -58,26 +58,9 @@ const useStyles = makeStyles({
 
     },
 
-    mainSection : {
-        display:"inline",
 
-    },
-    loginText : {
-        marginLeft : "20%",
-        marginTop : "10%",
-
-    },
-    loginInput : {
-        marginLeft : "20%",
-
-    },
-    textInput: {
-        width:150,
-
-    }
 
 })
-
 
 
 export default function LoginTopBar() {
@@ -116,39 +99,6 @@ export default function LoginTopBar() {
                 </Button>
             </Toolbar>
         </MuiAppBar>
-
-
-        <h1 class = {classes.loginText}>Login</h1>
-        <div  class = {classes.loginInput}>
-            <TextField  
-                id="standard-basic" 
-                label="Email" 
-                variant="standard"
-                style={{
-                    width: 300,
-                    marginTop : 40
-                }}>
-            </TextField>
-            <br></br>
-            <TextField  
-                id="standard-basic" 
-                label="Password" 
-                variant="standard"
-                style={{
-                    width: 300,
-                    marginTop : 20
-                }}>
-            </TextField>
-            <br></br>
-
-            <Button disableRipple class = {classes.loginBtn}
-                    onClick = {() => history.push("/")}
-                >Login
-            </Button>
-
-        </div>
-
-
         </div>
     );
 }

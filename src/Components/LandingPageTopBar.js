@@ -148,7 +148,7 @@ export default function LandingPageTopBar() {
                 
                 <Button disableRipple class = {classes.loginBtn}
                     onClick = {() => history.push("/login")}
-                >Login
+                ><b>Login</b>
                 </Button>
 
             </Toolbar>
