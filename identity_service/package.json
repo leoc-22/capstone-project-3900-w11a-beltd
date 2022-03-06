@@ -1,0 +1,15 @@
+{
+  "name": "identity_service",
+  "version": "1.0.0",
+  "description": "Identity service for user registering and logging",
+  "main": "./src/server.js",
+  "scripts": {
+    "test": "test",
+    "start": "node ."
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.3"
+  }
+}
