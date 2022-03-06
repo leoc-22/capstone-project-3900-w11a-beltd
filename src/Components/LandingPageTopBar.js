@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { makeStyles, List, ListItemIcon, ListItemText,   Grid, ListItem, IconButton} from '@material-ui/core';
+import { makeStyles, List, AppBar, ListItemText,   Grid, ListItem, IconButton} from '@material-ui/core';
 import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
@@ -14,7 +14,9 @@ const useStyles = makeStyles({
     appBar:{
         background: '#00C9D8',
         height:50,
-        verticalAlign: "baseline"
+        verticalAlign: "baseline",
+        minWidth : "800px",
+        position: "sticky"
     },
     Name: {
         marginLeft: "5%",
@@ -49,7 +51,7 @@ const useStyles = makeStyles({
         }
     },
     loginBtn : {
-        marginLeft:20,
+        marginLeft:"20px",
         color: "black",
         width:150,
         height:35,
@@ -62,7 +64,6 @@ const useStyles = makeStyles({
             background: "#FF8913",
             cursor:"pointer",
             color: "black",
-
           }
 
     },
@@ -76,7 +77,10 @@ const useStyles = makeStyles({
         marginRight: "0%",
         minWidth : "100px",
         maxWidth : "175px"
-    }
+    },
+    root: {
+    },
+
 
 })
 
@@ -100,8 +104,8 @@ export default function LandingPageTopBar() {
     
 
     return (
-        <div className={classes.root}>
-        <MuiAppBar class = {classes.appBar} position="sticky">
+        <div class = {classes.root}>
+        <AppBar class = {classes.appBar}>
             <Toolbar>
                 <h3 
                 class = {classes.Name}
@@ -153,7 +157,7 @@ export default function LandingPageTopBar() {
 
             </Toolbar>
 
-        </MuiAppBar>
+        </AppBar>
 
         </div>
     );

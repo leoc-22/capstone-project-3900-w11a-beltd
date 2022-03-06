@@ -78,6 +78,7 @@ export default function LandingPage() {
                     id="standard-basic" 
                     label="Password" 
                     variant="standard"
+                    type="password"
                     style={{
                         width: 300,
                         marginTop : 20
