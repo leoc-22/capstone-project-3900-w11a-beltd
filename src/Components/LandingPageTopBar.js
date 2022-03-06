@@ -1,22 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { makeStyles, List, AppBar, ListItemText,   Grid, ListItem, IconButton} from '@material-ui/core';
+import { makeStyles, List, AppBar, IconButton} from '@material-ui/core';
 import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
 import SearchIcon from '@mui/icons-material/Search';
 import TextField from '@mui/material/TextField';
+import Divider from '@mui/material/Divider';
 
 
 const useStyles = makeStyles({
 
     appBar:{
-        background: '#00C9D8',
+        background: '#f1f1f1',
         height:50,
-        verticalAlign: "baseline",
-        minWidth : "800px",
-        position: "sticky"
+        top: 0,
+        width: "100%",
+        position: 'fixed',
+        zIndex: 0
     },
     Name: {
         marginLeft: "5%",
@@ -42,7 +43,7 @@ const useStyles = makeStyles({
           }
     },
     iconBtn : {
-        marginLeft: "25%",
+        marginLeft: "20%",
         marginTop: "-10px",
         border:"none",
         background:"transparent",
@@ -80,6 +81,16 @@ const useStyles = makeStyles({
     },
     root: {
     },
+    divider1:{
+        paddingTop:0,
+        width: "100%",
+        minWidth: "1000px",
+        position:"absolute",
+        height : -10,
+        background: "#00C9D8",
+
+    },
+
 
 
 })
@@ -106,7 +117,7 @@ export default function LandingPageTopBar() {
     return (
         <div class = {classes.root}>
         <AppBar class = {classes.appBar}>
-            <Toolbar>
+            <Toolbar > 
                 <h3 
                 class = {classes.Name}
                 onClick = {() => history.push("/")}
@@ -156,8 +167,14 @@ export default function LandingPageTopBar() {
                 </Button>
 
             </Toolbar>
+            <Divider  className={classes.divider1}
+               style={{ 
+                marginTop: "-15px"
+            }} />
 
         </AppBar>
+
+  
 
         </div>
     );

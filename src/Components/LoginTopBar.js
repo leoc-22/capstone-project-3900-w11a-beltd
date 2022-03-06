@@ -1,21 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
-import { makeStyles, List, ListItemIcon, ListItemText,   Grid, ListItem, IconButton} from '@material-ui/core';
+import { makeStyles} from '@material-ui/core';
 import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
-import SearchIcon from '@mui/icons-material/Search';
-import TextField from '@mui/material/TextField';
-import { InfoOutlined } from '@mui/icons-material';
+import Divider from '@mui/material/Divider';
 
 
 const useStyles = makeStyles({
 
     appBar:{
-        background: '#00C9D8',
+        background: '#f1f1f1',
         height:50,
-        verticalAlign: "baseline"
+        verticalAlign: "baseline",
+
     },
     Name: {
         marginLeft: "5%",
@@ -57,6 +55,15 @@ const useStyles = makeStyles({
           }
 
     },
+    divider1:{
+        paddingTop:0,
+        width: "100%",
+        minWidth: "1000px",
+        position:"absolute",
+        height : -10,
+        background: "#00C9D8",
+    },
+
 
 
 
@@ -98,6 +105,10 @@ export default function LoginTopBar() {
                 >LeaderBoard
                 </Button>
             </Toolbar>
+            <Divider className={classes.divider1}
+               style={{ 
+                marginTop: "-15px"
+            }} />
         </MuiAppBar>
         </div>
     );

@@ -11,8 +11,9 @@ import { makeStyles, List, ListItemIcon, ListItemText,   Grid, ListItem, IconBut
 
 const useStyles = makeStyles({
     main:{
-        minHeight: "1200px",
-        minWidth : "500px"
+        minHeight: "1100px",
+        minWidth : "500px",
+
     },
     popularCollections : {
         marginLeft : "7%",
@@ -23,6 +24,8 @@ const useStyles = makeStyles({
         marginTop: "5%"
 
     },
+    test: {
+    }
 })
 
 
@@ -31,21 +34,22 @@ export default function LandingPage() {
     const classes = useStyles();
 
     return (
-        <div className={classes.main}>
-            <LandingPageTopBar  
-            >  
+        <div>
+            <LandingPageTopBar>  
             </LandingPageTopBar>
 
-            <Header ></Header>
-            <h2 className={classes.popularCollections}>Popular Collections</h2>
-            <CollectionsCarousel>
-            </CollectionsCarousel>
-            <h2 className={classes.TopBooks}>Top Books</h2>
-            <TopBookGrid>
-            </TopBookGrid>
+            <div className={classes.main}>
+                
+                <Header ></Header>
+                    <h2 className={classes.popularCollections}>Popular Collections</h2>
+                
+                <CollectionsCarousel>
+                </CollectionsCarousel>
+                    <h2 className={classes.TopBooks}>Top Books</h2>
+                <TopBookGrid>
+                </TopBookGrid>
 
-        <div>
-        </div>
+            </div>
         </div>
     );
 }

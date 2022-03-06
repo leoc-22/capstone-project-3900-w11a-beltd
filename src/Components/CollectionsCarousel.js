@@ -10,7 +10,7 @@ const useStyles = makeStyles({
     main:{
         marginLeft : "5%",
         marginRight : "5%",
-
+        position: 'relative'
     },
     PopCollections : {
         marginLeft : "20%",
@@ -26,10 +26,7 @@ const useStyles = makeStyles({
         cursor:"pointer",
       }
     }
-    
 
-
-      
 })
 
 
@@ -38,7 +35,7 @@ export default function CollectionsCarousel() {
     const classes = useStyles();
 
     return (
-    <div className={classes.main}>
+    <div className={classes.main} zIndex = "999">
 
         <Carousel 
             className={classes.PopCollections}
