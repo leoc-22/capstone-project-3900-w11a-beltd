@@ -13,10 +13,9 @@ const useStyles = makeStyles({
 
     },
     gridClass:{
-        marginTop: 40,
-        width: "150%",
-        
-
+        marginTop: "0px",  
+        minWidth : "15%",
+        minHeight : "275px"      
     },
 
 })
@@ -28,28 +27,29 @@ export default function TopBooksGrid() {
 
     return (
         <div className={classes.main}>
-            <Grid container spacing = {2} >
-                <Grid item xs = {2} sm = {2} md = {2} >
+            <Grid container spacing = {2}  >
+                <Grid item xs = {4} sm = {3} md = {2} className={classes.gridClass}>
                 <TopBookItem >
                 </TopBookItem>
                 </Grid>
-                <Grid item xs = {2} sm = {2} md = {2} >
+                <br></br>
+                <Grid item xs = {4} sm = {3} md = {2} className={classes.gridClass}>
                 <TopBookItem >
                 </TopBookItem>
                 </Grid>
-                <Grid item xs = {2} sm = {2} md = {2} >
+                <Grid item xs = {4} sm = {3} md = {2} className={classes.gridClass}>
                 <TopBookItem >
                 </TopBookItem>
                 </Grid>
-                <Grid item xs = {2} sm = {2} md = {2} >
+                <Grid item xs = {4} sm = {3} md = {2} className={classes.gridClass}>
                 <TopBookItem >
                 </TopBookItem>
                 </Grid>
-                <Grid item xs = {2} sm = {2} md = {2} >
+                <Grid item xs = {4} sm = {3} md = {2} className={classes.gridClass}>
                 <TopBookItem >
                 </TopBookItem>
                 </Grid>
-                <Grid item xs = {2} sm = {2} md = {2} >
+                <Grid item xs = {4} sm = {3} md = {2} className={classes.gridClass}>
                 <TopBookItem >
                 </TopBookItem>
                 </Grid>

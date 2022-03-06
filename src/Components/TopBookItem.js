@@ -5,7 +5,7 @@ import Button from '@mui/material/Button';
 
 const useStyles = makeStyles({
     main:{
-        height :"150px",
+        height :"160px",
     },
     img: {
         borderRadius: "10px",
@@ -32,7 +32,6 @@ const useStyles = makeStyles({
             //color: "#00C9D8",
             cursor:"pointer"
           }
-
     }
 
 })
@@ -60,7 +59,7 @@ export default function TopBookItem() {
                     >Add to Collection
             </Button>
 
-
+        <br></br>
         </div>
     )
 }
