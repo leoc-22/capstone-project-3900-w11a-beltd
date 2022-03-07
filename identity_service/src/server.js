@@ -8,8 +8,8 @@ const app = express();
 
 app.use(express.json());
 
-const connectionStr =
-  "mongodb+srv://w11a-beltd:comp3900-w11a-beltd@cluster0.3myyc.mongodb.net/Cluster0?retryWrites=true&w=majority";
+const name = "identity-service";
+const connectionStr = `mongodb+srv://w11a-beltd:comp3900-w11a-beltd@cluster0.3myyc.mongodb.net/${name}?retryWrites=true&w=majority`;
 try {
   mongoose.connect(connectionStr, {
     useNewUrlParser: true,
@@ -22,6 +22,15 @@ try {
 }
 
 app.use(userRouter);
+
+app.delete("/drop", async (req, res) => {
+  try {
+    await mongoose.connection.dropCollection("Users");
+    console.log("Collection dropped");
+  } catch {
+    res.status(500).send("Error deleting database");
+  }
+});
 
 app.listen(port, () => {
   console.log(`Identity Service listening on port: ${port}`);

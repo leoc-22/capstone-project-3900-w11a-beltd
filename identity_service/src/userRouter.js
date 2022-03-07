@@ -2,46 +2,57 @@ const express = require("express");
 const userModel = require("./models/userModel");
 const app = express();
 
-app.get("/users", async (request, response) => {
+app.get("/users", async (req, res) => {
   const users = await userModel.find({});
 
   try {
-    response.send(users);
+    res.send(users);
   } catch (error) {
-    response.status(500).send(error);
+    res.status(500).send(error);
   }
 });
 
-app.post("/user", async (request, response) => {
-  const user = new userModel(request.body);
+app.post("/user", async (req, res) => {
+  const user = new userModel(req.body);
 
   try {
     await user.save();
-    response.send(user);
+    console.log("User saved");
+    res.send(user);
   } catch (error) {
-    response.status(500).send(error);
+    res.status(500).send(error);
   }
 });
 
-app.patch("/user/:id", async (request, response) => {
-  try {
-    await userModel.findByIdAndUpdate(request.params.id, request.body);
-    await userModel.save();
-    response.send(food);
-  } catch (error) {
-    response.status(500).send(error);
-  }
+// update password or name by querying the email
+app.patch("/user", async (req, res) => {
+  var query = { email: req.body.email };
+
+  userModel.findOneAndUpdate(
+    query,
+    {
+      name: req.body.name,
+      email: req.body.email,
+      password: req.body.password,
+    },
+    { upsert: true },
+    (err, doc) => {
+      if (err) return res.send(500, { error: err });
+      console.log("User updated");
+      res.send("Succesfully updated.");
+    }
+  );
 });
 
-app.delete("/user/:id", async (request, response) => {
-  try {
-    const user = await userModel.findByIdAndDelete(request.params.id);
+// delete the doc by querying the email
+app.delete("/user", async (req, res) => {
+  var query = { email: req.body.email };
 
-    if (!user) response.status(404).send("No user found");
-    response.status(200).send();
-  } catch (error) {
-    response.status(500).send(error);
-  }
+  userModel.findOneAndRemove(query, (err, doc) => {
+    if (err) return res.send(500, { error: err });
+    console.log("User deleted");
+    res.send("Succesfully deleted.");
+  });
 });
 
 module.exports = app;
