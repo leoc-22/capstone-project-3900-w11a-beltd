@@ -5,11 +5,16 @@
   "main": "./src/server.js",
   "scripts": {
     "test": "test",
-    "start": "node ."
+    "start": "node .",
+    "start:dev": "nodemon"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.3"
+    "express": "^4.17.3",
+    "mongodb": "^4.4.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
   }
 }
