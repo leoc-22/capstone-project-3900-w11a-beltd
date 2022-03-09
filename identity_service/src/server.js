@@ -23,6 +23,7 @@ try {
 
 app.use(userRouter);
 
+// Drop the entire database, development only, use for testing
 app.delete("/drop", async (req, res) => {
   try {
     await mongoose.connection.dropCollection("Users");
