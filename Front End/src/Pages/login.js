@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
 import LoginTopBar from '../Components/LoginTopBar'
 import SearchIcon from '@mui/icons-material/Search';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import { useHistory } from 'react-router-dom';
 import { makeStyles} from '@material-ui/core';
+import validator from 'validator';
 
 
 const useStyles = makeStyles({
@@ -56,6 +57,17 @@ const useStyles = makeStyles({
 export default function LandingPage() {
     const history = useHistory();
     const classes = useStyles();
+    // email validation from: https://www.geeksforgeeks.org/how-to-validate-an-email-in-reactjs/
+    const [emailError, setEmailError] = useState('')
+    const validateEmail = (e) => {
+      var email = e.target.value
+    
+      if (validator.isEmail(email)) {
+        setEmailError('Valid email :)')
+      } else {
+        setEmailError('Please enter a valid email!')
+      }
+    }
 
     return (
         <div>
@@ -71,7 +83,9 @@ export default function LandingPage() {
                     style={{
                         width: 300,
                         marginTop : 40
-                    }}>
+                    }}
+                    onChange={(e) => validateEmail(e)}
+                    helperText={emailError}>
                 </TextField>
                 <br></br>
                 <TextField  
@@ -91,9 +105,9 @@ export default function LandingPage() {
                     >Login
                 </Button>
                     <p>Don't have an account? <a 
-                    onClick = {() => history.push("/")}
+                    onClick = {() => history.push("/signup")}
                     class = {classes.signUp}
-                    >sign up</a></p>
+                    >Sign Up</a></p>
             </div>
 
         </div>

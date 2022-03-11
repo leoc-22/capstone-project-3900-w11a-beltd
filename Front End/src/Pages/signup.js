@@ -1,10 +1,11 @@
-import React from 'react';
+import React, {useState} from 'react';
 import LoginTopBar from '../Components/LoginTopBar';
 import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core';
 import signup from "../Images/signup.svg";
 import { grid } from '@mui/system';
 import { Grid, TextField, Button } from '@mui/material';
+import validator from 'validator';
 
 
 const useStyles = makeStyles({
@@ -36,11 +37,20 @@ const useStyles = makeStyles({
 
 })
 
-
-
 export default function LandingPage() {
     const history = useHistory();
     const classes = useStyles();
+    // email validation from: https://www.geeksforgeeks.org/how-to-validate-an-email-in-reactjs/
+    const [emailError, setEmailError] = useState('')
+    const validateEmail = (e) => {
+      var email = e.target.value
+    
+      if (validator.isEmail(email)) {
+        setEmailError('Valid email :)')
+      } else {
+        setEmailError('Please enter a valid email!')
+      }
+    }
 
     return (
         <div>
@@ -52,17 +62,21 @@ export default function LandingPage() {
                     <Grid item xs={4}>
                             <h1>Sign Up</h1>
                             <div>
-                                <TextField
+                                <form>
+                                <TextField required
                                     id="standard-basic"
                                     label="Email"
                                     variant="standard"
                                     style={{
                                         width: 300,
                                         marginTop: 20
-                                    }}>
+                                    }}
+                                    onChange={(e) => validateEmail(e)}
+                                    helperText={emailError}
+                                    >
                                 </TextField>
                                 <br></br>
-                                <TextField
+                                <TextField required
                                     id="standard-basic"
                                     label="Username"
                                     variant="standard"
@@ -72,7 +86,7 @@ export default function LandingPage() {
                                     }}>
                                 </TextField>
                                 <br></br>
-                                <TextField
+                                <TextField required
                                     id="standard-basic"
                                     label="Password"
                                     variant="standard"
@@ -84,10 +98,14 @@ export default function LandingPage() {
                                 </TextField>
                                 <br></br>
 
-                                <Button disableRipple class={classes.primaryButton}
-                                    onClick={() => history.push("/login")}
+                                <Button disableRipple 
+                                    class={classes.primaryButton}
+                                    onClick={() => history.push("/login")} 
+                                    id="submit"
+                                    value="Submit"
                                 >Sign Up
                                 </Button>
+                                </form>
                                 <p>Already have an account? <a
                                     onClick={() => history.push("/login")}
                                     class={classes.link}
