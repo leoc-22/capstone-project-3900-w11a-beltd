@@ -52,6 +52,17 @@ export default function LandingPage() {
       }
     }
 
+    const [passwordError, setPasswordError] = useState('')
+    const validatePassword = (p) =>  {
+        var reg = new RegExp('^(?=.*\\d).{6,}$');
+        var password = p.target.value;
+        if (reg.test(password)) {
+            setPasswordError('Strong password');
+        }else{
+            setPasswordError('Password should be at least 6 characters and include 1 number!');
+        }        
+    }
+
     return (
         <div>
             <LoginTopBar>
@@ -94,7 +105,10 @@ export default function LandingPage() {
                                     style={{
                                         width: 300,
                                         marginTop: 20
-                                    }}>
+                                    }}
+                                    onChange={(p) => validatePassword(p)}
+                                    helperText={passwordError}
+                                    >
                                 </TextField>
                                 <br></br>
 
