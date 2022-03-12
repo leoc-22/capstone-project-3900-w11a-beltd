@@ -34,8 +34,18 @@ const useStyles = makeStyles({
             cursor: "pointer"
         }
     },
+    image : {
+        position: 'absolute',
+        marginLeft : "180px"
+    },
+    errorMsg : {
+        color:"red",
+    }
 
 })
+
+
+
 
 export default function LandingPage() {
     const history = useHistory();
@@ -63,6 +73,37 @@ export default function LandingPage() {
         }        
     }
 
+    function registerUser(){
+        var newEmail = document.getElementById("emailInput").value;
+        var newUserName = document.getElementById("userNameInput").value;
+        var newPassword = document.getElementById("passwordInput").value;
+        var reTypedPassword = document.getElementById("retypePassword").value;
+
+        if (newPassword !== reTypedPassword){    
+            document.getElementById("passwordErr").hidden = false;
+            return;
+        }
+
+        if (emailError === 'Valid email :)' && passwordError === 'Strong password' && newUserName.length >= 1){
+            fetch("http://localhost:8001/user", {
+                headers : {
+                    email : newEmail,
+                    name : newUserName,
+                    password : newPassword
+                },
+                method: "POST",
+            }).then(response => response.json())
+            .then(response => handelResponse(response));    
+        } else {    
+            console.log("unable to create user");
+        }
+    }
+
+    function handelResponse(data){
+        localStorage.setItem("name", data["name"]);
+        history.push("/homePage");
+    }
+
     return (
         <div>
             <LoginTopBar>
@@ -75,7 +116,7 @@ export default function LandingPage() {
                             <div>
                                 <form>
                                 <TextField required
-                                    id="standard-basic"
+                                    id="emailInput"
                                     label="Email"
                                     variant="standard"
                                     style={{
@@ -88,7 +129,7 @@ export default function LandingPage() {
                                 </TextField>
                                 <br></br>
                                 <TextField required
-                                    id="standard-basic"
+                                    id="userNameInput"
                                     label="Username"
                                     variant="standard"
                                     style={{
@@ -98,7 +139,7 @@ export default function LandingPage() {
                                 </TextField>
                                 <br></br>
                                 <TextField required
-                                    id="standard-basic"
+                                    id="passwordInput"
                                     label="Password"
                                     variant="standard"
                                     type="password"
@@ -108,13 +149,25 @@ export default function LandingPage() {
                                     }}
                                     onChange={(p) => validatePassword(p)}
                                     helperText={passwordError}
-                                    >
+                                >
                                 </TextField>
+                                <TextField required
+                                    id="retypePassword"
+                                    label="Re Type Password"
+                                    variant="standard"
+                                    type="password"
+                                    style={{
+                                        width: 300,
+                                        marginTop :10
+                                    }}
+                                >
+                                </TextField>
+
                                 <br></br>
 
                                 <Button disableRipple 
                                     class={classes.primaryButton}
-                                    onClick={() => history.push("/login")} 
+                                    onClick={() => registerUser()} 
                                     id="submit"
                                     value="Submit"
                                 >Sign Up
@@ -130,6 +183,8 @@ export default function LandingPage() {
                             <img class={classes.image} src={signup} alt="experiment with booklab + two people" />
                     </Grid>
                 </Grid>
+                <h3 id = "passwordErr" hidden class = {classes.errorMsg}>Passwords Don't Match</h3>
+
             </div>
         </div>
     );

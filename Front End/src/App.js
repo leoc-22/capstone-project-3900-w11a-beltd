@@ -5,6 +5,8 @@ import ReactDOM from 'react-dom';
 import LandingPage from './Pages/LandingPage'
 import login from './Pages/login'
 import signup from './Pages/signup'
+import HomePage from './Pages/HomePage'
+
 
 function App() {
   return (
@@ -18,6 +20,10 @@ function App() {
       <Switch>
         <Route exact path="/signup" component={signup}></Route>
       </Switch>
+      <Switch>
+        <Route exact path="/HomePage" component={HomePage}></Route>
+      </Switch>
+
     </Router>
   );
 }

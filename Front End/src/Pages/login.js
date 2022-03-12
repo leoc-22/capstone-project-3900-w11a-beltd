@@ -48,6 +48,9 @@ const useStyles = makeStyles({
     '&:hover': {
         cursor:"pointer"
     }
+    },
+    errorMsg : {
+        color:"red",
     }
 
 })
@@ -69,15 +72,39 @@ export default function LandingPage() {
       }
     }
 
+
+    function loginUser(){
+        var enteredEmail = document.getElementById("emailInput").value;
+        var ennteredPassword = document.getElementById("passwordInput").value;
+
+        fetch("http://localhost:8001/login", {
+            Accept: "application/json",
+            method: "GET",
+            headers : {
+                email : enteredEmail,
+                password : ennteredPassword
+            }
+        }).then(response => response.json())
+        .then(response => handleResponse(response))
+        .catch(function() {
+            console.log("login failed");
+            document.getElementById("loginFailed").hidden = false;
+        });
+    }
+
+    function handleResponse(data){
+        localStorage.setItem("name", data["name"]);
+        history.push("/homePage");
+    }
+
     return (
         <div>
             <LoginTopBar>  
             </LoginTopBar>
             <h1 class = {classes.loginText}>Login</h1>
             <div  class = {classes.loginInput}>
-
                 <TextField  
-                    id="standard-basic" 
+                    id="emailInput" 
                     label="Email" 
                     variant="standard"
                     style={{
@@ -89,7 +116,7 @@ export default function LandingPage() {
                 </TextField>
                 <br></br>
                 <TextField  
-                    id="standard-basic" 
+                    id="passwordInput" 
                     label="Password" 
                     variant="standard"
                     type="password"
@@ -101,13 +128,15 @@ export default function LandingPage() {
                 <br></br>
 
                 <Button disableRipple class = {classes.loginBtn}
-                        onClick = {() => history.push("/")}
+                        onClick = {() => loginUser()}
                     >Login
                 </Button>
-                    <p>Don't have an account? <a 
-                    onClick = {() => history.push("/signup")}
-                    class = {classes.signUp}
-                    >Sign Up</a></p>
+                <p>Don't have an account? <a 
+                onClick = {() => history.push("/signup")}
+                class = {classes.signUp}
+                >Sign Up</a></p>
+
+                <h3 id = "loginFailed" hidden class = {classes.errorMsg}>login Failed</h3>
             </div>
 
         </div>
