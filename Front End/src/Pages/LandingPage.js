@@ -41,7 +41,7 @@ export default function LandingPage() {
             <div className={classes.main}>
                 
                 <Header ></Header>
-                    <h2 className={classes.popularCollections}>Popular Collections</h2>
+                <h2 className={classes.popularCollections}>Popular Collections</h2>
                 
                 <CollectionsCarousel>
                 </CollectionsCarousel>

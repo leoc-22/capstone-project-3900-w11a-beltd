@@ -14,12 +14,14 @@ import { maxWidth } from '@mui/system';
 const useStyles = makeStyles({
 
     appBar:{
-        background: '#f1f1f1',
+        background: '#F3F3F3',
         height:50,
         top: 0,
         width: "100%",
         position: 'fixed',
-        zIndex: 0
+        zIndex: 99,
+        borderBottom: '0.7px solid #00B3AB'
+
     },
     Name: {
         marginLeft: "5%",
@@ -117,11 +119,10 @@ export default function LandingPageTopBar() {
             <Toolbar > 
                 <h3 
                 class = {classes.Name}
-                onClick = {() => history.push("/")}
-
+                onClick = {() => history.push("/homePage")}
                 >BookLab</h3>
                 <Button disableRipple class = {classes.appBarBtn}
-                    onClick = {() => history.push("/")}
+                    onClick = {() => history.push("/SearchPage")}
                 >Explore
                 </Button>
             
@@ -162,10 +163,7 @@ export default function LandingPageTopBar() {
                 ></PermIdentityIcon>
                 
             </Toolbar>
-            <Divider  className={classes.divider1}
-               style={{ 
-                marginTop: "-15px"
-            }} />
+          
     
         </AppBar>
 

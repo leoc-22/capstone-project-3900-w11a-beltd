@@ -10,9 +10,10 @@ import Divider from '@mui/material/Divider';
 const useStyles = makeStyles({
 
     appBar:{
-        background: '#f1f1f1',
+        background: '#F3F3F3',
         height:50,
         verticalAlign: "baseline",
+        borderBottom: '0.7px solid #00B3AB'
 
     },
     Name: {
@@ -55,17 +56,6 @@ const useStyles = makeStyles({
           }
 
     },
-    divider1:{
-        paddingTop:0,
-        width: "100%",
-        minWidth: "1000px",
-        position:"absolute",
-        height : -10,
-        background: "#00C9D8",
-    },
-
-
-
 
 })
 
@@ -105,10 +95,6 @@ export default function LoginTopBar() {
                 >LeaderBoard
                 </Button>
             </Toolbar>
-            <Divider className={classes.divider1}
-               style={{ 
-                marginTop: "-15px"
-            }} />
         </MuiAppBar>
         </div>
     );

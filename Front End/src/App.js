@@ -6,6 +6,7 @@ import LandingPage from './Pages/LandingPage'
 import login from './Pages/login'
 import signup from './Pages/signup'
 import HomePage from './Pages/HomePage'
+import SearchPage from './Pages/SearchPage'
 
 
 function App() {
@@ -22,6 +23,9 @@ function App() {
       </Switch>
       <Switch>
         <Route exact path="/HomePage" component={HomePage}></Route>
+      </Switch>
+      <Switch>
+        <Route exact path="/SearchPage" component={SearchPage}></Route>
       </Switch>
 
     </Router>
