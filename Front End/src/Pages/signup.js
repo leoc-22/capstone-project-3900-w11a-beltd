@@ -6,6 +6,7 @@ import signup from "../Images/signup.svg";
 import { grid } from '@mui/system';
 import { Grid, TextField, Button } from '@mui/material';
 import validator from 'validator';
+import axios from 'axios';
 
 
 const useStyles = makeStyles({
@@ -25,6 +26,7 @@ const useStyles = makeStyles({
         borderColor: "#00C9D8",
         '&:hover': {
             backgroundColor: "#00C9D8",
+            color: "#fff",
             cursor: "pointer"
         }
     },
@@ -40,27 +42,53 @@ const useStyles = makeStyles({
 export default function LandingPage() {
     const history = useHistory();
     const classes = useStyles();
+    // connect to backend
+    const [name, setName] = useState('')
+    const handleChange = (u) => {
+        setName(u.target.value);
+    }
+
     // email validation from: https://www.geeksforgeeks.org/how-to-validate-an-email-in-reactjs/
     const [emailError, setEmailError] = useState('')
+    const [email, setEmail] = useState('')
     const validateEmail = (e) => {
-      var email = e.target.value
+      var emailCheck = e.target.value;
     
-      if (validator.isEmail(email)) {
-        setEmailError('Valid email :)')
+      if (validator.isEmail(emailCheck)) {
+        setEmailError('Valid email :)');
+        setEmail(emailCheck);
       } else {
         setEmailError('Please enter a valid email!')
       }
     }
-
+    
+    // password validation
     const [passwordError, setPasswordError] = useState('')
+    const [password, setPassword] = useState('')
     const validatePassword = (p) =>  {
         var reg = new RegExp('^(?=.*\\d).{6,}$');
-        var password = p.target.value;
-        if (reg.test(password)) {
+        var passwordCheck = p.target.value;
+        if (reg.test(passwordCheck)) {
             setPasswordError('Strong password');
-        }else{
+            setPassword(passwordCheck); 
+        } else {
             setPasswordError('Password should be at least 6 characters and include 1 number!');
         }        
+    }
+
+    const handleSubmit = (f) => {
+        const user = {
+            name,
+            password,
+            email
+        }
+
+        axios.post(`http://localhost:8001/user`, { user })
+            .then(res => {
+            console.log(res);
+            console.log(res.data);
+        })
+
     }
 
     return (
@@ -73,9 +101,8 @@ export default function LandingPage() {
                     <Grid item xs={4}>
                             <h1>Sign Up</h1>
                             <div>
-                                <form>
+                                <form onSubmit={(f) => handleSubmit(f)}>
                                 <TextField required
-                                    id="standard-basic"
                                     label="Email"
                                     variant="standard"
                                     style={{
@@ -88,17 +115,17 @@ export default function LandingPage() {
                                 </TextField>
                                 <br></br>
                                 <TextField required
-                                    id="standard-basic"
                                     label="Username"
                                     variant="standard"
                                     style={{
                                         width: 300,
                                         marginTop: 20
-                                    }}>
+                                    }}
+                                    onChange={(u) => handleChange(u)}
+                                    >
                                 </TextField>
                                 <br></br>
                                 <TextField required
-                                    id="standard-basic"
                                     label="Password"
                                     variant="standard"
                                     type="password"
@@ -117,6 +144,7 @@ export default function LandingPage() {
                                     onClick={() => history.push("/login")} 
                                     id="submit"
                                     value="Submit"
+                                    type="submit"
                                 >Sign Up
                                 </Button>
                                 </form>
