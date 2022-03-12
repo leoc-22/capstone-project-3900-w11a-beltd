@@ -2,9 +2,12 @@ const express = require("express");
 const userModel = require("./models/userModel");
 const app = express();
 const crypto = require("crypto");
+const sha256 = require('js-sha256');
+const cors = require('cors');
 
 const secret = "This is a company secret";
 const Hasher = crypto.createHmac("sha256", secret);
+app.use(cors({origin: 'http://localhost:3000'}));
 
 // Get all users in the database
 app.get("/users", async (req, res) => {
@@ -20,18 +23,20 @@ app.get("/users", async (req, res) => {
 app.post("/user", async (req, res) => {
   // Look up if the user already exists
   userModel.countDocuments(
-    { email: req.body.email },
+    { email: req.header('email')},
+
     async function (err, count) {
       if (count > 0) {
         //document exists
         console.log("User already exists");
         res.status(400).send("User already exists");
       } else {
-        const hash = Hasher.update(req.body.password);
+        
+        var newPassword = sha256(req.header('password'));
         const user = new userModel({
-          name: req.body.name,
-          email: req.body.email,
-          password: hash.digest("hex"),
+          name: req.header('name'),
+          email:req.header('email'),
+          password: newPassword,
         });
 
         try {
@@ -80,10 +85,11 @@ app.delete("/user", async (req, res) => {
 
 // return the user detail if the look-up is successful
 app.get("/login", async (req, res) => {
-  const hash = Hasher.update(req.body.password);
+  //const hash = Hasher.update(req.body.password);
+  
   const user = await userModel.findOne({
-    email: req.body.email,
-    password: hash.digest("hex"),
+    email: req.header('email'),
+    password: sha256(req.header('password'))
   });
 
   try {
