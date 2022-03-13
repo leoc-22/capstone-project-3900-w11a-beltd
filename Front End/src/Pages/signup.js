@@ -6,7 +6,6 @@ import signup from "../Images/signup.svg";
 import { grid } from '@mui/system';
 import { Grid, TextField, Button } from '@mui/material';
 import validator from 'validator';
-import axios from 'axios';
 
 
 const useStyles = makeStyles({
@@ -39,24 +38,17 @@ const useStyles = makeStyles({
 
 })
 
-export default function LandingPage() {
+export default function SignUpPage() {
     const history = useHistory();
     const classes = useStyles();
-    // connect to backend
-    const [name, setName] = useState('')
-    const handleChange = (u) => {
-        setName(u.target.value);
-    }
 
     // email validation from: https://www.geeksforgeeks.org/how-to-validate-an-email-in-reactjs/
     const [emailError, setEmailError] = useState('')
-    const [email, setEmail] = useState('')
     const validateEmail = (e) => {
       var emailCheck = e.target.value;
     
       if (validator.isEmail(emailCheck)) {
         setEmailError('Valid email :)');
-        setEmail(emailCheck);
       } else {
         setEmailError('Please enter a valid email!')
       }
@@ -64,31 +56,14 @@ export default function LandingPage() {
     
     // password validation
     const [passwordError, setPasswordError] = useState('')
-    const [password, setPassword] = useState('')
     const validatePassword = (p) =>  {
         var reg = new RegExp('^(?=.*\\d).{6,}$');
         var passwordCheck = p.target.value;
         if (reg.test(passwordCheck)) {
             setPasswordError('Strong password');
-            setPassword(passwordCheck); 
         } else {
             setPasswordError('Password should be at least 6 characters and include 1 number!');
         }        
-    }
-
-    const handleSubmit = (f) => {
-        const user = {
-            name,
-            password,
-            email
-        }
-
-        axios.post(`http://localhost:8001/user`, { user })
-            .then(res => {
-            console.log(res);
-            console.log(res.data);
-        })
-
     }
 
     return (
@@ -101,7 +76,7 @@ export default function LandingPage() {
                     <Grid item xs={4}>
                             <h1>Sign Up</h1>
                             <div>
-                                <form onSubmit={(f) => handleSubmit(f)}>
+                                <form>
                                 <TextField required
                                     label="Email"
                                     variant="standard"
@@ -121,7 +96,6 @@ export default function LandingPage() {
                                         width: 300,
                                         marginTop: 20
                                     }}
-                                    onChange={(u) => handleChange(u)}
                                     >
                                 </TextField>
                                 <br></br>
@@ -155,7 +129,7 @@ export default function LandingPage() {
                             </div>
                     </Grid>
                     <Grid item xs={6}>
-                            <img class={classes.image} src={signup} alt="experiment with booklab + two people" />
+                            <img class={classes.image} src={signup} alt="two people standing" />
                     </Grid>
                 </Grid>
             </div>
