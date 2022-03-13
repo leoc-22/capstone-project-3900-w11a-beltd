@@ -7,6 +7,8 @@ import Button from "@mui/material/Button";
 import SearchIcon from "@mui/icons-material/Search";
 import TextField from "@mui/material/TextField";
 import Divider from "@mui/material/Divider";
+import PermIdentityIcon from "@mui/icons-material/PermIdentity";
+import { maxWidth } from "@mui/system";
 
 const useStyles = makeStyles({
   appBar: {
@@ -50,22 +52,7 @@ const useStyles = makeStyles({
       cursor: "pointer",
     },
   },
-  loginBtn: {
-    marginLeft: "20px",
-    color: "black",
-    width: 150,
-    height: 35,
-    borderRadius: 10,
-    fontSize: "meidum",
-    background: "#FFAB58",
-    border: "none",
-    marginTop: "-0.8%",
-    "&:hover": {
-      background: "#FF8913",
-      cursor: "pointer",
-      color: "black",
-    },
-  },
+
   navSearch: {
     marginLeft: "0%",
   },
@@ -77,6 +64,27 @@ const useStyles = makeStyles({
     maxWidth: "175px",
   },
   root: {},
+  divider1: {
+    paddingTop: 0,
+    width: "100%",
+    minWidth: "1000px",
+    position: "absolute",
+    height: -10,
+    background: "#00C9D8",
+  },
+
+  loggedInUser: {
+    marginTop: 15,
+    marginLeft: "3%",
+  },
+  profileIcon: {
+    marginTop: -10,
+    marginLeft: "1%",
+    maxWidth: "25px",
+    "&:hover": {
+      cursor: "pointer",
+    },
+  },
 });
 
 export default function LandingPageTopBar() {
@@ -93,18 +101,19 @@ export default function LandingPageTopBar() {
       setSeachOpen(false);
     }
   }
+  var userName = localStorage.getItem("name");
 
   return (
     <div class={classes.root}>
       <AppBar class={classes.appBar}>
         <Toolbar>
-          <h3 class={classes.Name} onClick={() => history.push("/")}>
+          <h3 class={classes.Name} onClick={() => history.push("/homePage")}>
             BookLab
           </h3>
           <Button
             disableRipple
             class={classes.appBarBtn}
-            onClick={() => history.push("/")}
+            onClick={() => history.push("/SearchPage")}
           >
             Explore
           </Button>
@@ -114,7 +123,7 @@ export default function LandingPageTopBar() {
             class={classes.appBarBtn}
             onClick={() => history.push("/")}
           >
-            Recommended for you
+            Recommended for {userName}
           </Button>
 
           <Button
@@ -147,14 +156,11 @@ export default function LandingPageTopBar() {
               variant="standard"
             ></TextField>
           </div>
-
-          <Button
-            disableRipple
-            class={classes.loginBtn}
-            onClick={() => history.push("/login")}
-          >
-            <b>Login</b>
-          </Button>
+          <h5 class={classes.loggedInUser}>{userName}</h5>
+          <PermIdentityIcon
+            class={classes.profileIcon}
+            //onClick = {() => history.push("")}
+          ></PermIdentityIcon>
         </Toolbar>
       </AppBar>
     </div>

@@ -3,6 +3,7 @@ import LandingPageTopBar from "../Components/LandingPageTopBar";
 import Header from "../Components/Header";
 import CollectionsCarousel from "../Components/CollectionsCarousel";
 import TopBookGrid from "../Components/TopBookGrid";
+import AuthenicatedTopBar from "../Components/AuthenicatedTopBar";
 
 import { useHistory } from "react-router-dom";
 import {
@@ -31,13 +32,13 @@ const useStyles = makeStyles({
   test: {},
 });
 
-export default function LandingPage() {
+const HomePage = (props) => {
   const history = useHistory();
   const classes = useStyles();
 
   return (
     <div>
-      <LandingPageTopBar></LandingPageTopBar>
+      <AuthenicatedTopBar></AuthenicatedTopBar>
 
       <div className={classes.main}>
         <Header></Header>
@@ -49,4 +50,6 @@ export default function LandingPage() {
       </div>
     </div>
   );
-}
+};
+
+export default HomePage;
