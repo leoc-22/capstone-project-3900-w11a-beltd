@@ -1,11 +1,7 @@
 const express = require("express");
 const userModel = require("./models/userModel");
 const app = express();
-const crypto = require("crypto");
-const sha256 = require('js-sha256');
-
-const secret = "This is a company secret";
-const Hasher = crypto.createHmac("sha256", secret);
+const sha256 = require("js-sha256");
 
 // Get all users in the database
 app.get("/users", async (req, res) => {
@@ -18,22 +14,19 @@ app.get("/users", async (req, res) => {
   }
 });
 
-
 app.post("/user", async (req, res) => {
   // Look up if the user already exists
   userModel.countDocuments(
     { email: req.body.email },
     async function (err, count) {
       if (count > 0) {
-        //document exists
         console.log("User already exists");
         res.status(400).send("User already exists");
       } else {
-        //const hash = Hasher.update(req.body.password);
         const user = new userModel({
           name: req.body.name,
           email: req.body.email,
-          password: sha256(req.body.password)
+          password: sha256(req.body.password),
         });
 
         try {
@@ -48,18 +41,16 @@ app.post("/user", async (req, res) => {
   );
 });
 
-
 // update password or name by querying the email
 app.patch("/user", async (req, res) => {
   var query = { email: req.body.email };
 
-  const hash = Hasher.update(req.body.password);
   userModel.findOneAndUpdate(
     query,
     {
       name: req.body.name,
       email: req.body.email,
-      password: hash.digest("hex"),
+      password: sha256(req.body.password),
     },
     { upsert: true },
     (err, doc) => {
@@ -83,14 +74,9 @@ app.delete("/user", async (req, res) => {
 
 // return the user detail if the look-up is successful
 app.get("/login", async (req, res) => {
-
-  //console.log(req.query['email']);
-  //console.log(req.query['password']);
-
-  //const hash = Hasher.update(req.body.password);
   const user = await userModel.findOne({
-    email: req.query['email'],
-    password: sha256(req.query['password'])
+    email: req.query["email"],
+    password: sha256(req.query["password"]),
   });
 
   try {
@@ -101,6 +87,5 @@ app.get("/login", async (req, res) => {
     res.status(500).send(error);
   }
 });
-
 
 module.exports = app;

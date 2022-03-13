@@ -5,8 +5,8 @@ const userRouter = require("./userRouter.js");
 const isProduction = process.env.NODE_ENV === "production";
 const port = isProduction ? 8000 : 8001;
 const app = express();
-const cors = require('cors');
-app.use(cors({origin: 'http://localhost:3000'}));
+const cors = require("cors");
+app.use(cors());
 
 app.use(express.json());
 
@@ -15,7 +15,6 @@ const connectionStr = `mongodb+srv://w11a-beltd:comp3900-w11a-beltd@cluster0.3my
 try {
   mongoose.connect(connectionStr, {
     useNewUrlParser: true,
-    // useFindAndModify: false,
     useUnifiedTopology: true,
   });
   console.log("Connected to MongoDB");

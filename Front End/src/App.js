@@ -1,13 +1,12 @@
-import logo from './logo.svg';
-import './App.css';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
-import ReactDOM from 'react-dom';
-import LandingPage from './Pages/LandingPage'
-import login from './Pages/login'
-import signup from './Pages/signup'
-import HomePage from './Pages/HomePage'
-import SearchPage from './Pages/SearchPage'
-
+import logo from "./logo.svg";
+import "./App.css";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import ReactDOM from "react-dom";
+import LandingPage from "./Pages/LandingPage";
+import login from "./Pages/login";
+import signup from "./Pages/signup";
+import HomePage from "./Pages/HomePage";
+import SearchPage from "./Pages/SearchPage";
 
 function App() {
   return (
@@ -27,7 +26,6 @@ function App() {
       <Switch>
         <Route exact path="/SearchPage" component={SearchPage}></Route>
       </Switch>
-
     </Router>
   );
 }
