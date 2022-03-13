@@ -2,6 +2,10 @@ const express = require("express");
 const mongoose = require("mongoose");
 const userRouter = require("./userRouter.js");
 
+//
+const tokenRouter = require("./tokenRouter.js");
+//
+
 const isProduction = process.env.NODE_ENV === "production";
 const port = isProduction ? 8000 : 8001;
 const app = express();
@@ -22,6 +26,10 @@ try {
 }
 
 app.use(userRouter);
+
+//
+app.use(tokenRouter);
+//
 
 // Drop the entire database, development only, use for testing
 app.delete("/drop", async (req, res) => {
