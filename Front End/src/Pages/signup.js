@@ -6,6 +6,7 @@ import signup from "../Images/signup.svg";
 import { grid } from '@mui/system';
 import { Grid, TextField, Button } from '@mui/material';
 import validator from 'validator';
+const axios = require('axios');
 
 
 const useStyles = makeStyles({
@@ -83,24 +84,31 @@ export default function LandingPage() {
             document.getElementById("passwordErr").hidden = false;
             return;
         }
-
+        
         if (emailError === 'Valid email :)' && passwordError === 'Strong password' && newUserName.length >= 1){
-            fetch("http://localhost:8001/user", {
-                headers : {
+            const user = {
+                email : newEmail,
+                name : newUserName,
+                password : newPassword
+            }
+            axios({
+                method : 'post',
+                url : 'http://localhost:8001/user',
+                headers : {},
+                data: {
                     email : newEmail,
                     name : newUserName,
                     password : newPassword
-                },
-                method: "POST",
-            }).then(response => response.json())
-            .then(response => handelResponse(response));    
+                }
+            }).then(response => handelResponse(response))
         } else {    
             console.log("unable to create user");
         }
     }
 
-    function handelResponse(data){
-        localStorage.setItem("name", data["name"]);
+    function handelResponse(res){
+        console.log(res);
+        localStorage.setItem("name", res["data"]["name"]);
         history.push("/homePage");
     }
 

@@ -6,6 +6,7 @@ import Button from '@mui/material/Button';
 import { useHistory } from 'react-router-dom';
 import { makeStyles} from '@material-ui/core';
 import validator from 'validator';
+const axios = require('axios');
 
 
 const useStyles = makeStyles({
@@ -76,25 +77,34 @@ export default function LandingPage() {
     function loginUser(){
         var enteredEmail = document.getElementById("emailInput").value;
         var ennteredPassword = document.getElementById("passwordInput").value;
+        console.log(ennteredPassword);
+        console.log(enteredEmail);
 
-        fetch("http://localhost:8001/login", {
-            Accept: "application/json",
-            method: "GET",
-            headers : {
+        axios({
+            method : 'get',
+            url : 'http://localhost:8001/login',
+            headers : {},
+            params : {
                 email : enteredEmail,
                 password : ennteredPassword
             }
-        }).then(response => response.json())
-        .then(response => handleResponse(response))
+        }).then(response => handleResponse(response))
         .catch(function() {
             console.log("login failed");
             document.getElementById("loginFailed").hidden = false;
         });
     }
 
-    function handleResponse(data){
-        localStorage.setItem("name", data["name"]);
-        history.push("/homePage");
+    function handleResponse(res){
+
+        if (res["data"] == ''){
+            console.log("login failed");
+            document.getElementById("loginFailed").hidden = false;
+        } else {
+            localStorage.setItem("name", res["data"]["name"]);
+            history.push("/homePage");
+
+        }
     }
 
     return (
