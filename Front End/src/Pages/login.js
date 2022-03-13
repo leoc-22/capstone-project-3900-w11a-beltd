@@ -77,8 +77,8 @@ export default function LandingPage() {
     function loginUser(){
         var enteredEmail = document.getElementById("emailInput").value;
         var ennteredPassword = document.getElementById("passwordInput").value;
-        console.log(ennteredPassword);
-        console.log(enteredEmail);
+        //console.log(ennteredPassword);
+        //console.log(enteredEmail);
 
         axios({
             method : 'get',
