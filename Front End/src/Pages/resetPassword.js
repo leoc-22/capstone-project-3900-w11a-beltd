@@ -1,11 +1,11 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import LoginTopBar from '../Components/LoginTopBar';
 import { useHistory } from 'react-router-dom';
-import { makeStyles} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
+import reset from "../Images/reset.svg";
 import { grid } from '@mui/system';
 import { Grid, TextField, Button } from '@mui/material';
 import validator from 'validator';
-import login from "../Images/login.svg";
 
 
 const useStyles = makeStyles({
@@ -15,11 +15,11 @@ const useStyles = makeStyles({
         gridTemplateColumns: "1fr 2fr",
     },
     primaryButton: {
-        width: 130,
         height: 40,
         borderRadius: 8,
         fontSize: "large",
         margin: "10% 0",
+        padding: "0 20px",
         background: "transparent",
         fontWeight: "bold",
         borderColor: "#00C9D8",
@@ -40,33 +40,33 @@ const useStyles = makeStyles({
     },
 })
 
-
-
-export default function LogInPage() {
+export default function ResetPassword() {
     const history = useHistory();
     const classes = useStyles();
+
     // email validation from: https://www.geeksforgeeks.org/how-to-validate-an-email-in-reactjs/
     const [emailError, setEmailError] = useState('')
     const validateEmail = (e) => {
-      var email = e.target.value
-    
-      if (validator.isEmail(email)) {
-        setEmailError('Valid email :)')
-      } else {
-        setEmailError('Please enter a valid email!')
-      }
+        var emailCheck = e.target.value;
+
+        if (validator.isEmail(emailCheck)) {
+            setEmailError('Valid email :)');
+        } else {
+            setEmailError('Please enter a valid email!')
+        }
     }
 
     return (
         <div>
-            <LoginTopBar>  
+            <LoginTopBar>
             </LoginTopBar>
             <div class={classes.body}>
                 <Grid container spacing={3}>
                     <Grid item xs={4}>
-                            <h1>Log In</h1>
-                            <div>
-                                <form>
+                        <h1>Forgotten your password?</h1>
+                        <p>No worries, let's reset it!</p>
+                        <div>
+                            <form>
                                 <TextField required
                                     label="Email"
                                     variant="standard"
@@ -76,46 +76,28 @@ export default function LogInPage() {
                                     }}
                                     onChange={(e) => validateEmail(e)}
                                     helperText={emailError}
-                                    >
+                                >
                                 </TextField>
                                 <br></br>
-                                <TextField required
-                                    label="Password"
-                                    variant="standard"
-                                    type="password"
-                                    style={{
-                                        width: 300,
-                                        marginTop: 20
-                                    }}
-                                    >
-                                </TextField>
-                                <br></br>
-
-                                <Button disableRipple 
+                                <Button disableRipple
                                     class={classes.primaryButton}
-                                    onClick={() => history.push("/login")} 
+                                    onClick={() => history.push("/login")}
                                     id="submit"
                                     value="Submit"
                                     type="submit"
-                                >Log In
+                                >Reset password
                                 </Button>
-                                </form>
-                                <p>Don't have an account? <a
-                                    onClick={() => history.push("/signup")}
-                                    class={classes.link}
-                                >Sign Up</a></p>
-                                <p>Forgot your password? <a
-                                    onClick={() => history.push("/reset")}
-                                    class={classes.link}
-                                >Reset password</a></p>
-                            </div>
+                            </form>
+                            <a onClick={() => history.push("/")}
+                                class={classes.link}
+                            >Back to home</a>
+                        </div>
                     </Grid>
                     <Grid item xs={6}>
-                            <img class={classes.image} src={login} alt="two people standing" />
+                        <img class={classes.image} src={reset} alt="one person sitting, one person standing" />
                     </Grid>
                 </Grid>
             </div>
-
         </div>
     );
 }

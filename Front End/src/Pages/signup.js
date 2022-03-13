@@ -1,16 +1,16 @@
 import React, {useState} from 'react';
 import LoginTopBar from '../Components/LoginTopBar';
 import { useHistory } from 'react-router-dom';
-import { makeStyles} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core';
+import signup from "../Images/signup.svg";
 import { grid } from '@mui/system';
 import { Grid, TextField, Button } from '@mui/material';
 import validator from 'validator';
-import login from "../Images/login.svg";
 
 
 const useStyles = makeStyles({
     body: {
-        margin: "22vh 22vw",
+        margin: "25vh 22vw",
         display: grid,
         gridTemplateColumns: "1fr 2fr",
     },
@@ -40,31 +40,43 @@ const useStyles = makeStyles({
     },
 })
 
-
-
-export default function LogInPage() {
+export default function SignUpPage() {
     const history = useHistory();
     const classes = useStyles();
+
     // email validation from: https://www.geeksforgeeks.org/how-to-validate-an-email-in-reactjs/
     const [emailError, setEmailError] = useState('')
     const validateEmail = (e) => {
-      var email = e.target.value
+      var emailCheck = e.target.value;
     
-      if (validator.isEmail(email)) {
-        setEmailError('Valid email :)')
+      if (validator.isEmail(emailCheck)) {
+        setEmailError('Valid email :)');
       } else {
         setEmailError('Please enter a valid email!')
       }
     }
+    
+    // password validation
+    const [passwordError, setPasswordError] = useState('')
+    const validatePassword = (p) =>  {
+        var reg = new RegExp('^(?=.*\\d).{6,}$');
+        var passwordCheck = p.target.value;
+        if (reg.test(passwordCheck)) {
+            setPasswordError('Strong password');
+        } else {
+            setPasswordError('Password should be at least 6 characters and include 1 number!');
+        }        
+    }
 
     return (
         <div>
-            <LoginTopBar>  
+            <LoginTopBar>
             </LoginTopBar>
+
             <div class={classes.body}>
                 <Grid container spacing={3}>
                     <Grid item xs={4}>
-                            <h1>Log In</h1>
+                            <h1>Sign Up</h1>
                             <div>
                                 <form>
                                 <TextField required
@@ -80,6 +92,16 @@ export default function LogInPage() {
                                 </TextField>
                                 <br></br>
                                 <TextField required
+                                    label="Username"
+                                    variant="standard"
+                                    style={{
+                                        width: 300,
+                                        marginTop: 20
+                                    }}
+                                    >
+                                </TextField>
+                                <br></br>
+                                <TextField required
                                     label="Password"
                                     variant="standard"
                                     type="password"
@@ -87,6 +109,8 @@ export default function LogInPage() {
                                         width: 300,
                                         marginTop: 20
                                     }}
+                                    onChange={(p) => validatePassword(p)}
+                                    helperText={passwordError}
                                     >
                                 </TextField>
                                 <br></br>
@@ -97,25 +121,20 @@ export default function LogInPage() {
                                     id="submit"
                                     value="Submit"
                                     type="submit"
-                                >Log In
+                                >Sign Up
                                 </Button>
                                 </form>
-                                <p>Don't have an account? <a
-                                    onClick={() => history.push("/signup")}
+                                <p>Already have an account? <a
+                                    onClick={() => history.push("/login")}
                                     class={classes.link}
-                                >Sign Up</a></p>
-                                <p>Forgot your password? <a
-                                    onClick={() => history.push("/reset")}
-                                    class={classes.link}
-                                >Reset password</a></p>
+                                >Log In</a></p>
                             </div>
                     </Grid>
                     <Grid item xs={6}>
-                            <img class={classes.image} src={login} alt="two people standing" />
+                            <img class={classes.image} src={signup} alt="two people standing" />
                     </Grid>
                 </Grid>
             </div>
-
         </div>
     );
 }
