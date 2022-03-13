@@ -3,11 +3,9 @@ const userModel = require("./models/userModel");
 const app = express();
 const crypto = require("crypto");
 const sha256 = require('js-sha256');
-const cors = require('cors');
 
 const secret = "This is a company secret";
 const Hasher = crypto.createHmac("sha256", secret);
-app.use(cors({origin: 'http://localhost:3000'}));
 
 // Get all users in the database
 app.get("/users", async (req, res) => {
@@ -20,23 +18,22 @@ app.get("/users", async (req, res) => {
   }
 });
 
+
 app.post("/user", async (req, res) => {
   // Look up if the user already exists
   userModel.countDocuments(
-    { email: req.header('email')},
-
+    { email: req.body.email },
     async function (err, count) {
       if (count > 0) {
         //document exists
         console.log("User already exists");
         res.status(400).send("User already exists");
       } else {
-        
-        var newPassword = sha256(req.header('password'));
+        //const hash = Hasher.update(req.body.password);
         const user = new userModel({
-          name: req.header('name'),
-          email:req.header('email'),
-          password: newPassword,
+          name: req.body.name,
+          email: req.body.email,
+          password: sha256(req.body.password)
         });
 
         try {
@@ -50,6 +47,7 @@ app.post("/user", async (req, res) => {
     }
   );
 });
+
 
 // update password or name by querying the email
 app.patch("/user", async (req, res) => {
@@ -85,11 +83,14 @@ app.delete("/user", async (req, res) => {
 
 // return the user detail if the look-up is successful
 app.get("/login", async (req, res) => {
+
+  //console.log(req.query['email']);
+  //console.log(req.query['password']);
+
   //const hash = Hasher.update(req.body.password);
-  
   const user = await userModel.findOne({
-    email: req.header('email'),
-    password: sha256(req.header('password'))
+    email: req.query['email'],
+    password: sha256(req.query['password'])
   });
 
   try {
@@ -100,5 +101,6 @@ app.get("/login", async (req, res) => {
     res.status(500).send(error);
   }
 });
+
 
 module.exports = app;
