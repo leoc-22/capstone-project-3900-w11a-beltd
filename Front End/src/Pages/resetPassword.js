@@ -35,7 +35,9 @@ const useStyles = makeStyles({
             cursor: "pointer"
         }
     },
-
+    image: {
+        marginLeft: "5%",
+    },
 })
 
 export default function ResetPassword() {

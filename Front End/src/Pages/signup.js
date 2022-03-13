@@ -19,7 +19,7 @@ const useStyles = makeStyles({
         height: 40,
         borderRadius: 8,
         fontSize: "large",
-        marginTop: "10%",
+        margin: "10% 0",
         background: "transparent",
         fontWeight: "bold",
         borderColor: "#00C9D8",
@@ -35,7 +35,9 @@ const useStyles = makeStyles({
             cursor: "pointer"
         }
     },
-
+    image: {
+        marginLeft: "5%",
+    },
 })
 
 export default function SignUpPage() {
