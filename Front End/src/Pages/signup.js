@@ -3,28 +3,26 @@ import LoginTopBar from "../Components/LoginTopBar";
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
 import signup from "../Images/signup.svg";
-import { grid } from "@mui/system";
-import { Grid, TextField, Button } from "@mui/material";
+import { Grid, TextField, Button, Alert } from "@mui/material";
 import validator from "validator";
 const axios = require("axios");
 
 const useStyles = makeStyles({
   body: {
-    margin: "25vh 22vw",
-    display: grid,
-    gridTemplateColumns: "1fr 2fr",
+    margin: "15vh 22vw",
   },
   primaryButton: {
-    width: 130,
+    padding: "0 30px",
     height: 40,
     borderRadius: 8,
-    fontSize: "large",
-    marginTop: "10%",
+    fontSize: "13pt",
+    margin: "40px 0 20px 0",
     background: "transparent",
     fontWeight: "bold",
     borderColor: "#00C9D8",
     "&:hover": {
       backgroundColor: "#00C9D8",
+      color: "#fff",
       cursor: "pointer",
     },
   },
@@ -35,15 +33,11 @@ const useStyles = makeStyles({
     },
   },
   image: {
-    position: "absolute",
-    marginLeft: "180px",
-  },
-  errorMsg: {
-    color: "red",
+    marginLeft: "10%",
   },
 });
 
-export default function LandingPage() {
+export default function SignUpPage() {
   const history = useHistory();
   const classes = useStyles();
   // email validation from: https://www.geeksforgeeks.org/how-to-validate-an-email-in-reactjs/
@@ -71,27 +65,27 @@ export default function LandingPage() {
     }
   };
 
+  const [matchError, setMatchError] = useState("");
+  const passwordMatch = (p) => {
+    var password = document.getElementById("passwordInput").value;
+    var retype = p.target.value;
+    if (retype !== password) {
+      setMatchError("Passwords don't match");
+    } else {
+      setMatchError("Passwords match!");
+    }
+  };
+
   function registerUser() {
     var newEmail = document.getElementById("emailInput").value;
     var newUserName = document.getElementById("userNameInput").value;
     var newPassword = document.getElementById("passwordInput").value;
-    var reTypedPassword = document.getElementById("retypePassword").value;
-
-    if (newPassword !== reTypedPassword) {
-      document.getElementById("passwordErr").hidden = false;
-      return;
-    }
-
     if (
       emailError === "Valid email :)" &&
       passwordError === "Strong password" &&
+      matchError === "Passwords match!" &&
       newUserName.length >= 1
     ) {
-      const user = {
-        email: newEmail,
-        name: newUserName,
-        password: newPassword,
-      };
       axios({
         method: "post",
         url: "http://localhost:8001/user",
@@ -101,16 +95,17 @@ export default function LandingPage() {
           name: newUserName,
           password: newPassword,
         },
-      }).then((response) => handelResponse(response));
+      }).then((res) => {
+        if (res.status === 200) {
+          console.log(res);
+          history.push("/home");
+        } else {
+          alert("Error: " + res.status);
+        }
+      });
     } else {
-      console.log("unable to create user");
+      console.log("Unable to create user");
     }
-  }
-
-  function handelResponse(res) {
-    console.log(res);
-    localStorage.setItem("name", res["data"]["name"]);
-    history.push("/homePage");
   }
 
   return (
@@ -121,6 +116,9 @@ export default function LandingPage() {
         <Grid container spacing={3}>
           <Grid item xs={4}>
             <h1>Sign Up</h1>
+            <Alert severity="error" id="userError">
+              ERROR: Unable to create user
+            </Alert>
             <div>
               <form>
                 <TextField
@@ -130,12 +128,10 @@ export default function LandingPage() {
                   variant="standard"
                   style={{
                     width: 300,
-                    marginTop: 20,
                   }}
                   onChange={(e) => validateEmail(e)}
                   helperText={emailError}
                 ></TextField>
-                <br></br>
                 <TextField
                   required
                   id="userNameInput"
@@ -143,10 +139,9 @@ export default function LandingPage() {
                   variant="standard"
                   style={{
                     width: 300,
-                    marginTop: 20,
+                    marginTop: 15,
                   }}
                 ></TextField>
-                <br></br>
                 <TextField
                   required
                   id="passwordInput"
@@ -155,7 +150,7 @@ export default function LandingPage() {
                   type="password"
                   style={{
                     width: 300,
-                    marginTop: 20,
+                    marginTop: 15,
                   }}
                   onChange={(p) => validatePassword(p)}
                   helperText={passwordError}
@@ -163,17 +158,16 @@ export default function LandingPage() {
                 <TextField
                   required
                   id="retypePassword"
-                  label="Re Type Password"
+                  label="Re-enter Password"
                   variant="standard"
                   type="password"
                   style={{
                     width: 300,
-                    marginTop: 10,
+                    marginTop: 15,
                   }}
+                  onChange={(p) => passwordMatch(p)}
+                  helperText={matchError}
                 ></TextField>
-
-                <br></br>
-
                 <Button
                   disableRipple
                   class={classes.primaryButton}
@@ -193,16 +187,9 @@ export default function LandingPage() {
             </div>
           </Grid>
           <Grid item xs={6}>
-            <img
-              class={classes.image}
-              src={signup}
-              alt="experiment with booklab + two people"
-            />
+            <img class={classes.image} src={signup} alt="two people standing" />
           </Grid>
         </Grid>
-        <h3 id="passwordErr" hidden class={classes.errorMsg}>
-          Passwords Don't Match
-        </h3>
       </div>
     </div>
   );
