@@ -6,6 +6,7 @@ import SignUpPage from "./Pages/signup";
 import HomePage from "./Pages/HomePage";
 import SearchPage from "./Pages/SearchPage";
 import ResetPasswordPage from "./Pages/resetPassword";
+import UpdatePasswordPage from "./Pages/UpdatePassword";
 
 function App() {
   return (
@@ -21,6 +22,9 @@ function App() {
       </Switch>
       <Switch>
         <Route exact path="/reset" component={ResetPasswordPage}></Route>
+      </Switch>
+      <Switch>
+        <Route exact path="/update-password" component={UpdatePasswordPage}></Route>
       </Switch>
       <Switch>
         <Route exact path="/home" component={HomePage}></Route>

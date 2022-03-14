@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import LoginTopBar from '../Components/LoginTopBar';
 import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core';
-import reset from "../Images/reset.svg";
+import update from "../Images/update.svg";
 import { Grid, TextField, Button } from '@mui/material';
 import validator from 'validator';
 
@@ -37,7 +37,7 @@ const useStyles = makeStyles({
   },
 })
 
-export default function ResetPassword() {
+export default function UpdatePasswordPage() {
   const history = useHistory();
   const classes = useStyles();
 
@@ -53,6 +53,32 @@ export default function ResetPassword() {
     }
   }
 
+  const [passwordError, setPasswordError] = useState("");
+  const validatePassword = (p) => {
+    var reg = new RegExp("^(?=.*\\d).{6,}$");
+    var password = p.target.value;
+    if (reg.test(password)) {
+      setPasswordError("Strong password");
+    } else {
+      setPasswordError(
+        "Password should be at least 6 characters and include 1 number!"
+      );
+    }
+  };
+
+  const [matchError, setMatchError] = useState("");
+  const passwordMatch = (p) => {
+    var password = document.getElementById("passwordInput").value;
+    var retype = p.target.value;
+    if (retype !== password) {
+      setMatchError("Passwords don't match");
+    } else {
+      setMatchError(
+        "Passwords match!"
+      );
+    }
+  }
+
   return (
     <div>
       <LoginTopBar>
@@ -60,8 +86,7 @@ export default function ResetPassword() {
       <div class={classes.body}>
         <Grid container spacing={3}>
           <Grid item xs={4}>
-            <h1>Forgotten your password?</h1>
-            <p>No worries, let's reset it!</p>
+            <h1>Let's reset your password!</h1>
             <div>
               <form>
                 <TextField required
@@ -75,14 +100,40 @@ export default function ResetPassword() {
                   helperText={emailError}
                 >
                 </TextField>
+                <TextField
+                  required
+                  id="passwordInput"
+                  label="Password"
+                  variant="standard"
+                  type="password"
+                  style={{
+                    width: 300,
+                    marginTop: 15,
+                  }}
+                  onChange={(p) => validatePassword(p)}
+                  helperText={passwordError}
+                ></TextField>
+                <TextField
+                  required
+                  id="retypePassword"
+                  label="Re-enter Password"
+                  variant="standard"
+                  type="password"
+                  style={{
+                    width: 300,
+                    marginTop: 15,
+                  }}
+                  onChange={(p) => passwordMatch(p)}
+                  helperText={matchError}
+                ></TextField>
                 <br></br>
                 <Button disableRipple
                   class={classes.primaryButton}
-                  onClick={() => history.push("/update-password")}
+                  onClick={() => history.push("/login")}
                   id="submit"
                   value="Submit"
                   type="submit"
-                >Reset password
+                >Update password
                 </Button>
               </form>
               <a onClick={() => history.push("/")}
@@ -91,7 +142,7 @@ export default function ResetPassword() {
             </div>
           </Grid>
           <Grid item xs={6}>
-            <img class={classes.image} src={reset} alt="one person sitting, one person standing" />
+            <img class={classes.image} src={update} alt="one person sitting, one person standing" />
           </Grid>
         </Grid>
       </div>
