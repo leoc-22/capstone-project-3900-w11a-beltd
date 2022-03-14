@@ -9,7 +9,7 @@ import validator from 'validator';
 
 const useStyles = makeStyles({
   body: {
-    margin: "22vh 22vw",
+    margin: "15vh 22vw",
   },
   primaryButton: {
     height: 40,
