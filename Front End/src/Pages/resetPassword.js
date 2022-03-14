@@ -3,7 +3,6 @@ import LoginTopBar from '../Components/LoginTopBar';
 import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core';
 import reset from "../Images/reset.svg";
-import { grid } from '@mui/system';
 import { Grid, TextField, Button } from '@mui/material';
 import validator from 'validator';
 
@@ -11,8 +10,6 @@ import validator from 'validator';
 const useStyles = makeStyles({
     body: {
         margin: "22vh 22vw",
-        display: grid,
-        gridTemplateColumns: "1fr 2fr",
     },
     primaryButton: {
         height: 40,
@@ -36,7 +33,7 @@ const useStyles = makeStyles({
         }
     },
     image: {
-        marginLeft: "5%",
+        marginLeft: "10%",
     },
 })
 
