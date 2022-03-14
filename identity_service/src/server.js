@@ -2,8 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const userRouter = require("./userRouter.js");
 
-const isProduction = process.env.NODE_ENV === "production";
-const port = isProduction ? 8000 : 8001;
+const port = 8001;
 const app = express();
 const cors = require("cors");
 app.use(cors());

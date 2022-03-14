@@ -1,16 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
-import {
-  makeStyles,
-  List,
-  ListItemIcon,
-  ListItemText,
-  Grid,
-  ListItem,
-  IconButton,
-} from "@material-ui/core";
-import { height } from "@mui/system";
-import Button from "@mui/material/Button";
+import React from "react";
+import { makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles({
   main: {},
@@ -26,7 +15,6 @@ const useStyles = makeStyles({
 });
 
 export default function Header() {
-  const history = useHistory();
   const classes = useStyles();
 
   return (

@@ -53,7 +53,7 @@ app.patch("/user", async (req, res) => {
       password: sha256.hex(req.body.password),
     },
     { upsert: true },
-    (err, doc) => {
+    (err) => {
       if (err) return res.status(500).send(err);
       console.log("User updated");
       res.send("Succesfully updated.");
@@ -65,7 +65,7 @@ app.patch("/user", async (req, res) => {
 app.delete("/user", async (req, res) => {
   var query = { email: req.body.email };
 
-  userModel.findOneAndRemove(query, (err, doc) => {
+  userModel.findOneAndRemove(query, (err) => {
     if (err) return res.send(500, { error: err });
     console.log("User deleted");
     res.send("Succesfully deleted.");

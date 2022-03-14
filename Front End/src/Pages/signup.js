@@ -5,7 +5,7 @@ import { makeStyles } from "@material-ui/core";
 import signup from "../Images/signup.svg";
 import { Grid, TextField, Button, Alert } from "@mui/material";
 import validator from "validator";
-const axios = require("axios");
+import axios from "axios";
 
 const useStyles = makeStyles({
   body: {
@@ -112,7 +112,7 @@ export default function SignUpPage() {
     <div>
       <LoginTopBar></LoginTopBar>
 
-      <div class={classes.body}>
+      <div className={classes.body}>
         <Grid container spacing={3}>
           <Grid item xs={4}>
             <h1>Sign Up</h1>
@@ -180,14 +180,21 @@ export default function SignUpPage() {
               </form>
               <p>
                 Already have an account?{" "}
-                <a onClick={() => history.push("/login")} class={classes.link}>
+                <a
+                  onClick={() => history.push("/login")}
+                  className={classes.link}
+                >
                   Log In
                 </a>
               </p>
             </div>
           </Grid>
           <Grid item xs={6}>
-            <img class={classes.image} src={signup} alt="two people standing" />
+            <img
+              className={classes.image}
+              src={signup}
+              alt="two people standing"
+            />
           </Grid>
         </Grid>
       </div>

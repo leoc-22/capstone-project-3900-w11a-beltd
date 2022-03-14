@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Button from "@mui/material/Button";
 import CollectionsCarousel from "../Components/CollectionsCarousel";
 import TopBookGrid from "../Components/TopBookGrid";
 import AuthenicatedTopBar from "../Components/AuthenicatedTopBar";
 import TextField from "@mui/material/TextField";
-import { MuiThemeProvider, createTheme } from "@material-ui/core/styles";
+import { createTheme } from "@material-ui/core/styles";
 import Typewriter from "typewriter-effect";
-import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles({
@@ -62,7 +61,7 @@ const useStyles = makeStyles({
   },
 });
 
-const HomePage = (props) => {
+const HomePage = () => {
   const theme = createTheme({
     palette: {
       secondary: {
@@ -71,7 +70,6 @@ const HomePage = (props) => {
     },
   });
 
-  const history = useHistory();
   const classes = useStyles();
 
   return (
@@ -81,34 +79,34 @@ const HomePage = (props) => {
       <div className={classes.serachBarBox}>
         <ButtonGroup color="secondary" theme={theme} variant="text">
           <Button>
-            <span class={classes.Categorybtn}>All Categories</span>
+            <span className={classes.Categorybtn}>All Categories</span>
           </Button>
           <Button>
-            <span class={classes.Categorybtn}>Category1</span>
+            <span className={classes.Categorybtn}>Category1</span>
           </Button>
           <Button>
-            <span class={classes.Categorybtn}>Category2</span>
+            <span className={classes.Categorybtn}>Category2</span>
           </Button>
           <Button>
-            <span class={classes.Categorybtn}>Category3</span>
+            <span className={classes.Categorybtn}>Category3</span>
           </Button>
           <Button>
-            <span class={classes.Categorybtn}>Category4</span>
+            <span className={classes.Categorybtn}>Category4</span>
           </Button>
           <Button>
-            <span class={classes.Categorybtn}>Category5</span>
+            <span className={classes.Categorybtn}>Category5</span>
           </Button>
           <Button>
-            <span class={classes.Categorybtn}>Category6</span>
+            <span className={classes.Categorybtn}>Category6</span>
           </Button>
           <Button>
-            <span class={classes.Categorybtn}>Category7</span>
+            <span className={classes.Categorybtn}>Category7</span>
           </Button>
           <Button>
-            <span class={classes.Categorybtn}>Category8</span>
+            <span className={classes.Categorybtn}>Category8</span>
           </Button>
           <Button>
-            <span class={classes.Categorybtn}>Category9</span>
+            <span className={classes.Categorybtn}>Category9</span>
           </Button>
         </ButtonGroup>
         <br></br>

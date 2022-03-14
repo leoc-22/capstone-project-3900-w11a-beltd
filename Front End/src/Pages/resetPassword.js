@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
-import LoginTopBar from '../Components/LoginTopBar';
-import { useHistory } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core';
+import React, { useState } from "react";
+import LoginTopBar from "../Components/LoginTopBar";
+import { useHistory } from "react-router-dom";
+import { makeStyles } from "@material-ui/core";
 import reset from "../Images/reset.svg";
-import { Grid, TextField, Button } from '@mui/material';
-import validator from 'validator';
-
+import { Grid, TextField, Button } from "@mui/material";
+import validator from "validator";
 
 const useStyles = makeStyles({
   body: {
@@ -20,78 +19,83 @@ const useStyles = makeStyles({
     background: "transparent",
     fontWeight: "bold",
     borderColor: "#00C9D8",
-    '&:hover': {
+    "&:hover": {
       backgroundColor: "#00C9D8",
       color: "#fff",
-      cursor: "pointer"
-    }
+      cursor: "pointer",
+    },
   },
   link: {
     color: "#00C9D8",
-    '&:hover': {
-      cursor: "pointer"
-    }
+    "&:hover": {
+      cursor: "pointer",
+    },
   },
   image: {
     marginLeft: "10%",
   },
-})
+});
 
 export default function ResetPassword() {
   const history = useHistory();
   const classes = useStyles();
 
   // email validation from: https://www.geeksforgeeks.org/how-to-validate-an-email-in-reactjs/
-  const [emailError, setEmailError] = useState('')
+  const [emailError, setEmailError] = useState("");
   const validateEmail = (e) => {
     var emailCheck = e.target.value;
 
     if (validator.isEmail(emailCheck)) {
-      setEmailError('Valid email :)');
+      setEmailError("Valid email :)");
     } else {
-      setEmailError('Please enter a valid email!')
+      setEmailError("Please enter a valid email!");
     }
-  }
+  };
 
   return (
     <div>
-      <LoginTopBar>
-      </LoginTopBar>
-      <div class={classes.body}>
+      <LoginTopBar></LoginTopBar>
+      <div className={classes.body}>
         <Grid container spacing={3}>
           <Grid item xs={4}>
             <h1>Forgotten your password?</h1>
             <p>No worries, let's reset it!</p>
             <div>
               <form>
-                <TextField required
+                <TextField
+                  required
                   label="Email"
                   variant="standard"
                   style={{
                     width: 300,
-                    marginTop: 20
+                    marginTop: 20,
                   }}
                   onChange={(e) => validateEmail(e)}
                   helperText={emailError}
-                >
-                </TextField>
+                ></TextField>
                 <br></br>
-                <Button disableRipple
+                <Button
+                  disableRipple
                   class={classes.primaryButton}
                   onClick={() => history.push("/update-password")}
                   id="submit"
                   value="Submit"
                   type="submit"
-                >Reset password
+                >
+                  Reset password
                 </Button>
               </form>
-              <a onClick={() => history.push("/")}
-                class={classes.link}
-              >Back to home</a>
+              <a onClick={() => history.push("/")} className={classes.link}>
+                Back to home
+              </a>
             </div>
           </Grid>
           <Grid item xs={6}>
-            <img class={classes.image} src={reset} alt="one person sitting, one person standing" />
+            <img
+              className={classes.image}
+              src={reset}
+              alt="one person sitting, one person standing"
+            />
           </Grid>
         </Grid>
       </div>

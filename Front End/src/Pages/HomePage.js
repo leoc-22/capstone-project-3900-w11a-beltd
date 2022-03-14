@@ -1,20 +1,9 @@
-import React, { useEffect, useState } from "react";
-import LandingPageTopBar from "../Components/LandingPageTopBar";
+import React from "react";
 import Header from "../Components/Header";
 import CollectionsCarousel from "../Components/CollectionsCarousel";
 import TopBookGrid from "../Components/TopBookGrid";
 import AuthenicatedTopBar from "../Components/AuthenicatedTopBar";
-
-import { useHistory } from "react-router-dom";
-import {
-  makeStyles,
-  List,
-  ListItemIcon,
-  ListItemText,
-  Grid,
-  ListItem,
-  IconButton,
-} from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles({
   main: {
@@ -32,8 +21,7 @@ const useStyles = makeStyles({
   test: {},
 });
 
-const HomePage = (props) => {
-  const history = useHistory();
+const HomePage = () => {
   const classes = useStyles();
 
   return (

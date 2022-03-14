@@ -1,14 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { makeStyles, List, AppBar, IconButton } from "@material-ui/core";
-import MuiAppBar from "@mui/material/AppBar";
+import { makeStyles, AppBar, IconButton } from "@material-ui/core";
 import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
 import SearchIcon from "@mui/icons-material/Search";
 import TextField from "@mui/material/TextField";
-import Divider from "@mui/material/Divider";
 import PermIdentityIcon from "@mui/icons-material/PermIdentity";
-import { maxWidth } from "@mui/system";
 
 const useStyles = makeStyles({
   appBar: {
@@ -104,10 +101,13 @@ export default function LandingPageTopBar() {
   var userName = localStorage.getItem("name");
 
   return (
-    <div class={classes.root}>
+    <div className={classes.root}>
       <AppBar class={classes.appBar}>
         <Toolbar>
-          <h3 class={classes.Name} onClick={() => history.push("/homePage")}>
+          <h3
+            className={classes.Name}
+            onClick={() => history.push("/homePage")}
+          >
             BookLab
           </h3>
           <Button
@@ -149,14 +149,14 @@ export default function LandingPageTopBar() {
           >
             <SearchIcon className={classes.navSearch}></SearchIcon>
           </IconButton>
-          <div class={classes.textItem} id="searchText" hidden>
+          <div className={classes.textItem} id="searchText" hidden>
             <TextField
               id="standard-basic"
               placeholder="Search Books"
               variant="standard"
             ></TextField>
           </div>
-          <h5 class={classes.loggedInUser}>{userName}</h5>
+          <h5 className={classes.loggedInUser}>{userName}</h5>
           <PermIdentityIcon
             class={classes.profileIcon}
             //onClick = {() => history.push("")}
