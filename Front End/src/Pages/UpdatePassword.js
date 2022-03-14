@@ -1,11 +1,10 @@
-import React, { useState } from 'react';
-import LoginTopBar from '../Components/LoginTopBar';
-import { useHistory } from 'react-router-dom';
-import { makeStyles } from '@material-ui/core';
+import React, { useState } from "react";
+import LoginTopBar from "../Components/LoginTopBar";
+import { useHistory } from "react-router-dom";
+import { makeStyles } from "@material-ui/core";
 import update from "../Images/update.svg";
-import { Grid, TextField, Button } from '@mui/material';
-import validator from 'validator';
-
+import { Grid, TextField, Button } from "@mui/material";
+import validator from "validator";
 
 const useStyles = makeStyles({
   body: {
@@ -20,38 +19,38 @@ const useStyles = makeStyles({
     background: "transparent",
     fontWeight: "bold",
     borderColor: "#00C9D8",
-    '&:hover': {
+    "&:hover": {
       backgroundColor: "#00C9D8",
       color: "#fff",
-      cursor: "pointer"
-    }
+      cursor: "pointer",
+    },
   },
   link: {
     color: "#00C9D8",
-    '&:hover': {
-      cursor: "pointer"
-    }
+    "&:hover": {
+      cursor: "pointer",
+    },
   },
   image: {
     marginLeft: "10%",
   },
-})
+});
 
 export default function UpdatePasswordPage() {
   const history = useHistory();
   const classes = useStyles();
 
   // email validation from: https://www.geeksforgeeks.org/how-to-validate-an-email-in-reactjs/
-  const [emailError, setEmailError] = useState('')
+  const [emailError, setEmailError] = useState("");
   const validateEmail = (e) => {
     var emailCheck = e.target.value;
 
     if (validator.isEmail(emailCheck)) {
-      setEmailError('Valid email :)');
+      setEmailError("Valid email :)");
     } else {
-      setEmailError('Please enter a valid email!')
+      setEmailError("Please enter a valid email!");
     }
-  }
+  };
 
   const [passwordError, setPasswordError] = useState("");
   const validatePassword = (p) => {
@@ -73,33 +72,30 @@ export default function UpdatePasswordPage() {
     if (retype !== password) {
       setMatchError("Passwords don't match");
     } else {
-      setMatchError(
-        "Passwords match!"
-      );
+      setMatchError("Passwords match!");
     }
-  }
+  };
 
   return (
     <div>
-      <LoginTopBar>
-      </LoginTopBar>
-      <div class={classes.body}>
+      <LoginTopBar></LoginTopBar>
+      <div className={classes.body}>
         <Grid container spacing={3}>
           <Grid item xs={4}>
             <h1>Let's reset your password!</h1>
             <div>
               <form>
-                <TextField required
+                <TextField
+                  required
                   label="Email"
                   variant="standard"
                   style={{
                     width: 300,
-                    marginTop: 20
+                    marginTop: 20,
                   }}
                   onChange={(e) => validateEmail(e)}
                   helperText={emailError}
-                >
-                </TextField>
+                ></TextField>
                 <TextField
                   required
                   id="passwordInput"
@@ -127,22 +123,28 @@ export default function UpdatePasswordPage() {
                   helperText={matchError}
                 ></TextField>
                 <br></br>
-                <Button disableRipple
+                <Button
+                  disableRipple
                   class={classes.primaryButton}
                   onClick={() => history.push("/login")}
                   id="submit"
                   value="Submit"
                   type="submit"
-                >Update password
+                >
+                  Update password
                 </Button>
               </form>
-              <a onClick={() => history.push("/")}
-                class={classes.link}
-              >Back to home</a>
+              <a onClick={() => history.push("/")} className={classes.link}>
+                Back to home
+              </a>
             </div>
           </Grid>
           <Grid item xs={6}>
-            <img class={classes.image} src={update} alt="one person sitting, one person standing" />
+            <img
+              className={classes.image}
+              src={update}
+              alt="one person sitting, one person standing"
+            />
           </Grid>
         </Grid>
       </div>

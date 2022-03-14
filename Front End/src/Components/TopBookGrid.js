@@ -1,15 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import React from "react";
 import { makeStyles } from "@material-ui/core";
-import {
-  List,
-  ListItemIcon,
-  ListItemText,
-  Grid,
-  ListItem,
-  IconButton,
-} from "@material-ui/core";
-import { Container } from "@mui/material";
+import { Grid } from "@material-ui/core";
 import TopBookItem from "./TopBookItem";
 
 const useStyles = makeStyles({
@@ -25,7 +16,6 @@ const useStyles = makeStyles({
 });
 
 export default function TopBooksGrid() {
-  const history = useHistory();
   const classes = useStyles();
 
   return (

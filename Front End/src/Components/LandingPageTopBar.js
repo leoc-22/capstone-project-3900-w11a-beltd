@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { makeStyles, List, AppBar, IconButton } from "@material-ui/core";
-import MuiAppBar from "@mui/material/AppBar";
+import { makeStyles, AppBar, IconButton } from "@material-ui/core";
 import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
 import SearchIcon from "@mui/icons-material/Search";
 import TextField from "@mui/material/TextField";
-import Divider from "@mui/material/Divider";
 
 const useStyles = makeStyles({
   appBar: {
@@ -95,10 +93,10 @@ export default function LandingPageTopBar() {
   }
 
   return (
-    <div class={classes.root}>
+    <div className={classes.root}>
       <AppBar class={classes.appBar}>
         <Toolbar>
-          <h3 class={classes.Name} onClick={() => history.push("/")}>
+          <h3 className={classes.Name} onClick={() => history.push("/")}>
             BookLab
           </h3>
           <Button
@@ -140,7 +138,7 @@ export default function LandingPageTopBar() {
           >
             <SearchIcon className={classes.navSearch}></SearchIcon>
           </IconButton>
-          <div class={classes.textItem} id="searchText" hidden>
+          <div className={classes.textItem} id="searchText" hidden>
             <TextField
               id="standard-basic"
               placeholder="Search Books"

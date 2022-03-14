@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import Button from "@mui/material/Button";
@@ -47,11 +47,11 @@ export default function TopBookItem() {
         src="PlaceHolder.png"
       />
       <div>
-        <span class="bookTitle">
+        <span className="bookTitle">
           <b>Title</b>
         </span>
         <br></br>
-        <span class="bookTitle">Author</span>
+        <span className="bookTitle">Author</span>
       </div>
       <Button
         disableRipple

@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
 import MuiAppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
-import Divider from "@mui/material/Divider";
 
 const useStyles = makeStyles({
   appBar: {
@@ -62,7 +61,7 @@ export default function LoginTopBar() {
     <div className={classes.root}>
       <MuiAppBar class={classes.appBar} position="sticky">
         <Toolbar>
-          <h3 class={classes.Name} onClick={() => history.push("/")}>
+          <h3 className={classes.Name} onClick={() => history.push("/")}>
             BookLab
           </h3>
           <Button

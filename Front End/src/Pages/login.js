@@ -5,7 +5,7 @@ import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
 import validator from "validator";
 import login from "../Images/login.svg";
-const axios = require("axios");
+import axios from "axios";
 
 const useStyles = makeStyles({
   body: {
@@ -85,7 +85,7 @@ export default function LogInPage() {
   return (
     <div>
       <LoginTopBar></LoginTopBar>
-      <div class={classes.body}>
+      <div className={classes.body}>
         <Grid container spacing={3}>
           <Grid item xs={4}>
             <h1>Log In</h1>
@@ -128,19 +128,29 @@ export default function LogInPage() {
               </form>
               <p>
                 Don't have an account?{" "}
-                <a onClick={() => history.push("/signup")} class={classes.link}>
+                <a
+                  onClick={() => history.push("/signup")}
+                  className={classes.link}
+                >
                   Sign Up
                 </a>
               </p>
               <p>
-                <a onClick={() => history.push("/reset")} class={classes.link}>
+                <a
+                  onClick={() => history.push("/reset")}
+                  className={classes.link}
+                >
                   Forgot password?
                 </a>
               </p>
             </div>
           </Grid>
           <Grid item xs={6}>
-            <img class={classes.image} src={login} alt="two people standing" />
+            <img
+              className={classes.image}
+              src={login}
+              alt="two people standing"
+            />
           </Grid>
         </Grid>
       </div>

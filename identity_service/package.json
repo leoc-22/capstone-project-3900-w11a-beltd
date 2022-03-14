@@ -6,7 +6,8 @@
   "scripts": {
     "test": "test",
     "start": "node .",
-    "start:dev": "nodemon"
+    "start:dev": "nodemon",
+    "lint": "eslint --ext .js,.ts,.tsx src/ --max-warnings=0"
   },
   "author": "",
   "license": "ISC",
@@ -17,6 +18,9 @@
     "mongoose": "^6.2.4"
   },
   "devDependencies": {
+    "eslint": "^8.11.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.0.0",
     "nodemon": "^2.0.15"
   }
 }
