@@ -78,8 +78,8 @@ const requestPasswordReset = async (email) => {
     email,
     "Password Reset Request",
     {
-      name: user.name,
-      link: link,
+      name: user.name, // delete later don't need custom greeting
+      link: link, 
     },
     "./util/forgotPassword.handlebars"
   );
