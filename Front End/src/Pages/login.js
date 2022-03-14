@@ -1,53 +1,43 @@
 import React, { useState } from "react";
+import { Grid, TextField, Button, Alert } from "@mui/material";
 import LoginTopBar from "../Components/LoginTopBar";
-import SearchIcon from "@mui/icons-material/Search";
-import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
 import validator from "validator";
+import login from "../Images/login.svg"
 const axios = require("axios");
 
+
 const useStyles = makeStyles({
-  loginBtn: {
-    width: 150,
+  body: {
+    margin: "15vh 22vw"
+  },
+  primaryButton: {
+    padding: "0 30px",
     height: 40,
-    borderRadius: 10,
-    fontSize: "large",
-    marginTop: "5%",
+    borderRadius: 8,
+    fontSize: "13pt",
+    margin: "40px 0 20px 0",
     background: "transparent",
     fontWeight: "bold",
-    borderWidth: "thin",
     borderColor: "#00C9D8",
     "&:hover": {
-      //color: "#00C9D8",
+      backgroundColor: "#00C9D8",
+      color: "#fff",
       cursor: "pointer",
     },
   },
-
-  mainSection: {
-    display: "inline",
-  },
-  loginText: {
-    marginLeft: "20%",
-    marginTop: "10%",
-  },
-  loginInput: {
-    marginLeft: "20%",
-  },
-  textInput: {
-    width: 150,
-  },
-  signUp: {
+  link: {
     color: "#00C9D8",
     "&:hover": {
       cursor: "pointer",
     },
   },
-  errorMsg: {
-    color: "red",
+  image: {
+    marginLeft: "10%",
   },
 });
+
 
 export default function LandingPage() {
   const history = useHistory();
@@ -66,9 +56,7 @@ export default function LandingPage() {
 
   function loginUser() {
     var enteredEmail = document.getElementById("emailInput").value;
-    var ennteredPassword = document.getElementById("passwordInput").value;
-    //console.log(ennteredPassword);
-    //console.log(enteredEmail);
+    var enteredPassword = document.getElementById("passwordInput").value;
 
     axios({
       method: "get",
@@ -76,7 +64,7 @@ export default function LandingPage() {
       headers: {},
       params: {
         email: enteredEmail,
-        password: ennteredPassword,
+        password: enteredPassword,
       },
     })
       .then((response) => handleResponse(response))
@@ -92,56 +80,73 @@ export default function LandingPage() {
       document.getElementById("loginFailed").hidden = false;
     } else {
       localStorage.setItem("name", res["data"]["name"]);
-      history.push("/homePage");
+      history.push("/home");
     }
   }
 
   return (
     <div>
       <LoginTopBar></LoginTopBar>
-      <h1 class={classes.loginText}>Login</h1>
-      <div class={classes.loginInput}>
-        <TextField
-          id="emailInput"
-          label="Email"
-          variant="standard"
-          style={{
-            width: 300,
-            marginTop: 40,
-          }}
-          onChange={(e) => validateEmail(e)}
-          helperText={emailError}
-        ></TextField>
-        <br></br>
-        <TextField
-          id="passwordInput"
-          label="Password"
-          variant="standard"
-          type="password"
-          style={{
-            width: 300,
-            marginTop: 20,
-          }}
-        ></TextField>
-        <br></br>
-
-        <Button
-          disableRipple
-          class={classes.loginBtn}
-          onClick={() => loginUser()}
-        >
-          Login
-        </Button>
-        <p>
-          Don't have an account?{" "}
-          <a onClick={() => history.push("/signup")} class={classes.signUp}>
-            Sign Up
-          </a>
-        </p>
-
-        <h3 id="loginFailed" hidden class={classes.errorMsg}>
-          login Failed
-        </h3>
+      <div class={classes.body}>
+        <Grid container spacing={3}>
+          <Grid item xs={4}>
+            <h1>Log In</h1>
+            <Alert severity="error" id="userError">ERROR: Log in failed</Alert>
+            <div>
+              <form>
+                <TextField
+                  required
+                  id="emailInput"
+                  label="Email"
+                  variant="standard"
+                  style={{
+                    width: 300,
+                  }}
+                  onChange={(e) => validateEmail(e)}
+                  helperText={emailError}
+                ></TextField>
+                <TextField
+                  required
+                  id="passwordInput"
+                  label="Password"
+                  variant="standard"
+                  type="password"
+                  style={{
+                    width: 300,
+                    marginTop: 15,
+                  }}
+                ></TextField>
+                <Button
+                  disableRipple
+                  class={classes.primaryButton}
+                  onClick={() => loginUser()}
+                  id="submit"
+                  value="Submit"
+                >
+                  Log In
+                </Button>
+              </form>
+              <p>
+                Don't have an account?{" "}
+                <a onClick={() => history.push("/signup")} class={classes.link}>
+                  Sign Up
+                </a>
+              </p>
+              <p>
+                <a onClick={() => history.push("/reset")} class={classes.link}>
+                  Forgot password?
+                </a>
+              </p>
+            </div>
+          </Grid>
+          <Grid item xs={6}>
+            <img
+              class={classes.image}
+              src={login}
+              alt="two people standing"
+            />
+          </Grid>
+        </Grid>
       </div>
     </div>
   );
