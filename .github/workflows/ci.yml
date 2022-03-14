@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        component: [Front End, identity_service]
+        component: [Front\ End/, identity_service]
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v2
