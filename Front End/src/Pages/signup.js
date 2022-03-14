@@ -9,7 +9,7 @@ const axios = require("axios");
 
 const useStyles = makeStyles({
   body: {
-    margin: "15vh 22vw"
+    margin: "15vh 22vw",
   },
   primaryButton: {
     padding: "0 30px",
@@ -72,11 +72,9 @@ export default function SignUpPage() {
     if (retype !== password) {
       setMatchError("Passwords don't match");
     } else {
-      setMatchError(
-        "Passwords match!"
-      );
+      setMatchError("Passwords match!");
     }
-  }
+  };
 
   function registerUser() {
     var newEmail = document.getElementById("emailInput").value;
@@ -97,16 +95,17 @@ export default function SignUpPage() {
           name: newUserName,
           password: newPassword,
         },
-      }).then((response) => handleResponse(response));
+      }).then((res) => {
+        if (res.status === 200) {
+          console.log(res);
+          history.push("/home");
+        } else {
+          alert("Error: " + res.status);
+        }
+      });
     } else {
       console.log("Unable to create user");
     }
-  }
-
-  function handleResponse(res) {
-    console.log(res);
-    localStorage.setItem("name", res["data"]["name"]);
-    history.push("/homePage");
   }
 
   return (
@@ -117,7 +116,9 @@ export default function SignUpPage() {
         <Grid container spacing={3}>
           <Grid item xs={4}>
             <h1>Sign Up</h1>
-            <Alert severity="error" id="userError">ERROR: Unable to create user</Alert>
+            <Alert severity="error" id="userError">
+              ERROR: Unable to create user
+            </Alert>
             <div>
               <form>
                 <TextField
@@ -186,11 +187,7 @@ export default function SignUpPage() {
             </div>
           </Grid>
           <Grid item xs={6}>
-            <img
-              class={classes.image}
-              src={signup}
-              alt="two people standing"
-            />
+            <img class={classes.image} src={signup} alt="two people standing" />
           </Grid>
         </Grid>
       </div>

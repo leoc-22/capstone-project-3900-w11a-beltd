@@ -26,7 +26,7 @@ app.post("/user", async (req, res) => {
         const user = new userModel({
           name: req.body.name,
           email: req.body.email,
-          password: sha256(req.body.password),
+          password: sha256.hex(req.body.password),
         });
 
         try {
@@ -50,7 +50,7 @@ app.patch("/user", async (req, res) => {
     {
       name: req.body.name,
       email: req.body.email,
-      password: sha256(req.body.password),
+      password: sha256.hex(req.body.password),
     },
     { upsert: true },
     (err, doc) => {
@@ -73,16 +73,15 @@ app.delete("/user", async (req, res) => {
 });
 
 // return the user detail if the look-up is successful
-app.get("/login", async (req, res) => {
+app.post("/login", async (req, res) => {
   const user = await userModel.findOne({
-    email: req.query["email"],
-    password: sha256(req.query["password"]),
+    email: req.body.email,
+    password: sha256.hex(req.body.password),
   });
 
   try {
-    console.log("Found user");
     console.log(user);
-    res.send(user);
+    res.send(user); // user === '' if no user is found
   } catch (error) {
     res.status(500).send(error);
   }

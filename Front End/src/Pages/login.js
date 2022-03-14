@@ -4,13 +4,12 @@ import LoginTopBar from "../Components/LoginTopBar";
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
 import validator from "validator";
-import login from "../Images/login.svg"
+import login from "../Images/login.svg";
 const axios = require("axios");
-
 
 const useStyles = makeStyles({
   body: {
-    margin: "15vh 22vw"
+    margin: "15vh 22vw",
   },
   primaryButton: {
     padding: "0 30px",
@@ -38,7 +37,6 @@ const useStyles = makeStyles({
   },
 });
 
-
 export default function LogInPage() {
   const history = useHistory();
   const classes = useStyles();
@@ -59,10 +57,10 @@ export default function LogInPage() {
     var enteredPassword = document.getElementById("passwordInput").value;
 
     axios({
-      method: "get",
+      method: "post",
       url: "http://localhost:8001/login",
       headers: {},
-      params: {
+      data: {
         email: enteredEmail,
         password: enteredPassword,
       },
@@ -75,11 +73,11 @@ export default function LogInPage() {
   }
 
   function handleResponse(res) {
-    if (res["data"] == "") {
+    if (res.data === "") {
       console.log("login failed");
       document.getElementById("loginFailed").hidden = false;
     } else {
-      localStorage.setItem("name", res["data"]["name"]);
+      console.log("login success, redirecting to home");
       history.push("/home");
     }
   }
@@ -91,7 +89,9 @@ export default function LogInPage() {
         <Grid container spacing={3}>
           <Grid item xs={4}>
             <h1>Log In</h1>
-            <Alert severity="error" id="userError">ERROR: Log in failed</Alert>
+            <Alert severity="error" id="userError">
+              ERROR: Log in failed
+            </Alert>
             <div>
               <form>
                 <TextField
@@ -140,11 +140,7 @@ export default function LogInPage() {
             </div>
           </Grid>
           <Grid item xs={6}>
-            <img
-              class={classes.image}
-              src={login}
-              alt="two people standing"
-            />
+            <img class={classes.image} src={login} alt="two people standing" />
           </Grid>
         </Grid>
       </div>
