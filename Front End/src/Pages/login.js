@@ -39,7 +39,7 @@ const useStyles = makeStyles({
 });
 
 
-export default function LandingPage() {
+export default function LogInPage() {
   const history = useHistory();
   const classes = useStyles();
   // email validation from: https://www.geeksforgeeks.org/how-to-validate-an-email-in-reactjs/
