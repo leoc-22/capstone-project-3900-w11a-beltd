@@ -23,23 +23,23 @@ export default function TopBooksGrid(props) {
     <div className={classes.main}>
       <Grid container spacing={2}>
         <Grid item xs={4} sm={3} md={2} className={classes.gridClass}>
-          <TopBookItem image={props.books[0].image}></TopBookItem>
+          <TopBookItem book={props.books[0]}></TopBookItem>
         </Grid>
         <br></br>
         <Grid item xs={4} sm={3} md={2} className={classes.gridClass}>
-          <TopBookItem image={props.books[1].image}></TopBookItem>
+          <TopBookItem book={props.books[1]}></TopBookItem>
         </Grid>
         <Grid item xs={4} sm={3} md={2} className={classes.gridClass}>
-          <TopBookItem image={props.books[2].image}></TopBookItem>
+          <TopBookItem book={props.books[2]}></TopBookItem>
         </Grid>
         <Grid item xs={4} sm={3} md={2} className={classes.gridClass}>
-          <TopBookItem image={props.books[3].image}></TopBookItem>
+          <TopBookItem book={props.books[3]}></TopBookItem>
         </Grid>
         <Grid item xs={4} sm={3} md={2} className={classes.gridClass}>
-          <TopBookItem image={props.books[4].image}></TopBookItem>
+          <TopBookItem book={props.books[4]}></TopBookItem>
         </Grid>
         <Grid item xs={4} sm={3} md={2} className={classes.gridClass}>
-          <TopBookItem image={props.books[5].image}></TopBookItem>
+          <TopBookItem book={props.books[5]}></TopBookItem>
         </Grid>
       </Grid>
     </div>
