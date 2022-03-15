@@ -139,7 +139,7 @@ export default function LandingPageTopBar() {
             class={classes.appBarBtn}
             //onClick={() => history.push("/")}
           >
-            LeaderBoard
+            Leaderboard
           </Button>
 
           <IconButton
@@ -161,6 +161,13 @@ export default function LandingPageTopBar() {
             class={classes.profileIcon}
             onClick = {() => history.push("/user-settings")}
           ></PermIdentityIcon>
+          <Button
+            disableRipple
+            class={classes.appBarBtn}
+            onClick={() => history.push("/")}
+          >
+            Log out
+          </Button>
         </Toolbar>
       </AppBar>
     </div>
