@@ -25,28 +25,10 @@ const useStyles = makeStyles({
 export default function LandingPage() {
   const classes = useStyles();
 
-  const [popular, setPopular] = React.useState();
+  // const [popular, setPopular] = React.useState();
 
   const handleclick = () => {
-    const params = {
-      api_key: "6BE45BB0BE0F4BCA8DD46F0EC1B10B78",
-      type: "category",
-      category_id: "4366",
-      amazon_domain: "amazon.com",
-      output: "json",
-      include_html: "false",
-    };
-
-    axios
-      .get("https://api.rainforestapi.com/request", { params })
-      .then((res) => {
-        console.log("retrieved data");
-        // console.log(JSON.stringify(response.data, 0, 2));
-        setPopular(res.data.category_results); // a list of books
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    // call db to get the books
   };
 
   return (
