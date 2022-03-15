@@ -106,14 +106,14 @@ export default function LandingPageTopBar() {
         <Toolbar>
           <h3
             className={classes.Name}
-            onClick={() => history.push("/homePage")}
+            onClick={() => history.push("/home")}
           >
             BookLab
           </h3>
           <Button
             disableRipple
             class={classes.appBarBtn}
-            onClick={() => history.push("/SearchPage")}
+            onClick={() => history.push("/search")}
           >
             Explore
           </Button>
@@ -121,7 +121,7 @@ export default function LandingPageTopBar() {
           <Button
             disableRipple
             class={classes.appBarBtn}
-            onClick={() => history.push("/")}
+            //onClick={() => history.push("/")}
           >
             Recommended for {userName}
           </Button>
@@ -129,7 +129,7 @@ export default function LandingPageTopBar() {
           <Button
             disableRipple
             class={classes.appBarBtn}
-            onClick={() => history.push("/")}
+            //onClick={() => history.push("/")}
           >
             Book Store
           </Button>
@@ -137,9 +137,9 @@ export default function LandingPageTopBar() {
           <Button
             disableRipple
             class={classes.appBarBtn}
-            onClick={() => history.push("/")}
+            //onClick={() => history.push("/")}
           >
-            LeaderBoard
+            Leaderboard
           </Button>
 
           <IconButton
@@ -159,8 +159,15 @@ export default function LandingPageTopBar() {
           <h5 className={classes.loggedInUser}>{userName}</h5>
           <PermIdentityIcon
             class={classes.profileIcon}
-            //onClick = {() => history.push("")}
+            onClick = {() => history.push("/user-settings")}
           ></PermIdentityIcon>
+          <Button
+            disableRipple
+            class={classes.appBarBtn}
+            onClick={() => history.push("/")}
+          >
+            Log out
+          </Button>
         </Toolbar>
       </AppBar>
     </div>

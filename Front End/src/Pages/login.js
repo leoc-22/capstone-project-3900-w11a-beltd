@@ -77,6 +77,8 @@ export default function LogInPage() {
       console.log("login failed");
       document.getElementById("loginFailed").hidden = false;
     } else {
+      localStorage.setItem("email", res["data"]["email"]);
+      localStorage.setItem("name", res["data"]["name"]);
       console.log("login success, redirecting to home");
       history.push("/home");
     }
@@ -89,9 +91,11 @@ export default function LogInPage() {
         <Grid container spacing={3}>
           <Grid item xs={4}>
             <h1>Log In</h1>
-            <Alert severity="error" id="userError">
-              ERROR: Log in failed
-            </Alert>
+            <div id="loginFailed" hidden>   
+              <Alert severity="error" id="userError">
+                ERROR: Log in failed
+              </Alert>
+            </div>
             <div>
               <form>
                 <TextField
@@ -101,6 +105,7 @@ export default function LogInPage() {
                   variant="standard"
                   style={{
                     width: 300,
+                    marginTop: 10,
                   }}
                   onChange={(e) => validateEmail(e)}
                   helperText={emailError}

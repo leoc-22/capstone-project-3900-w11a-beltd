@@ -97,14 +97,17 @@ export default function SignUpPage() {
         },
       }).then((res) => {
         if (res.status === 200) {
-          console.log(res);
+          localStorage.setItem("email", res["data"]["email"]);
+          localStorage.setItem("name", res["data"]["name"]);
           history.push("/home");
         } else {
           alert("Error: " + res.status);
+          document.getElementById("loginFailed").hidden = false;
         }
       });
     } else {
       console.log("Unable to create user");
+      document.getElementById("signUpFailed").hidden = false;
     }
   }
 
@@ -116,9 +119,11 @@ export default function SignUpPage() {
         <Grid container spacing={3}>
           <Grid item xs={4}>
             <h1>Sign Up</h1>
-            <Alert severity="error" id="userError">
-              ERROR: Unable to create user
-            </Alert>
+            <div id="signUpFailed" hidden>
+              <Alert severity="error" id="userError">
+                ERROR: Unable to create user
+              </Alert>
+            </div>
             <div>
               <form>
                 <TextField
@@ -128,6 +133,7 @@ export default function SignUpPage() {
                   variant="standard"
                   style={{
                     width: 300,
+                    marginTop: 10,
                   }}
                   onChange={(e) => validateEmail(e)}
                   helperText={emailError}

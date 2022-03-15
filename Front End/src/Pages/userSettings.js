@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import LoginTopBar from "../Components/LoginTopBar";
-import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
 import update from "../Images/update.svg";
 import { Grid, TextField, Button } from "@mui/material";
-import validator from "validator";
+import axios from "axios";
+import AuthenicatedTopBar from "../Components/AuthenticatedTopBar";
+
+// import validator from "validator";
 
 const useStyles = makeStyles({
   body: {
@@ -34,23 +35,26 @@ const useStyles = makeStyles({
   image: {
     marginLeft: "10%",
   },
+  updatedPassword : {
+    color: "#1ca600"
+  }
 });
 
-export default function UpdatePasswordPage() {
-  const history = useHistory();
+export default function UserSettingsPage() {
+  //const history = useHistory();
   const classes = useStyles();
 
   // email validation from: https://www.geeksforgeeks.org/how-to-validate-an-email-in-reactjs/
-  const [emailError, setEmailError] = useState("");
-  const validateEmail = (e) => {
-    var emailCheck = e.target.value;
+  // const [emailError, setEmailError] = useState("");
+  // const validateEmail = (e) => {
+  //   var emailCheck = e.target.value;
 
-    if (validator.isEmail(emailCheck)) {
-      setEmailError("Valid email :)");
-    } else {
-      setEmailError("Please enter a valid email!");
-    }
-  };
+  //   if (validator.isEmail(emailCheck)) {
+  //     setEmailError("Valid email :)");
+  //   } else {
+  //     setEmailError("Please enter a valid email!");
+  //   }
+  // };
 
   const [passwordError, setPasswordError] = useState("");
   const validatePassword = (p) => {
@@ -76,16 +80,40 @@ export default function UpdatePasswordPage() {
     }
   };
 
+  function updatePassword(){
+    var newPassword = document.getElementById("passwordInput").value;
+    if (matchError == "Passwords match!"){
+      axios({
+        method: "patch",
+        url: "http://localhost:8001/user",
+        headers: {},
+        data: {
+          email: localStorage.getItem("email"),
+          name: localStorage.getItem("name"),
+          password: newPassword,
+        },
+      })
+        .then((res) => handleReset(res));
+    }
+    return;
+  }
+
+  function handleReset(data){
+    console.log(data);
+    document.getElementById("successUpdate").hidden = false;
+  }
+
   return (
     <div>
-      <LoginTopBar></LoginTopBar>
+      <AuthenicatedTopBar></AuthenicatedTopBar>
       <div className={classes.body}>
         <Grid container spacing={3}>
           <Grid item xs={4}>
-            <h1>Let's reset your password!</h1>
+            <h1>Update account details</h1>
+            <h4 className={classes.updatedPassword} id = "successUpdate" hidden>Password updated</h4>
             <div>
               <form>
-                <TextField
+                {/* <TextField
                   required
                   label="Email"
                   variant="standard"
@@ -95,11 +123,11 @@ export default function UpdatePasswordPage() {
                   }}
                   onChange={(e) => validateEmail(e)}
                   helperText={emailError}
-                ></TextField>
+                ></TextField> */}
                 <TextField
                   required
                   id="passwordInput"
-                  label="Password"
+                  label="New Password"
                   variant="standard"
                   type="password"
                   style={{
@@ -112,7 +140,7 @@ export default function UpdatePasswordPage() {
                 <TextField
                   required
                   id="retypePassword"
-                  label="Re-enter Password"
+                  label="Confirm New Password"
                   variant="standard"
                   type="password"
                   style={{
@@ -126,17 +154,14 @@ export default function UpdatePasswordPage() {
                 <Button
                   disableRipple
                   class={classes.primaryButton}
-                  onClick={() => history.push("/login")}
+                  onClick={() => updatePassword()}
                   id="submit"
                   value="Submit"
                   type="submit"
                 >
-                  Update password
+                  Save changes
                 </Button>
               </form>
-              <a onClick={() => history.push("/")} className={classes.link}>
-                Back to home
-              </a>
             </div>
           </Grid>
           <Grid item xs={6}>
