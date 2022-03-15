@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import LoginTopBar from "../Components/LoginTopBar";
-import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
 import update from "../Images/update.svg";
 import { Grid, TextField, Button } from "@mui/material";
+import axios from "axios";
+import AuthenicatedTopBar from "../Components/AuthenticatedTopBar";
+
 // import validator from "validator";
 
 const useStyles = makeStyles({
@@ -34,10 +35,13 @@ const useStyles = makeStyles({
   image: {
     marginLeft: "10%",
   },
+  updatedPassword : {
+    color: "#1ca600"
+  }
 });
 
 export default function UserSettingsPage() {
-  const history = useHistory();
+  //const history = useHistory();
   const classes = useStyles();
 
   // email validation from: https://www.geeksforgeeks.org/how-to-validate-an-email-in-reactjs/
@@ -76,13 +80,37 @@ export default function UserSettingsPage() {
     }
   };
 
+  function updatePassword(){
+    var newPassword = document.getElementById("passwordInput").value;
+    if (matchError == "Passwords match!"){
+      axios({
+        method: "patch",
+        url: "http://localhost:8001/user",
+        headers: {},
+        data: {
+          email: localStorage.getItem("email"),
+          name: localStorage.getItem("name"),
+          password: newPassword,
+        },
+      })
+        .then((res) => handleReset(res));
+    }
+    return;
+  }
+
+  function handleReset(data){
+    console.log(data);
+    document.getElementById("successUpdate").hidden = false;
+  }
+
   return (
     <div>
-      <LoginTopBar></LoginTopBar>
+      <AuthenicatedTopBar></AuthenicatedTopBar>
       <div className={classes.body}>
         <Grid container spacing={3}>
           <Grid item xs={4}>
             <h1>Update account details</h1>
+            <h4 className={classes.updatedPassword} id = "successUpdate" hidden>Password updated</h4>
             <div>
               <form>
                 {/* <TextField
@@ -126,7 +154,7 @@ export default function UserSettingsPage() {
                 <Button
                   disableRipple
                   class={classes.primaryButton}
-                  onClick={() => history.push("/home")}
+                  onClick={() => updatePassword()}
                   id="submit"
                   value="Submit"
                   type="submit"
