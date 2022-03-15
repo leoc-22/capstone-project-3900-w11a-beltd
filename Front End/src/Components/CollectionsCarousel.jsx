@@ -1,6 +1,5 @@
 import React from "react";
 import Carousel from "react-grid-carousel";
-import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
 import PropTypes from "prop-types";
 
@@ -26,12 +25,10 @@ const useStyles = makeStyles({
 });
 
 export default function CollectionsCarousel(props) {
-  const history = useHistory();
   const classes = useStyles();
 
-  console.log(JSON.stringify(props.popular));
   return (
-    <div className={classes.main} zIndex="999">
+    <div className={classes.main} zindex="999">
       <Carousel
         className={classes.PopCollections}
         cols={4}
@@ -39,46 +36,73 @@ export default function CollectionsCarousel(props) {
         gap={5}
         loop
       >
+        {/* {props.books.map((book) => {
+          console.log(book);
+          <Carousel.Item id={book.asin}>
+            <img
+              className={classes.img}
+              src={book.image == undefined ? "PlaceHolder.png" : book.image}
+            />
+          </Carousel.Item>;
+        })} */}
         <Carousel.Item>
           <img
-            onClick={() => history.push("/login")}
             className={classes.img}
-            src="PlaceHolder.png"
+            src={props.books[Math.floor(Math.random() * 48)].image}
           />
         </Carousel.Item>
         <Carousel.Item>
           <img
-            onClick={() => history.push("/login")}
             className={classes.img}
-            src="PlaceHolder.png"
+            src={props.books[Math.floor(Math.random() * 48)].image}
           />
         </Carousel.Item>
         <Carousel.Item>
           <img
-            onClick={() => history.push("/login")}
             className={classes.img}
-            src="PlaceHolder.png"
+            src={props.books[Math.floor(Math.random() * 48)].image}
           />
         </Carousel.Item>
         <Carousel.Item>
           <img
-            onClick={() => history.push("/login")}
             className={classes.img}
-            src="PlaceHolder.png"
+            src={props.books[Math.floor(Math.random() * 48)].image}
           />
         </Carousel.Item>
         <Carousel.Item>
           <img
-            onClick={() => history.push("/login")}
             className={classes.img}
-            src="PlaceHolder.png"
+            src={props.books[Math.floor(Math.random() * 48)].image}
           />
         </Carousel.Item>
         <Carousel.Item>
           <img
-            onClick={() => history.push("/login")}
             className={classes.img}
-            src="PlaceHolder.png"
+            src={props.books[Math.floor(Math.random() * 48)].image}
+          />
+        </Carousel.Item>
+        <Carousel.Item>
+          <img
+            className={classes.img}
+            src={props.books[Math.floor(Math.random() * 48)].image}
+          />
+        </Carousel.Item>
+        <Carousel.Item>
+          <img
+            className={classes.img}
+            src={props.books[Math.floor(Math.random() * 48)].image}
+          />
+        </Carousel.Item>
+        <Carousel.Item>
+          <img
+            className={classes.img}
+            src={props.books[Math.floor(Math.random() * 48)].image}
+          />
+        </Carousel.Item>
+        <Carousel.Item>
+          <img
+            className={classes.img}
+            src={props.books[Math.floor(Math.random() * 48)].image}
           />
         </Carousel.Item>
       </Carousel>
@@ -86,5 +110,5 @@ export default function CollectionsCarousel(props) {
   );
 }
 CollectionsCarousel.propTypes = {
-  popular: PropTypes.object,
+  books: PropTypes.array,
 };

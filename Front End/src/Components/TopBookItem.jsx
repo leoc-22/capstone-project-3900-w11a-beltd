@@ -2,6 +2,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import Button from "@mui/material/Button";
+import PropTypes from "prop-types";
 
 const useStyles = makeStyles({
   main: {
@@ -35,7 +36,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function TopBookItem() {
+export default function TopBookItem(props) {
   const classes = useStyles();
   const history = useHistory();
 
@@ -44,7 +45,7 @@ export default function TopBookItem() {
       <img
         onClick={() => history.push("")}
         className={classes.img}
-        src="PlaceHolder.png"
+        src={props.image == undefined ? "PlaceHolder.png" : props.image}
       />
       <div>
         <span className="bookTitle">
@@ -65,3 +66,6 @@ export default function TopBookItem() {
     </div>
   );
 }
+TopBookItem.propTypes = {
+  image: PropTypes.string,
+};
