@@ -7,7 +7,8 @@ import SignUpPage from "./Pages/signup";
 import HomePage from "./Pages/HomePage";
 import SearchPage from "./Pages/SearchPage";
 import ResetPasswordPage from "./Pages/resetPassword";
-import UpdatePasswordPage from "./Pages/UpdatePassword";
+import UpdatePasswordPage from "./Pages/updatePassword";
+import UserSettingsPage from "./Pages/userSettings";
 
 function App() {
   return (
@@ -28,10 +29,13 @@ function App() {
         <Route exact path="/update-password" component={UpdatePasswordPage}></Route>
       </Switch>
       <Switch>
+        <Route exact path="/user-settings" component={UserSettingsPage}></Route>
+      </Switch>
+      <Switch>
         <Route exact path="/home" component={HomePage}></Route>
       </Switch>
       <Switch>
-        <Route exact path="/SearchPage" component={SearchPage}></Route>
+        <Route exact path="/search" component={SearchPage}></Route>
       </Switch>
     </Router>
   );

@@ -2,7 +2,7 @@ import React from "react";
 import Header from "../Components/Header";
 import CollectionsCarousel from "../Components/CollectionsCarousel";
 import TopBookGrid from "../Components/TopBookGrid";
-import AuthenicatedTopBar from "../Components/AuthenicatedTopBar";
+import AuthenicatedTopBar from "../Components/AuthenticatedTopBar";
 import { makeStyles } from "@material-ui/core";
 
 const useStyles = makeStyles({

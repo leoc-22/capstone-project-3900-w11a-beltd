@@ -159,7 +159,7 @@ export default function LandingPageTopBar() {
           <h5 className={classes.loggedInUser}>{userName}</h5>
           <PermIdentityIcon
             class={classes.profileIcon}
-            //onClick = {() => history.push("")}
+            onClick = {() => history.push("/user-settings")}
           ></PermIdentityIcon>
         </Toolbar>
       </AppBar>
