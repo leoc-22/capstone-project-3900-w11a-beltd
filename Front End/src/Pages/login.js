@@ -77,6 +77,7 @@ export default function LogInPage() {
       console.log("login failed");
       document.getElementById("loginFailed").hidden = false;
     } else {
+      localStorage.setItem("email", res["data"]["email"]);
       localStorage.setItem("name", res["data"]["name"]);
       console.log("login success, redirecting to home");
       history.push("/home");
