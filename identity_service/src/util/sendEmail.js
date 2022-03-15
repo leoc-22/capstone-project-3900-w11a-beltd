@@ -16,11 +16,13 @@ const sendEmail = async (email, subject, payload, template) => {
       service: 'gmail',
       auth: {
         type: 'OAuth2',
-        user: process.env.MAIL_USERNAME,
-        pass: process.env.MAIL_PASSWORD,
-        clientId: process.env.OAUTH_CLIENTID, // TODO ADD TO .env
-        clientSecret: process.env.OAUTH_CLIENT_SECRET,
-        refreshToken: process.env.OAUTH_REFRESH_TOKEN
+        user: 'booklab3900@gmail.com',
+        pass: 'Beltd3900'
+        //user: process.env.MAIL_USERNAME,
+        //pass: process.env.MAIL_PASSWORD,
+        //clientId: process.env.OAUTH_CLIENTID, // TODO ADD TO .env
+        //clientSecret: process.env.OAUTH_CLIENT_SECRET,
+        //refreshToken: process.env.OAUTH_REFRESH_TOKEN
       }
     });
 
