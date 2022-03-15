@@ -26,7 +26,11 @@ function App() {
         <Route exact path="/reset" component={ResetPasswordPage}></Route>
       </Switch>
       <Switch>
-        <Route exact path="/update-password" component={UpdatePasswordPage}></Route>
+        <Route
+          exact
+          path="/update-password"
+          component={UpdatePasswordPage}
+        ></Route>
       </Switch>
       <Switch>
         <Route exact path="/user-settings" component={UserSettingsPage}></Route>

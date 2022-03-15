@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import LandingPageTopBar from "../Components/LandingPageTopBar";
 import Header from "../Components/Header";
 import CollectionsCarousel from "../Components/CollectionsCarousel";
 import TopBookGrid from "../Components/TopBookGrid";
 import { makeStyles } from "@material-ui/core";
+import axios from "axios";
 
 const useStyles = makeStyles({
   main: {
@@ -24,17 +25,43 @@ const useStyles = makeStyles({
 export default function LandingPage() {
   const classes = useStyles();
 
+  const [books, setBooks] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  async function getData() {
+    await axios
+      .get("http://localhost:8001/books")
+      .then((res) => {
+        setBooks(res.data);
+      })
+      .catch((error) => {
+        console.error(`Error: ${error}`);
+        setError(error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }
+
+  // wait for axios to get book data, then render book shelves
+  // TODO Beautify this
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
+
   return (
     <div>
       <LandingPageTopBar></LandingPageTopBar>
-
       <div className={classes.main}>
         <Header></Header>
         <h2 className={classes.popularCollections}>Popular Collections</h2>
-
-        <CollectionsCarousel></CollectionsCarousel>
+        <CollectionsCarousel books={books}></CollectionsCarousel>
         <h2 className={classes.TopBooks}>Top Books</h2>
-        <TopBookGrid></TopBookGrid>
+        <TopBookGrid books={books}></TopBookGrid>
       </div>
     </div>
   );
