@@ -106,14 +106,14 @@ export default function LandingPageTopBar() {
         <Toolbar>
           <h3
             className={classes.Name}
-            onClick={() => history.push("/homePage")}
+            onClick={() => history.push("/home")}
           >
             BookLab
           </h3>
           <Button
             disableRipple
             class={classes.appBarBtn}
-            onClick={() => history.push("/SearchPage")}
+            onClick={() => history.push("/search")}
           >
             Explore
           </Button>
@@ -121,7 +121,7 @@ export default function LandingPageTopBar() {
           <Button
             disableRipple
             class={classes.appBarBtn}
-            onClick={() => history.push("/")}
+            //onClick={() => history.push("/")}
           >
             Recommended for {userName}
           </Button>
@@ -129,7 +129,7 @@ export default function LandingPageTopBar() {
           <Button
             disableRipple
             class={classes.appBarBtn}
-            onClick={() => history.push("/")}
+            //onClick={() => history.push("/")}
           >
             Book Store
           </Button>
@@ -137,7 +137,7 @@ export default function LandingPageTopBar() {
           <Button
             disableRipple
             class={classes.appBarBtn}
-            onClick={() => history.push("/")}
+            //onClick={() => history.push("/")}
           >
             LeaderBoard
           </Button>

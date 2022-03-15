@@ -59,6 +59,10 @@ const useStyles = makeStyles({
     borderColor: "#C1C1C1",
     borderRadius: "3px",
   },
+  btnGroup : {
+    height : "25px",
+    marginTop : "2%"
+  }
 });
 
 const HomePage = () => {
@@ -77,7 +81,7 @@ const HomePage = () => {
       <AuthenicatedTopBar></AuthenicatedTopBar>
 
       <div className={classes.serachBarBox}>
-        <ButtonGroup color="secondary" theme={theme} variant="text">
+        <ButtonGroup className={classes.btnGroup} color="secondary" theme={theme} variant="text">
           <Button>
             <span className={classes.Categorybtn}>All Categories</span>
           </Button>

@@ -7,7 +7,7 @@ import SignUpPage from "./Pages/signup";
 import HomePage from "./Pages/HomePage";
 import SearchPage from "./Pages/SearchPage";
 import ResetPasswordPage from "./Pages/resetPassword";
-import UpdatePasswordPage from "./Pages/updatePassword";
+import UpdatePasswordPage from "./Pages/UpdatePassword";
 import UserSettingsPage from "./Pages/userSettings";
 
 function App() {
