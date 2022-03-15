@@ -126,7 +126,7 @@ export default function UserSettingsPage() {
                 <Button
                   disableRipple
                   class={classes.primaryButton}
-                  onClick={() => history.push("/login")}
+                  onClick={() => history.push("/home")}
                   id="submit"
                   value="Submit"
                   type="submit"
