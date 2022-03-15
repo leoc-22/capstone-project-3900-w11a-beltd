@@ -2,6 +2,7 @@ import React from "react";
 import Carousel from "react-grid-carousel";
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
+import PropTypes from "prop-types";
 
 const useStyles = makeStyles({
   main: {
@@ -24,10 +25,11 @@ const useStyles = makeStyles({
   },
 });
 
-export default function CollectionsCarousel() {
+export default function CollectionsCarousel(props) {
   const history = useHistory();
   const classes = useStyles();
 
+  console.log(JSON.stringify(props.popular));
   return (
     <div className={classes.main} zIndex="999">
       <Carousel
@@ -83,3 +85,6 @@ export default function CollectionsCarousel() {
     </div>
   );
 }
+CollectionsCarousel.propTypes = {
+  popular: PropTypes.object,
+};
