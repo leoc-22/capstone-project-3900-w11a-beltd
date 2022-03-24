@@ -1,0 +1,24 @@
+{
+  "name": "collection_service",
+  "version": "1.0.0",
+  "description": "Book Collection",
+  "main": "./src/server.js",
+  "scripts": {
+    "test": "test",
+    "start": "node .",
+    "start:dev": "nodemon",
+    "lint": "eslint --ext .js,.ts,.tsx src/ --max-warnings=0"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.3",
+    "mongoose": "^6.2.8"
+  },
+  "devDependencies": {
+    "eslint": "^8.11.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "nodemon": "^2.0.15"
+  }
+}
