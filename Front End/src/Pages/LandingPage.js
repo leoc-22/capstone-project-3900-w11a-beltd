@@ -35,7 +35,7 @@ export default function LandingPage() {
 
   async function getData() {
     await axios
-      .get("http://localhost:8001/books")
+      .get("http://localhost:8002/books")
       .then((res) => {
         setBooks(res.data);
       })
