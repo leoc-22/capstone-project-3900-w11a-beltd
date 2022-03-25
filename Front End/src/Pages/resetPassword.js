@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import LoginTopBar from "../Components/LoginTopBar";
+import Navbar from "../Components/Navbar";
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
 import reset from "../Images/reset.svg";
@@ -54,7 +54,7 @@ export default function ResetPassword() {
 
   return (
     <div>
-      <LoginTopBar></LoginTopBar>
+      <Navbar></Navbar>
       <div className={classes.body}>
         <Grid container spacing={3}>
           <Grid item xs={4}>

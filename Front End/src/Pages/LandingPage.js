@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import LandingPageTopBar from "../Components/LandingPageTopBar";
+import Navbar from "../Components/Navbar";
 import headerLanding from "../Images/headerLanding.svg";
 import CollectionsCarousel from "../Components/CollectionsCarousel";
 import TopBookGrid from "../Components/TopBookGrid";
@@ -63,7 +63,7 @@ export default function LandingPage() {
 
   return (
     <div>
-      <LandingPageTopBar></LandingPageTopBar>
+      <Navbar></Navbar>
       <div className={classes.main}>
         <img
           className={classes.headerImg}
