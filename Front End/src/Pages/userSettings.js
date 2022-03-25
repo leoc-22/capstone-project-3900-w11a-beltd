@@ -81,6 +81,7 @@ export default function UserSettingsPage() {
   };
 
   function updatePassword(){
+    console.log("test");
     var newPassword = document.getElementById("passwordInput").value;
     if (matchError == "Passwords match!"){
       axios({

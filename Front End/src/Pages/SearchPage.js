@@ -65,7 +65,7 @@ const useStyles = makeStyles({
   }
 });
 
-const HomePage = () => {
+export default function SearchPage() {
   const theme = createTheme({
     palette: {
       secondary: {
@@ -152,6 +152,5 @@ const HomePage = () => {
       <CollectionsCarousel></CollectionsCarousel>
     </div>
   );
-};
+}
 
-export default HomePage;

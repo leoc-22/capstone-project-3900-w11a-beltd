@@ -6,6 +6,7 @@ import Button from "@mui/material/Button";
 import SearchIcon from "@mui/icons-material/Search";
 import TextField from "@mui/material/TextField";
 import PermIdentityIcon from "@mui/icons-material/PermIdentity";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 const useStyles = makeStyles({
   appBar: {
@@ -82,6 +83,15 @@ const useStyles = makeStyles({
       cursor: "pointer",
     },
   },
+  logout : {
+    marginTop: -10,
+    marginLeft: "2%",
+    maxWidth: "25px",
+    "&:hover": {
+      cursor: "pointer",
+    },
+
+  }
 });
 
 export default function LandingPageTopBar() {
@@ -98,6 +108,12 @@ export default function LandingPageTopBar() {
       setSeachOpen(false);
     }
   }
+
+  function logout(){
+    localStorage.clear();
+    history.push("/");
+  }
+
   var userName = localStorage.getItem("name");
 
   return (
@@ -161,13 +177,12 @@ export default function LandingPageTopBar() {
             class={classes.profileIcon}
             onClick = {() => history.push("/user-settings")}
           ></PermIdentityIcon>
-          <Button
-            disableRipple
-            class={classes.appBarBtn}
-            onClick={() => history.push("/")}
-          >
-            Log out
-          </Button>
+
+          <LogoutIcon
+            class={classes.logout}
+            onClick = {() => logout()}
+          ></LogoutIcon>
+
         </Toolbar>
       </AppBar>
     </div>
