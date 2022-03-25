@@ -210,6 +210,8 @@ const ResponsiveAppBar = () => {
     setAnchorElUser(null);
   };
 
+  var userName = localStorage.getItem("name");
+
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -282,7 +284,7 @@ const ResponsiveAppBar = () => {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="User profile" src="/static/images/avatar/2.jpg" />
+                <Avatar alt={userName} src="/static/images/avatar/2.jpg" />
               </IconButton>
             </Tooltip>
             <Menu
