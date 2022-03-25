@@ -8,7 +8,7 @@ app.get("/books", async (req, res) => {
   const books = await bookModel.find({});
 
   try {
-    // console.log(books.length);
+    console.log(`Retrieved ${books.length} books`);
     res.send(books);
   } catch (error) {
     res.status(500).send(error);
@@ -22,7 +22,7 @@ app.get("/updatebookdb", async () => {
   const params = {
     api_key: "6BE45BB0BE0F4BCA8DD46F0EC1B10B78",
     type: "category",
-    category_id: "17",
+    category_id: "48",
     amazon_domain: "amazon.com",
     output: "json",
     include_html: "false",
