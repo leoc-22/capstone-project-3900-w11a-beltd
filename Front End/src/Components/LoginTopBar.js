@@ -67,7 +67,7 @@ export default function LoginTopBar() {
           <Button
             disableRipple
             class={classes.appBarBtn}
-            onClick={() => history.push("/")}
+            onClick={() => history.push("/search")}
           >
             Explore
           </Button>

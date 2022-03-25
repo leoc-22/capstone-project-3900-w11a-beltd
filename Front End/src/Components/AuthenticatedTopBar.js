@@ -110,11 +110,11 @@ export default function LandingPageTopBar() {
   }
 
   function logout(){
-    localStorage.clear();
+    sessionStorage.clear();
     history.push("/");
   }
 
-  var userName = localStorage.getItem("name");
+  var userName = sessionStorage.getItem("name");
 
   return (
     <div className={classes.root}>

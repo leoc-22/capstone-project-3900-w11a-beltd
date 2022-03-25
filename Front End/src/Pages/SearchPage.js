@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React from "react";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Button from "@mui/material/Button";
@@ -24,7 +26,7 @@ const useStyles = makeStyles({
   },
   serachBarBox: {
     marginLeft: "20%",
-    marginTop: "5%",
+    marginTop: "100px",
   },
   serachBar: {
     width: "50%",
@@ -75,6 +77,7 @@ export default function SearchPage() {
   });
 
   const classes = useStyles();
+
 
   return (
     <div className={classes.main}>
@@ -145,12 +148,10 @@ export default function SearchPage() {
           <option value="4">1 - 2 Stars</option>
         </select>
       </div>
-      <h2 className={classes.TopBooks}>Top Books</h2>
-      <TopBookGrid></TopBookGrid>
-
-      <h2 className={classes.popularCollections}>Top Authors</h2>
-      <CollectionsCarousel></CollectionsCarousel>
+      <h2 className={classes.TopBooks}>Top Books...</h2>  
     </div>
+
+
   );
 }
 

@@ -97,8 +97,8 @@ export default function SignUpPage() {
         },
       }).then((res) => {
         if (res.status === 200) {
-          localStorage.setItem("email", res["data"]["email"]);
-          localStorage.setItem("name", res["data"]["name"]);
+          sessionStorage.setItem("email", res["data"]["email"]);
+          sessionStorage.setItem("name", res["data"]["name"]);
           history.push("/home");
         } else {
           alert("Error: " + res.status);
