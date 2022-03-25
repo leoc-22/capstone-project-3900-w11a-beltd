@@ -148,7 +148,7 @@ export default function SearchPage() {
           <option value="4">1 - 2 Stars</option>
         </select>
       </div>
-      <h2 className={classes.TopBooks}>Top Books...</h2>  
+      <h2 className={classes.TopBooks}>Top Books....</h2>  
     </div>
 
 
