@@ -101,8 +101,8 @@ export default function SignUpPage() {
           localStorage.setItem("name", res["data"]["name"]);
           history.push("/home");
         } else {
-          alert("Error: " + res.status);
-          document.getElementById("loginFailed").hidden = false;
+          document.getElementById("userError").innerText = "ERROR: " + res.status;
+          document.getElementById("signUpFailed").hidden = false;
         }
       });
     } else {
