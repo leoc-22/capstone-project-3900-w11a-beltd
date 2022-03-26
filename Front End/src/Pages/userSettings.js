@@ -55,8 +55,8 @@ export default function UserSettingsPage() {
         url: "http://localhost:8001/user",
         headers: {},
         data: {
-          email: localStorage.getItem("email"),
-          name: localStorage.getItem("name"),
+          email: sessionStorage.getItem("email"),
+          name: sessionStorage.getItem("name"),
           password: newPassword,
         },
       })
