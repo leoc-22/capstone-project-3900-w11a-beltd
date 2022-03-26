@@ -11,6 +11,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import ClearIcon from "@mui/icons-material/Clear";
 import TextField from "@mui/material/TextField";
+import Alert from "@mui/material/Alert";
 
 const useStyles = makeStyles({
   main: {
@@ -33,6 +34,7 @@ const goalSettingPage = () => {
     <div>
       <AuthenicatedTopBar></AuthenicatedTopBar>
       <div className={classes.main}>
+        <Alert severity="info">Reading goal updated. Progress 8/10 books completed!</Alert>
         <h1>Set your reading goal for this month!</h1>
         <Grid container spacing={3}>
           <Grid item xs={12} md={8}>
