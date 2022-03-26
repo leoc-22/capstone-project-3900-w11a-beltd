@@ -10,6 +10,7 @@ import ResetPasswordPage from "./Pages/resetPassword";
 import UpdatePasswordPage from "./Pages/UpdatePassword";
 import UserSettingsPage from "./Pages/userSettings";
 import UserProfilePage from "./Pages/userProfile";
+import GoalSettingPage from "./Pages/goalSetting";
 
 function App() {
   return (
@@ -38,6 +39,9 @@ function App() {
       </Switch>
       <Switch>
         <Route exact path="/user-profile" component={UserProfilePage}></Route>
+      </Switch>
+      <Switch>
+        <Route exact path="/reading-goal" component={GoalSettingPage}></Route>
       </Switch>
       <Switch>
         <Route exact path="/home" component={HomePage}></Route>
