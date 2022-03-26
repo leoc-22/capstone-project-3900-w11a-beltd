@@ -53,6 +53,9 @@ const goalSettingPage = () => {
               />
             </Card>
             <br />
+            <h3>
+              Read x of x books. Completed on date.
+            </h3>
             <Button variant="contained">Save reading goal</Button>
           </Grid>
           <Grid item xs={12} md={4}>
