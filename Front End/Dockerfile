@@ -1,11 +1,11 @@
 FROM node:17.6-alpine
 
-WORKDIR /app/ui
+WORKDIR /app
 
-COPY . ./
-COPY ./package.json .
-COPY ./package-lock.json .
+COPY ./package*.json .
 
-RUN npm install
+RUN npm ci --production
 
-CMD [ "npm", "start"]
+COPY ./src ./src
+
+CMD [ "npm", "start" ]

@@ -1,22 +1,12 @@
-FROM node:17.6-alpine as builder
+FROM node:17.6-alpine
 
 WORKDIR /app
 
-COPY . ./
 COPY ./package*.json .
 
-RUN npm install
-
-
-FROM node:17.6-alpine as runner
-
-ENV NODE_ENV=production
-
-WORKDIR /app
+RUN npm ci --production
 
 COPY ./src ./src
-COPY ./package*.json .
-COPY --from=builder /app/node_modules ./node_modules
 
 EXPOSE 8000
 

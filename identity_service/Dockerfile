@@ -1,12 +1,12 @@
 FROM node:17.6-alpine
 
-WORKDIR /app/server
+WORKDIR /app
 
-COPY . ./
-COPY ./package.json .
-COPY ./package-lock.json .
+COPY ./package*.json .
 
-RUN npm install
+RUN npm ci --production
+
+COPY ./src ./src
 
 EXPOSE 8000
 
