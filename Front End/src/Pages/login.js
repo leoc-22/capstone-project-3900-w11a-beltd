@@ -11,21 +11,6 @@ const useStyles = makeStyles({
   body: {
     margin: "15vh 22vw",
   },
-  primaryButton: {
-    padding: "0 30px",
-    height: 40,
-    borderRadius: 8,
-    fontSize: "13pt",
-    margin: "40px 0 20px 0",
-    background: "transparent",
-    fontWeight: "bold",
-    borderColor: "#00C9D8",
-    "&:hover": {
-      backgroundColor: "#00C9D8",
-      color: "#fff",
-      cursor: "pointer",
-    },
-  },
   link: {
     color: "#00C9D8",
     "&:hover": {
@@ -123,7 +108,10 @@ export default function LogInPage() {
                 ></TextField>
                 <Button
                   disableRipple
-                  class={classes.primaryButton}
+                  style={{
+                    marginTop: 20,
+                  }}
+                  variant="contained"
                   onClick={() => loginUser()}
                   id="submit"
                   value="Submit"
