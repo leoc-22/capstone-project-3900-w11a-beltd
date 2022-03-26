@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import Header from "../Components/Header";
 import CollectionsCarousel from "../Components/CollectionsCarousel";
 import TopBookGrid from "../Components/TopBookGrid";
 import AuthenicatedTopBar from "../Components/AuthenticatedTopBar";
 import { makeStyles } from "@material-ui/core";
 import axios from "axios";
+import headerHome from "../Images/headerHome.svg";
 
 const useStyles = makeStyles({
   main: {
@@ -20,6 +20,14 @@ const useStyles = makeStyles({
     marginTop: "5%",
   },
   test: {},
+
+  headerImg: {
+    minHeight: "300px",
+    marginTop: "100px",
+    marginLeft: "10%",
+    borderRadius: "8px",
+    width: "80%",
+  },
 });
 
 const HomePage = () => {
@@ -31,6 +39,7 @@ const HomePage = () => {
 
   useEffect(() => {
     getData();
+    document.title = "Home Page | Booklab";
   }, []);
 
   async function getData() {
@@ -58,7 +67,11 @@ const HomePage = () => {
       <AuthenicatedTopBar></AuthenicatedTopBar>
 
       <div className={classes.main}>
-        <Header></Header>
+        <img
+          className={classes.headerImg}
+          src={headerHome}
+          alt={"booklab: collect and share your favourite books"}
+        />
         <h2 className={classes.popularCollections}>Popular Collections</h2>
 
         <CollectionsCarousel books={books}></CollectionsCarousel>
