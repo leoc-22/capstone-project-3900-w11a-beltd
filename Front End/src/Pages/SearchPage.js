@@ -1,10 +1,7 @@
-/* eslint-disable */
 
 import React from "react";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Button from "@mui/material/Button";
-import CollectionsCarousel from "../Components/CollectionsCarousel";
-import TopBookGrid from "../Components/TopBookGrid";
 import AuthenicatedTopBar from "../Components/AuthenticatedTopBar";
 import TextField from "@mui/material/TextField";
 import { createTheme } from "@material-ui/core/styles";
@@ -148,7 +145,7 @@ export default function SearchPage() {
           <option value="4">1 - 2 Stars</option>
         </select>
       </div>
-      <h2 className={classes.TopBooks}>Top Books....</h2>  
+      <h2 className={classes.TopBooks}>search results....</h2>  
     </div>
 
 

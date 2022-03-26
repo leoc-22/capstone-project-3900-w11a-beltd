@@ -19,7 +19,6 @@ const useStyles = makeStyles({
     marginLeft: "7%",
     marginTop: "5%",
   },
-  test: {},
 
   headerImg: {
     minHeight: "300px",

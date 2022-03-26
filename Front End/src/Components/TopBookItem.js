@@ -11,7 +11,7 @@ const useStyles = makeStyles({
   img: {
     borderRadius: "10px",
     width: "100%",
-    height: "100%",
+    height: "150%",
     "&:hover": {
       cursor: "pointer",
     },
@@ -30,7 +30,6 @@ const useStyles = makeStyles({
     borderWidth: "thin",
     borderColor: "#00C9D8",
     "&:hover": {
-      //color: "#00C9D8",
       cursor: "pointer",
     },
   },
@@ -39,11 +38,10 @@ const useStyles = makeStyles({
 export default function TopBookItem(props) {
   const classes = useStyles();
   const history = useHistory();
-
   return (
-    <div className={classes.main}>
+    <div clase={classes.main}>
       <img
-        onClick={() => history.push("")}
+        onClick={() => history.push("/book-profile"+"?"+props["book"]["_id"])}
         className={classes.img}
         src={
           props.book.image == undefined ? "PlaceHolder.png" : props.book.image
@@ -59,7 +57,7 @@ export default function TopBookItem(props) {
       <Button
         disableRipple
         class={classes.addCollectionBtn}
-        onClick={() => history.push("/")}
+        //onClick={() => history.push("/")}
       >
         Add to Collection
       </Button>
