@@ -1,12 +1,12 @@
 const express = require("express");
-const goalModel = require("./model/userModel/Goal");
+const goalModel = require("./models/goalModel");
 const app = express();
 
-// Create goal
+// Create goalG
 app.post("/goal", async (req, res) => {
   const goal = new goalModel({
-      user: jsdkf, // how to send/get id of user?
-      endDate: req.body.endDate,
+      user: req.body.name, // ID OR NAME SENT FROM FRONTEND?
+      //endDate: req.body.endDate,
       target: req.body.target,
       completed: false,
   });

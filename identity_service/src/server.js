@@ -2,6 +2,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const userRouter = require("./userRouter.js");
 const bookRouter = require("./userBookRouter.js");
+const goalRouter = require("./goalRouter.js")
 const port = 8001;
 const app = express();
 const cors = require("cors");
@@ -24,6 +25,7 @@ try {
 
 app.use(userRouter);
 app.use(bookRouter);
+app.use(goalRouter);
 
 // Drop the entire database, development only, use for testing
 app.delete("/drop", async (req, res) => {
