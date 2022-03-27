@@ -47,9 +47,12 @@ const reviewSchema = new mongoose.Schema(
 const goalSchema = new mongoose.Schema(
   {
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'Users' }, // 1. check if this coorect later
-    duration: { type: Number, require: true },
+    //startDate: { type: Date, require: true },
+    endDate: { type: Date, require: true },
     target: { type: Number, require: true },
     current: { type: Number },
+    completed: {type: Boolean, require: true},
+
   }
 );
 
@@ -62,4 +65,4 @@ const Goal = mongoose.model("Goal", goalSchema);
 // QUESITONS
 // 5. is 'books: [bookSchema]' the same thing as 'books: [{ type: mongoose.Schema.Types.ObjectId, ref: 'UserBooks' }]'
 
-module.exports = Users;
+module.exports = Users, Collection, UserBook, Review, Goal;
