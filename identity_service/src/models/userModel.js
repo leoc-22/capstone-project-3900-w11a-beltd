@@ -3,11 +3,12 @@ const mongoose = require("mongoose");
 
 const collectionSchema = new mongoose.Schema(
   {
-    user: { type: mongoose.Schema.Types.ObjectId, ref: 'Users' },
+    user: [userSchema],
     name: { type: String, require: true },
-    books: [{ type: mongoose.Schema.Types.ObjectId, ref: 'UserBook' }],
+    books: [bookSchema],
     status: { type: Boolean, require: true }, // for private/public
-  }
+  },
+  { collection: "Collection"}
 );
 
 const bookSchema = new mongoose.Schema(
@@ -23,26 +24,27 @@ const bookSchema = new mongoose.Schema(
     category: { type: String, required: true },
     publisher: { type: String, required: true },
     date: { type: Date, required: true },
-    reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Review' }], 
+    reviews: [reviewSchema], 
     read: { type: Boolean, required: true },
-  }
+  },
+  { collection: "UserBook"}
 );
 
 const reviewSchema = new mongoose.Schema(
   {
   review: { type: String, required: true },
-});
+  },
+  { collection: "Review" }
+);
 
 const goalSchema = new mongoose.Schema(
   {
-    user: { type: mongoose.Schema.Types.ObjectId, ref: 'Users' }, // 1. check if this coorect later
-    //startDate: { type: Date, require: true },
     endDate: { type: Date, default: Date.now, require: true },
     target: { type: Number, require: true },
     current: { type: Number },
     completed: {type: Boolean, require: true},
-
-  }
+  },
+  { collection: "Goal" }
 );
 
 const userSchema = new mongoose.Schema(
@@ -61,9 +63,9 @@ const Users = mongoose.model("Users", userSchema);
 const Collection = mongoose.model("Collection", collectionSchema);
 const UserBook = mongoose.model("UserBook", bookSchema);
 const Review = mongoose.model("Review", reviewSchema);
-//const Goal = mongoose.model("Goal", goalSchema);
+const Goal = mongoose.model("Goal", goalSchema);
 
 // QUESITONS
 // 5. is 'books: [bookSchema]' the same thing as 'books: [{ type: mongoose.Schema.Types.ObjectId, ref: 'UserBooks' }]'
 
-module.exports = Users, Collection, UserBook, Review; //Goal;
+module.exports = Users, Collection, UserBook, Review, Goal;

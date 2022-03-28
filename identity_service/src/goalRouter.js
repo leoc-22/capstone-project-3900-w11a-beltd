@@ -1,11 +1,12 @@
 const express = require("express");
-const goalModel = require("./models/goalModel");
+//const userModel = require("./models/userModel");
+const {Goal} = require("./models/userModel");
+const goalModel = {Goal};
 const app = express();
 
-// Create goalG
+// Create goal
 app.post("/goal", async (req, res) => {
   const goal = new goalModel({
-      user: req.body.name, // ID OR NAME SENT FROM FRONTEND?
       endDate: req.body.endDate,
       target: req.body.target,
       completed: false,
