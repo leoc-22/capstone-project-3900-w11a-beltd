@@ -1,5 +1,6 @@
 const express = require("express");
-const bookModel = require("./models/userBookModel");
+const {UserBook} = require("./models/userModel");
+const bookModel = {UserBook};
 const app = express();
 
 // Get all books in the database

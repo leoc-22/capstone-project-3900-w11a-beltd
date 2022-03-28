@@ -1,9 +1,12 @@
-
+const express = require("express");
+const {Collection} = require("./models/userModel");
+const collectionModel = {Collection};
+const app = express();
 
 
 // Get all collections for user
 app.get("/myCollections", async (req, res) => {
-  const collections = await.collectionModel.find({}); // find by session/userid???
+  const collections = await collectionModel.find({}); 
 
   try {
     res.send(collections);
@@ -15,9 +18,8 @@ app.get("/myCollections", async (req, res) => {
 // Create a new collection
 app.post("/collection", async (req, res) => {
   const collection = new collectionModel({
-    user: req.body.u_id,
-    name = req.body.name,
-    status = req.body.status,
+    name: req.body.name,
+    status: req.body.status,
   });
 
   try {
@@ -29,9 +31,9 @@ app.post("/collection", async (req, res) => {
   }
 });
 
-// Add book to collection
+// Add book to collection (add by id)
 
-// Remove book to collection
+// Remove book from collection 
 
 module.exports = app;
 
