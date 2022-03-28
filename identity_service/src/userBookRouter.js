@@ -15,4 +15,22 @@ app.get("/myBooks", async (req, res) => {
   }
 });
 
+// Mark a book as read, find by book id
+app.patch("/read", async (req, res) => {
+  var query = { b_id: req.body.b_id };
+
+  bookModel.findOneAndUpdate(
+    query,
+    {
+      read: true,
+    },
+    { upsert: true },
+    (err) => {
+      if (err) return res.status(500).send(err);
+      console.log("Read status updated");
+      res.send("Successfully updated");
+    }
+  );
+});
+
 module.exports = app;

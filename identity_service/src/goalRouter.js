@@ -1,5 +1,4 @@
 const express = require("express");
-//const userModel = require("./models/userModel");
 const {Goal} = require("./models/userModel");
 const goalModel = {Goal};
 const app = express();
@@ -21,6 +20,27 @@ app.post("/goal", async (req, res) => {
   }
 
 });
+
+// UPDATE current read books /advance goal forward
+app.patch("/goal", async (req, res) => {
+  var query = { g_id: req.body.g_id };
+
+  const update = goalModel.findOne().current + 1;
+
+  goalModel.findOneAndUpdate(
+    query,
+    {
+      current: update,
+    },
+    { upsert: true },
+    (err) => {
+      if (err) return res.status(500).send(err);
+      console.log("Goal progress updated");
+      res.send("Successfully updated");
+    }
+  );
+});
+
 
 // Delete goal by querying goal id
 app.delete("/goal", async (req, res) => {

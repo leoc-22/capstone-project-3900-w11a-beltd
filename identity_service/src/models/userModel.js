@@ -1,14 +1,10 @@
 const mongoose = require("mongoose");
 
-
-const collectionSchema = new mongoose.Schema(
+const reviewSchema = new mongoose.Schema(
   {
-    user: [userSchema],
-    name: { type: String, require: true },
-    books: [bookSchema],
-    status: { type: Boolean, require: true }, // for private/public
+  review: { type: String, required: true },
   },
-  { collection: "Collection"}
+  { collection: "Review" }
 );
 
 const bookSchema = new mongoose.Schema(
@@ -30,11 +26,13 @@ const bookSchema = new mongoose.Schema(
   { collection: "UserBook"}
 );
 
-const reviewSchema = new mongoose.Schema(
+const collectionSchema = new mongoose.Schema(
   {
-  review: { type: String, required: true },
+    name: { type: String, require: true },
+    books: [bookSchema],
+    status: { type: Boolean, require: true }, // for private/public
   },
-  { collection: "Review" }
+  { collection: "Collection"}
 );
 
 const goalSchema = new mongoose.Schema(
@@ -52,11 +50,10 @@ const userSchema = new mongoose.Schema(
     name: { type: String, required: false },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    //books: [bookSchema], // 3. within collections? 
     goals: [goalSchema],
     collections: [collectionSchema],
   },
-  { collection: "Users" } // 4. ask
+  { collection: "Users" } 
 );
 
 const Users = mongoose.model("Users", userSchema);
@@ -64,8 +61,5 @@ const Collection = mongoose.model("Collection", collectionSchema);
 const UserBook = mongoose.model("UserBook", bookSchema);
 const Review = mongoose.model("Review", reviewSchema);
 const Goal = mongoose.model("Goal", goalSchema);
-
-// QUESITONS
-// 5. is 'books: [bookSchema]' the same thing as 'books: [{ type: mongoose.Schema.Types.ObjectId, ref: 'UserBooks' }]'
 
 module.exports = Users, Collection, UserBook, Review, Goal;
