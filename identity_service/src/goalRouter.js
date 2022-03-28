@@ -6,7 +6,7 @@ const app = express();
 app.post("/goal", async (req, res) => {
   const goal = new goalModel({
       user: req.body.name, // ID OR NAME SENT FROM FRONTEND?
-      //endDate: req.body.endDate,
+      endDate: req.body.endDate,
       target: req.body.target,
       completed: false,
   });
