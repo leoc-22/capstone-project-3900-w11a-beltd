@@ -6,9 +6,9 @@ const app = express();
 // Create goal
 app.post("/goal", async (req, res) => {
   const goal = new goalModel({
-      endDate: req.body.endDate,
-      target: req.body.target,
-      completed: false,
+    endDate: req.body.endDate,
+    target: req.body.target,
+    completed: false,
   });
 
   try {
@@ -16,15 +16,13 @@ app.post("/goal", async (req, res) => {
     res.send(goal);
     console.log("Goal created");
   } catch (error) {
-      res.status(500).send(error);
+    res.status(500).send(error);
   }
-
 });
 
 // UPDATE current read books /advance goal forward
 app.patch("/goal", async (req, res) => {
   var query = { g_id: req.body.g_id };
-  GET
   const update = goalModel.findOne().current + 1;
 
   goalModel.findOneAndUpdate(
@@ -41,7 +39,6 @@ app.patch("/goal", async (req, res) => {
   );
 });
 
-
 // Delete goal by querying goal id
 app.delete("/goal", async (req, res) => {
   var query = { _id: req.body._id };
@@ -54,6 +51,5 @@ app.delete("/goal", async (req, res) => {
 });
 
 // TODO UPDATE GOAL
-
 
 module.exports = app;

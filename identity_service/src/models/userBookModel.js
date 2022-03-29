@@ -14,9 +14,9 @@ const bookSchema = new mongoose.Schema(
     publisher: { type: String, required: true },
     date: { type: Date, required: true },
     read: { type: Boolean, required: true },
-    reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: "Reviews" }], 
+    reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: "Reviews" }],
   },
-  { collection: "UserBooks"}
+  { collection: "UserBooks" }
 );
 
 const Books = mongoose.model("UserBooks", bookSchema);
