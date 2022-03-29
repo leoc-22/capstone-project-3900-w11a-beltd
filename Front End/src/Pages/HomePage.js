@@ -35,9 +35,10 @@ const HomePage = () => {
   const location = useLocation();
 
   const [books, setBooks] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [user, setUser] = useState(null);
+  const [loadingBooks, setLoadingBooks] = useState(true);
+  const [loadingUser, setLoadingUser] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     console.log(location.state.email);
@@ -57,7 +58,7 @@ const HomePage = () => {
         setError(error);
       })
       .finally(() => {
-        setLoading(false);
+        setLoadingBooks(false);
       });
   }
 
@@ -73,12 +74,12 @@ const HomePage = () => {
         setError(error);
       })
       .finally(() => {
-        setLoading(false);
+        setLoadingUser(false);
       });
   }
   // wait for axios to get book data, then render book shelves
   // TODO Beautify this
-  if (loading) return <p>Loading...</p>;
+  if (loadingBooks || loadingUser) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
   return (

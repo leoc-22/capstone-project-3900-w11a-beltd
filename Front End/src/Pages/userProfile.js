@@ -10,6 +10,7 @@ import Chip from "@mui/material/Chip";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import reset from "../Images/reset.svg";
+import { useLocation } from "react-router-dom";
 
 const useStyles = makeStyles({
   main: {
@@ -23,19 +24,22 @@ const useStyles = makeStyles({
 
 const userProfilePage = () => {
   const classes = useStyles();
-  
+  const location = useLocation();
+
+  const userDetails = location.state.user;
+
   useEffect(() => {
     document.title = "User Profile | Booklab";
   }, []);
 
-  var userName = localStorage.getItem("name");
+  // var userName = localStorage.getItem("name");
 
   return (
     <div>
-      <AuthenicatedTopBar></AuthenicatedTopBar>
+      <AuthenicatedTopBar user={location.state.user}></AuthenicatedTopBar>
       <div className={classes.main}>
-        <Avatar sx={{ width: 80, height: 80 }}>{userName}</Avatar>
-        <h1>Welcome back, {userName}</h1>
+        <Avatar sx={{ width: 80, height: 80 }}>{userDetails.name}</Avatar>
+        <h1>Welcome back, {userDetails.name}</h1>
         {/* update grid with user info */}
         <Grid container spacing={3}>
           <Grid item xs={12} md={4}>
@@ -46,12 +50,17 @@ const userProfilePage = () => {
                 <Typography sx={{ fontSize: 16 }} color="text.primary">
                   Book title
                 </Typography>
-                <Typography sx={{ fontSize: 14, textTransform: "uppercase", marginBottom: "20px" }} color="text.secondary">
+                <Typography
+                  sx={{
+                    fontSize: 14,
+                    textTransform: "uppercase",
+                    marginBottom: "20px",
+                  }}
+                  color="text.secondary"
+                >
                   Book author
                 </Typography>
-                <Typography variant="body2">
-                  Book description
-                </Typography>
+                <Typography variant="body2">Book description</Typography>
               </CardContent>
               <CardActions>
                 <Button size="small">Go to book profile</Button>
@@ -65,7 +74,14 @@ const userProfilePage = () => {
                 <Typography sx={{ fontSize: 16 }} color="text.primary">
                   Goal status
                 </Typography>
-                <Typography sx={{ fontSize: 14, textTransform: "uppercase", marginBottom: "20px" }} color="text.secondary">
+                <Typography
+                  sx={{
+                    fontSize: 14,
+                    textTransform: "uppercase",
+                    marginBottom: "20px",
+                  }}
+                  color="text.secondary"
+                >
                   On track
                   {/* Could also include x books behind */}
                 </Typography>
@@ -86,7 +102,14 @@ const userProfilePage = () => {
                 <Typography sx={{ fontSize: 16 }} color="text.primary">
                   See how you compare with global readers
                 </Typography>
-                <Typography sx={{ fontSize: 14, textTransform: "uppercase", marginBottom: "20px" }} color="text.secondary">
+                <Typography
+                  sx={{
+                    fontSize: 14,
+                    textTransform: "uppercase",
+                    marginBottom: "20px",
+                  }}
+                  color="text.secondary"
+                >
                   Top x% of readers
                   {/* show top percentage e.g. 10% of readers */}
                 </Typography>
@@ -100,44 +123,32 @@ const userProfilePage = () => {
             </Card>
           </Grid>
         </Grid>
-        <h2 style={{marginTop: "80px"}}>My collections</h2>
+        <h2 style={{ marginTop: "80px" }}>My collections</h2>
         <Button variant="outlined">View all my collections</Button>
         {/* map the first 4 collections for user */}
         <Grid container spacing={2}>
           <Grid item xs={3}>
-            <img
-              src={reset}
-              alt="one person sitting, one person standing"
-            />
+            <img src={reset} alt="one person sitting, one person standing" />
             <Button variant="text">Collection title</Button>
-            <br/>
+            <br />
             <Chip label="Public" size="small" />
           </Grid>
           <Grid item xs={3}>
-            <img
-              src={reset}
-              alt="one person sitting, one person standing"
-            />
+            <img src={reset} alt="one person sitting, one person standing" />
             <Button variant="text">Collection title</Button>
-            <br/>
+            <br />
             <Chip label="Private" size="small" />
           </Grid>
           <Grid item xs={3}>
-            <img
-              src={reset}
-              alt="one person sitting, one person standing"
-            />
+            <img src={reset} alt="one person sitting, one person standing" />
             <Button variant="text">Collection title</Button>
-            <br/>
+            <br />
             <Chip label="Public" size="small" />
           </Grid>
           <Grid item xs={3}>
-            <img
-              src={reset}
-              alt="one person sitting, one person standing"
-            />
+            <img src={reset} alt="one person sitting, one person standing" />
             <Button variant="text">Collection title</Button>
-            <br/>
+            <br />
             <Chip label="Public" size="small" />
           </Grid>
         </Grid>
