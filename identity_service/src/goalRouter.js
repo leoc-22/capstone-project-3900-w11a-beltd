@@ -6,7 +6,7 @@ const app = express();
 // Create goal
 app.post("/goal", async (req, res) => {
   const goal = new goalModel({
-      //endDate: req.body.endDate,
+      endDate: req.body.endDate,
       target: req.body.target,
       completed: false,
   });
@@ -24,7 +24,7 @@ app.post("/goal", async (req, res) => {
 // UPDATE current read books /advance goal forward
 app.patch("/goal", async (req, res) => {
   var query = { g_id: req.body.g_id };
-
+  GET
   const update = goalModel.findOne().current + 1;
 
   goalModel.findOneAndUpdate(
