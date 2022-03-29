@@ -14,6 +14,18 @@ app.get("/users", async (req, res) => {
   }
 });
 
+app.get("/oneUser:email", async (req, res) => {
+  const user = await userModel.findOne({ email: req.params.email });
+
+  try {
+    console.log(user);
+    res.send(user);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+// Create a new user
 app.post("/user", async (req, res) => {
   // Look up if the user already exists
   userModel.countDocuments(
