@@ -50,7 +50,10 @@ export default function AuthenicatedTopBar(props) {
   function routePage(page) {
     let targetPage = page["page"];
     if (targetPage === "Explore") {
-      history.push("/search");
+      history.push({
+        pathname: "/search",
+        state: { user: props.user },
+      });
     } else {
       return;
     }
@@ -85,7 +88,12 @@ export default function AuthenicatedTopBar(props) {
             noWrap
             component="div"
             sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
-            onClick={() => history.push("/home")}
+            onClick={() =>
+              history.push({
+                pathname: "/home",
+                state: { email: sessionStorage.getItem("email") },
+              })
+            }
             className={classes.BookLabTitle}
           >
             BOOKLAB
