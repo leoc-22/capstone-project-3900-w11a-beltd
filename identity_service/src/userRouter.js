@@ -14,13 +14,16 @@ app.get("/users", async (req, res) => {
   }
 });
 
-app.get("/oneUser:email", async (req, res) => {
+// Get a user by email
+app.get("/oneuser/:email", async (req, res) => {
+  console.log(req.params.email);
   const user = await userModel.findOne({ email: req.params.email });
 
   try {
     console.log(user);
     res.send(user);
   } catch (error) {
+    console.log("Cannot find this user");
     res.status(500).send(error);
   }
 });
