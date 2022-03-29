@@ -96,7 +96,7 @@ const HomePage = () => {
 
         <CollectionsCarousel books={books}></CollectionsCarousel>
         <h2 className={classes.TopBooks}>Top Books</h2>
-        <TopBookGrid books={books}></TopBookGrid>
+        <TopBookGrid books={books} user={user}></TopBookGrid>
       </div>
     </div>
   );

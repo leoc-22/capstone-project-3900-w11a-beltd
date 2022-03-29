@@ -62,7 +62,6 @@ export default function AuthenicatedTopBar(props) {
   function routeSettingPage(page) {
     let targetPage = page;
     if (targetPage === "Profile") {
-      history.push("/user-profile");
       history.push({
         pathname: "/user-profile",
         state: { user: props.user },
@@ -140,7 +139,12 @@ export default function AuthenicatedTopBar(props) {
             noWrap
             component="div"
             sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}
-            onClick={() => history.push("/home")}
+            onClick={() =>
+              history.push({
+                pathname: "/home",
+                state: { email: sessionStorage.getItem("email") },
+              })
+            }
             className={classes.BookLabTitle}
           >
             BOOKLAB
