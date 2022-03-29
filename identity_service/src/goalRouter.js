@@ -1,12 +1,12 @@
 const express = require("express");
-const {Goal} = require("./models/userModel");
-const goalModel = {Goal};
+const goalModel = require("./models/goalModel");
+
 const app = express();
 
 // Create goal
 app.post("/goal", async (req, res) => {
   const goal = new goalModel({
-      endDate: req.body.endDate,
+      //endDate: req.body.endDate,
       target: req.body.target,
       completed: false,
   });

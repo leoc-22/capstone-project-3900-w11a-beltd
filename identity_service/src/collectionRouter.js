@@ -1,8 +1,7 @@
 const express = require("express");
-const {Collection} = require("./models/userModel");
-const collectionModel = {Collection};
-const app = express();
+const collectionModel = require("./models/collectionModel");
 
+const app = express();
 
 // Get all collections for user
 app.get("/myCollections", async (req, res) => {
