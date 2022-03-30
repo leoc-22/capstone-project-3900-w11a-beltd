@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import LoginTopBar from "../Components/LoginTopBar";
+import Navbar from "../Components/Navbar";
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
 import reset from "../Images/reset.svg";
@@ -9,21 +9,6 @@ import validator from "validator";
 const useStyles = makeStyles({
   body: {
     margin: "15vh 22vw",
-  },
-  primaryButton: {
-    height: 40,
-    borderRadius: 8,
-    fontSize: "large",
-    margin: "10% 0",
-    padding: "0 20px",
-    background: "transparent",
-    fontWeight: "bold",
-    borderColor: "#00C9D8",
-    "&:hover": {
-      backgroundColor: "#00C9D8",
-      color: "#fff",
-      cursor: "pointer",
-    },
   },
   link: {
     color: "#00C9D8",
@@ -54,7 +39,7 @@ export default function ResetPassword() {
 
   return (
     <div>
-      <LoginTopBar></LoginTopBar>
+      <Navbar></Navbar>
       <div className={classes.body}>
         <Grid container spacing={3}>
           <Grid item xs={4}>
@@ -76,7 +61,11 @@ export default function ResetPassword() {
                 <br></br>
                 <Button
                   disableRipple
-                  class={classes.primaryButton}
+                  style={{
+                    marginTop: 20,
+                    marginBottom: 20
+                  }}
+                  variant="contained"
                   onClick={() => history.push("/update-password")}
                   id="submit"
                   value="Submit"

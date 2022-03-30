@@ -1,30 +1,14 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core";
 import update from "../Images/update.svg";
-import { Grid, TextField, Button } from "@mui/material";
+import { Grid, TextField, Button, Alert } from "@mui/material";
 import axios from "axios";
 import AuthenicatedTopBar from "../Components/AuthenticatedTopBar";
-
-// import validator from "validator";
+import { useLocation } from "react-router-dom";
 
 const useStyles = makeStyles({
   body: {
     margin: "15vh 22vw",
-  },
-  primaryButton: {
-    height: 40,
-    borderRadius: 8,
-    fontSize: "large",
-    margin: "10% 0",
-    padding: "0 20px",
-    background: "transparent",
-    fontWeight: "bold",
-    borderColor: "#00C9D8",
-    "&:hover": {
-      backgroundColor: "#00C9D8",
-      color: "#fff",
-      cursor: "pointer",
-    },
   },
   link: {
     color: "#00C9D8",
@@ -35,26 +19,11 @@ const useStyles = makeStyles({
   image: {
     marginLeft: "10%",
   },
-  updatedPassword : {
-    color: "#1ca600"
-  }
 });
 
 export default function UserSettingsPage() {
-  //const history = useHistory();
   const classes = useStyles();
-
-  // email validation from: https://www.geeksforgeeks.org/how-to-validate-an-email-in-reactjs/
-  // const [emailError, setEmailError] = useState("");
-  // const validateEmail = (e) => {
-  //   var emailCheck = e.target.value;
-
-  //   if (validator.isEmail(emailCheck)) {
-  //     setEmailError("Valid email :)");
-  //   } else {
-  //     setEmailError("Please enter a valid email!");
-  //   }
-  // };
+  const location = useLocation();
 
   const [passwordError, setPasswordError] = useState("");
   const validatePassword = (p) => {
@@ -80,50 +49,41 @@ export default function UserSettingsPage() {
     }
   };
 
-  function updatePassword(){
+  function updatePassword() {
     var newPassword = document.getElementById("passwordInput").value;
-    if (matchError == "Passwords match!"){
+    if (matchError == "Passwords match!") {
       axios({
         method: "patch",
         url: "http://localhost:8001/user",
         headers: {},
         data: {
-          email: localStorage.getItem("email"),
-          name: localStorage.getItem("name"),
+          email: sessionStorage.getItem("email"),
+          name: sessionStorage.getItem("name"),
           password: newPassword,
         },
-      })
-        .then((res) => handleReset(res));
+      }).then((res) => handleReset(res));
     }
     return;
   }
 
-  function handleReset(data){
+  function handleReset(data) {
     console.log(data);
     document.getElementById("successUpdate").hidden = false;
   }
 
   return (
     <div>
-      <AuthenicatedTopBar></AuthenicatedTopBar>
+      <AuthenicatedTopBar user={location.state.user}></AuthenicatedTopBar>
       <div className={classes.body}>
         <Grid container spacing={3}>
-          <Grid item xs={4}>
+          <Grid item xs={5}>
             <h1>Update account details</h1>
-            <h4 className={classes.updatedPassword} id = "successUpdate" hidden>Password updated</h4>
+            <div id="successUpdate" hidden>
+              <Alert severity="success">Password updated</Alert>
+            </div>
             <div>
               <form>
-                {/* <TextField
-                  required
-                  label="Email"
-                  variant="standard"
-                  style={{
-                    width: 300,
-                    marginTop: 20,
-                  }}
-                  onChange={(e) => validateEmail(e)}
-                  helperText={emailError}
-                ></TextField> */}
+                <h2>Change your password</h2>
                 <TextField
                   required
                   id="passwordInput"
@@ -132,7 +92,6 @@ export default function UserSettingsPage() {
                   type="password"
                   style={{
                     width: 300,
-                    marginTop: 15,
                   }}
                   onChange={(p) => validatePassword(p)}
                   helperText={passwordError}
@@ -150,10 +109,16 @@ export default function UserSettingsPage() {
                   onChange={(p) => passwordMatch(p)}
                   helperText={matchError}
                 ></TextField>
-                <br></br>
+                <h2 style={{ marginTop: 50 }}>Upload a new profile picture</h2>
+                <Button variant="outlined" component="label">
+                  Upload a file
+                  <input type="file" hidden />
+                </Button>
+                <br />
+                <br />
                 <Button
                   disableRipple
-                  class={classes.primaryButton}
+                  variant="contained"
                   onClick={() => updatePassword()}
                   id="submit"
                   value="Submit"

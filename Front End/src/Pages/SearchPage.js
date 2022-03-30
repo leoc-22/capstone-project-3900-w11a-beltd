@@ -1,13 +1,12 @@
 import React from "react";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Button from "@mui/material/Button";
-import CollectionsCarousel from "../Components/CollectionsCarousel";
-import TopBookGrid from "../Components/TopBookGrid";
 import AuthenicatedTopBar from "../Components/AuthenticatedTopBar";
 import TextField from "@mui/material/TextField";
 import { createTheme } from "@material-ui/core/styles";
 import Typewriter from "typewriter-effect";
 import { makeStyles } from "@material-ui/core";
+import { useLocation } from "react-router-dom";
 
 const useStyles = makeStyles({
   main: {
@@ -24,7 +23,7 @@ const useStyles = makeStyles({
   },
   serachBarBox: {
     marginLeft: "20%",
-    marginTop: "5%",
+    marginTop: "100px",
   },
   serachBar: {
     width: "50%",
@@ -59,13 +58,15 @@ const useStyles = makeStyles({
     borderColor: "#C1C1C1",
     borderRadius: "3px",
   },
-  btnGroup : {
-    height : "25px",
-    marginTop : "2%"
-  }
+  btnGroup: {
+    height: "25px",
+    marginTop: "2%",
+  },
 });
 
-const HomePage = () => {
+export default function SearchPage() {
+  const location = useLocation();
+
   const theme = createTheme({
     palette: {
       secondary: {
@@ -78,10 +79,15 @@ const HomePage = () => {
 
   return (
     <div className={classes.main}>
-      <AuthenicatedTopBar></AuthenicatedTopBar>
+      <AuthenicatedTopBar user={location.state.user}></AuthenicatedTopBar>
 
       <div className={classes.serachBarBox}>
-        <ButtonGroup className={classes.btnGroup} color="secondary" theme={theme} variant="text">
+        <ButtonGroup
+          className={classes.btnGroup}
+          color="secondary"
+          theme={theme}
+          variant="text"
+        >
           <Button>
             <span className={classes.Categorybtn}>All Categories</span>
           </Button>
@@ -145,13 +151,7 @@ const HomePage = () => {
           <option value="4">1 - 2 Stars</option>
         </select>
       </div>
-      <h2 className={classes.TopBooks}>Top Books</h2>
-      <TopBookGrid></TopBookGrid>
-
-      <h2 className={classes.popularCollections}>Top Authors</h2>
-      <CollectionsCarousel></CollectionsCarousel>
+      <h2 className={classes.TopBooks}>search results....</h2>
     </div>
   );
-};
-
-export default HomePage;
+}

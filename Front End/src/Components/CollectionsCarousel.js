@@ -12,12 +12,11 @@ const useStyles = makeStyles({
   PopCollections: {
     marginLeft: "20%",
     marginTop: "10%",
-    maxHeight: "70px",
   },
   img: {
     borderRadius: "10px",
-    width: "95%",
-    height: "100%",
+    width: "90%",
+    height: "90%",
     "&:hover": {
       cursor: "pointer",
     },
@@ -36,15 +35,6 @@ export default function CollectionsCarousel(props) {
         gap={5}
         loop
       >
-        {/* {props.books.map((book) => {
-          console.log(book);
-          <Carousel.Item id={book.asin}>
-            <img
-              className={classes.img}
-              src={book.image == undefined ? "PlaceHolder.png" : book.image}
-            />
-          </Carousel.Item>;
-        })} */}
         <Carousel.Item>
           <img
             className={classes.img}

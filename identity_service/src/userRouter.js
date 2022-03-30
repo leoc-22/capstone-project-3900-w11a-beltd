@@ -14,6 +14,21 @@ app.get("/users", async (req, res) => {
   }
 });
 
+// Get a user by email
+app.get("/oneuser/:email", async (req, res) => {
+  console.log(req.params.email);
+  const user = await userModel.findOne({ email: req.params.email });
+
+  try {
+    console.log(user);
+    res.send(user);
+  } catch (error) {
+    console.log("Cannot find this user");
+    res.status(500).send(error);
+  }
+});
+
+// Create a new user
 app.post("/user", async (req, res) => {
   // Look up if the user already exists
   userModel.countDocuments(

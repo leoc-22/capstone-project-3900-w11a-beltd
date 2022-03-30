@@ -9,6 +9,9 @@ import SearchPage from "./Pages/SearchPage";
 import ResetPasswordPage from "./Pages/resetPassword";
 import UpdatePasswordPage from "./Pages/UpdatePassword";
 import UserSettingsPage from "./Pages/userSettings";
+import UserProfilePage from "./Pages/userProfile";
+import GoalSettingPage from "./Pages/goalSetting";
+import BookProfilePage from "./Pages/bookProfile";
 
 function App() {
   return (
@@ -26,14 +29,19 @@ function App() {
         <Route exact path="/reset" component={ResetPasswordPage}></Route>
       </Switch>
       <Switch>
-        <Route
-          exact
-          path="/update-password"
-          component={UpdatePasswordPage}
-        ></Route>
+        <Route exact path="/update-password" component={UpdatePasswordPage}></Route>
       </Switch>
       <Switch>
         <Route exact path="/user-settings" component={UserSettingsPage}></Route>
+      </Switch>
+      <Switch>
+        <Route exact path="/user-profile" component={UserProfilePage}></Route>
+      </Switch>
+      <Switch>
+        <Route exact path="/book-profile" component={BookProfilePage}></Route>
+      </Switch>
+      <Switch>
+        <Route exact path="/reading-goal" component={GoalSettingPage}></Route>
       </Switch>
       <Switch>
         <Route exact path="/home" component={HomePage}></Route>

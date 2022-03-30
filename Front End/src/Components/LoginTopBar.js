@@ -5,7 +5,7 @@ import MuiAppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Button from "@mui/material/Button";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles({ 
   appBar: {
     background: "#F3F3F3",
     height: 50,
@@ -67,7 +67,7 @@ export default function LoginTopBar() {
           <Button
             disableRipple
             class={classes.appBarBtn}
-            onClick={() => history.push("/")}
+            onClick={() => history.push("/search")}
           >
             Explore
           </Button>

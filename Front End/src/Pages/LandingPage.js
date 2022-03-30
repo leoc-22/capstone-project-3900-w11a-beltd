@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import LandingPageTopBar from "../Components/LandingPageTopBar";
-import Header from "../Components/Header";
+import Navbar from "../Components/Navbar";
+import headerLanding from "../Images/headerLanding.svg";
 import CollectionsCarousel from "../Components/CollectionsCarousel";
 import TopBookGrid from "../Components/TopBookGrid";
 import { makeStyles } from "@material-ui/core";
@@ -19,6 +19,13 @@ const useStyles = makeStyles({
     marginLeft: "7%",
     marginTop: "5%",
   },
+  headerImg: {
+    minHeight: "300px",
+    marginTop: "100px",
+    marginLeft: "10%",
+    borderRadius: "8px",
+    width: "80%",
+  },
   test: {},
 });
 
@@ -31,6 +38,7 @@ export default function LandingPage() {
 
   useEffect(() => {
     getData();
+    document.title = "Welcome to Booklab";
   }, []);
 
   async function getData() {
@@ -55,9 +63,13 @@ export default function LandingPage() {
 
   return (
     <div>
-      <LandingPageTopBar></LandingPageTopBar>
+      <Navbar></Navbar>
       <div className={classes.main}>
-        <Header></Header>
+        <img
+          className={classes.headerImg}
+          src={headerLanding}
+          alt={"booklab: collect and share your favourite books"}
+        />
         <h2 className={classes.popularCollections}>Popular Collections</h2>
         <CollectionsCarousel books={books}></CollectionsCarousel>
         <h2 className={classes.TopBooks}>Top Books</h2>
