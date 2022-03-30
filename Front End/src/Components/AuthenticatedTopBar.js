@@ -1,5 +1,5 @@
 import * as React from "react";
-import {useHistory} from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -12,8 +12,8 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import {makeStyles} from "@material-ui/core";
-
+import { makeStyles } from "@material-ui/core";
+import PropTypes from "prop-types";
 
 const useStyles = makeStyles({
   BookLabTitle: {
@@ -23,11 +23,10 @@ const useStyles = makeStyles({
   },
 });
 
-
 const pages = ["Explore", "Recommended for you", "Book store", "Leader board"];
-const settings = ["Profile", "Settings", "My goals","Logout"];
+const settings = ["Profile", "Settings", "My goals", "Logout"];
 
-const ResponsiveAppBar = () => {
+export default function AuthenicatedTopBar(props) {
   const classes = useStyles();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -48,24 +47,36 @@ const ResponsiveAppBar = () => {
     setAnchorElUser(null);
   };
 
-  function routePage(page){
+  function routePage(page) {
     let targetPage = page["page"];
-    if (targetPage === "Explore"){
-      history.push("/search");
+    if (targetPage === "Explore") {
+      history.push({
+        pathname: "/search",
+        state: { user: props.user },
+      });
     } else {
       return;
     }
   }
 
-  function routeSettingPage(page){
+  function routeSettingPage(page) {
     let targetPage = page;
-    if (targetPage === "Profile"){
-      history.push("/user-profile");
-    } else if(targetPage === "Settings"){
-      history.push("/user-settings");
-    } else if (targetPage === "My goals"){
-      history.push("/reading-goal");
-    } else if (targetPage === "Logout"){
+    if (targetPage === "Profile") {
+      history.push({
+        pathname: "/user-profile",
+        state: { user: props.user },
+      });
+    } else if (targetPage === "Settings") {
+      history.push({
+        pathname: "/user-settings",
+        state: { user: props.user },
+      });
+    } else if (targetPage === "My goals") {
+      history.push({
+        pathname: "/reading-goal",
+        state: { user: props.user },
+      });
+    } else if (targetPage === "Logout") {
       sessionStorage.clear();
       history.push("/");
     } else {
@@ -73,8 +84,7 @@ const ResponsiveAppBar = () => {
     }
   }
 
-
-  var userName = localStorage.getItem("name");
+  // var userName = localStorage.getItem("name");
 
   return (
     <AppBar position="static">
@@ -85,8 +95,13 @@ const ResponsiveAppBar = () => {
             noWrap
             component="div"
             sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
-            onClick={() => history.push("/home")}
-            className = {classes.BookLabTitle}
+            onClick={() =>
+              history.push({
+                pathname: "/home",
+                state: { email: sessionStorage.getItem("email") },
+              })
+            }
+            className={classes.BookLabTitle}
           >
             BOOKLAB
           </Typography>
@@ -121,7 +136,7 @@ const ResponsiveAppBar = () => {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={() => routePage({page})}>
+                <MenuItem key={page} onClick={() => routePage({ page })}>
                   <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
               ))}
@@ -132,8 +147,13 @@ const ResponsiveAppBar = () => {
             noWrap
             component="div"
             sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}
-            onClick={() => history.push("/home")}
-            className = {classes.BookLabTitle}
+            onClick={() =>
+              history.push({
+                pathname: "/home",
+                state: { email: sessionStorage.getItem("email") },
+              })
+            }
+            className={classes.BookLabTitle}
           >
             BOOKLAB
           </Typography>
@@ -141,7 +161,7 @@ const ResponsiveAppBar = () => {
             {pages.map((page) => (
               <Button
                 key={page}
-                onClick={() => routePage({page})}
+                onClick={() => routePage({ page })}
                 sx={{ my: 2, color: "white", display: "block" }}
               >
                 {page}
@@ -152,7 +172,10 @@ const ResponsiveAppBar = () => {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt={userName} src="/static/images/avatar/2.jpg" />
+                <Avatar
+                  alt={props.user.name}
+                  src="/static/images/avatar/2.jpg"
+                />
               </IconButton>
             </Tooltip>
             <Menu
@@ -172,7 +195,10 @@ const ResponsiveAppBar = () => {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={() => routeSettingPage(setting)}>
+                <MenuItem
+                  key={setting}
+                  onClick={() => routeSettingPage(setting)}
+                >
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}
@@ -182,5 +208,7 @@ const ResponsiveAppBar = () => {
       </Container>
     </AppBar>
   );
+}
+AuthenicatedTopBar.propTypes = {
+  user: PropTypes.object,
 };
-export default ResponsiveAppBar;

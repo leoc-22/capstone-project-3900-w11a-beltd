@@ -12,6 +12,7 @@ import Typography from "@mui/material/Typography";
 import ClearIcon from "@mui/icons-material/Clear";
 import TextField from "@mui/material/TextField";
 import Alert from "@mui/material/Alert";
+import { useLocation } from "react-router-dom";
 
 const useStyles = makeStyles({
   main: {
@@ -25,6 +26,7 @@ const useStyles = makeStyles({
 
 const goalSettingPage = () => {
   const classes = useStyles();
+  const location = useLocation();
 
   useEffect(() => {
     document.title = "Reading goal | Booklab";
@@ -32,16 +34,25 @@ const goalSettingPage = () => {
 
   return (
     <div>
-      <AuthenicatedTopBar></AuthenicatedTopBar>
+      <AuthenicatedTopBar user={location.state.user}></AuthenicatedTopBar>
       <div className={classes.main}>
-        <Alert severity="info">Reading goal updated. Progress 8/10 books completed!</Alert>
+        <Alert severity="info">
+          Reading goal updated. Progress 8/10 books completed!
+        </Alert>
         <h1>Set your reading goal for this month!</h1>
         <Grid container spacing={3}>
           <Grid item xs={12} md={8}>
-            <h2>I want to read <TextField variant="standard" placeholder="10"/> books by  <TextField variant="standard" placeholder="date"/></h2>
-            <br/>
-            <TextField label="Search for books to add to your goal" variant="standard" sx={{ width: "80%", marginBottom: "50px"}} />
-            <br/>
+            <h2>
+              I want to read <TextField variant="standard" placeholder="10" />{" "}
+              books by <TextField variant="standard" placeholder="date" />
+            </h2>
+            <br />
+            <TextField
+              label="Search for books to add to your goal"
+              variant="standard"
+              sx={{ width: "80%", marginBottom: "50px" }}
+            />
+            <br />
             <Card>
               {/* template for books added to reading goal */}
               <CardHeader
@@ -55,9 +66,7 @@ const goalSettingPage = () => {
               />
             </Card>
             <br />
-            <h3>
-              Read x of x books. Completed on date.
-            </h3>
+            <h3>Read x of x books. Completed on date.</h3>
             <Button variant="contained">Save reading goal</Button>
           </Grid>
           <Grid item xs={12} md={4}>
@@ -75,9 +84,16 @@ const goalSettingPage = () => {
             <Card>
               <CardContent>
                 <Typography sx={{ fontSize: 16 }} color="text.primary">
-                  February goal 
+                  February goal
                 </Typography>
-                <Typography sx={{ fontSize: 14, textTransform: "uppercase", marginBottom: "20px" }} color="text.secondary">
+                <Typography
+                  sx={{
+                    fontSize: 14,
+                    textTransform: "uppercase",
+                    marginBottom: "20px",
+                  }}
+                  color="text.secondary"
+                >
                   Completed
                 </Typography>
                 <Typography variant="body2">

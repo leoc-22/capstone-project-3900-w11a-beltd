@@ -4,6 +4,7 @@ import update from "../Images/update.svg";
 import { Grid, TextField, Button, Alert } from "@mui/material";
 import axios from "axios";
 import AuthenicatedTopBar from "../Components/AuthenticatedTopBar";
+import { useLocation } from "react-router-dom";
 
 const useStyles = makeStyles({
   body: {
@@ -22,6 +23,7 @@ const useStyles = makeStyles({
 
 export default function UserSettingsPage() {
   const classes = useStyles();
+  const location = useLocation();
 
   const [passwordError, setPasswordError] = useState("");
   const validatePassword = (p) => {
@@ -59,8 +61,7 @@ export default function UserSettingsPage() {
           name: sessionStorage.getItem("name"),
           password: newPassword,
         },
-      })
-        .then((res) => handleReset(res));
+      }).then((res) => handleReset(res));
     }
     return;
   }
@@ -72,15 +73,13 @@ export default function UserSettingsPage() {
 
   return (
     <div>
-      <AuthenicatedTopBar></AuthenicatedTopBar>
+      <AuthenicatedTopBar user={location.state.user}></AuthenicatedTopBar>
       <div className={classes.body}>
         <Grid container spacing={3}>
           <Grid item xs={5}>
             <h1>Update account details</h1>
             <div id="successUpdate" hidden>
-              <Alert severity="success">
-                  Password updated
-              </Alert>
+              <Alert severity="success">Password updated</Alert>
             </div>
             <div>
               <form>
@@ -111,15 +110,9 @@ export default function UserSettingsPage() {
                   helperText={matchError}
                 ></TextField>
                 <h2 style={{ marginTop: 50 }}>Upload a new profile picture</h2>
-                <Button
-                  variant="outlined"
-                  component="label"
-                >
+                <Button variant="outlined" component="label">
                   Upload a file
-                  <input
-                    type="file"
-                    hidden
-                  />
+                  <input type="file" hidden />
                 </Button>
                 <br />
                 <br />

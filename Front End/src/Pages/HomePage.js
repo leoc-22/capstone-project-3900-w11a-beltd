@@ -5,6 +5,7 @@ import AuthenicatedTopBar from "../Components/AuthenticatedTopBar";
 import { makeStyles } from "@material-ui/core";
 import axios from "axios";
 import headerHome from "../Images/headerHome.svg";
+import { useLocation } from "react-router-dom";
 
 const useStyles = makeStyles({
   main: {
@@ -31,19 +32,24 @@ const useStyles = makeStyles({
 
 const HomePage = () => {
   const classes = useStyles();
+  const location = useLocation();
 
   const [books, setBooks] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null);
+  const [loadingBooks, setLoadingBooks] = useState(true);
+  const [loadingUser, setLoadingUser] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    getData();
+    console.log(location.state.email);
+    getBookData();
+    getUserData();
     document.title = "Home Page | Booklab";
   }, []);
 
-  async function getData() {
+  async function getBookData() {
     await axios
-      .get("http://localhost:8001/books")
+      .get("http://localhost:8002/books")
       .then((res) => {
         setBooks(res.data);
       })
@@ -52,18 +58,33 @@ const HomePage = () => {
         setError(error);
       })
       .finally(() => {
-        setLoading(false);
+        setLoadingBooks(false);
       });
   }
 
+  async function getUserData() {
+    await axios
+      .get(`http://localhost:8001/oneuser/${location.state.email}`)
+      .then((res) => {
+        console.log(res.data);
+        setUser(res.data);
+      })
+      .catch((error) => {
+        console.error(`Error: ${error}`);
+        setError(error);
+      })
+      .finally(() => {
+        setLoadingUser(false);
+      });
+  }
   // wait for axios to get book data, then render book shelves
   // TODO Beautify this
-  if (loading) return <p>Loading...</p>;
+  if (loadingBooks || loadingUser) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
   return (
     <div>
-      <AuthenicatedTopBar></AuthenicatedTopBar>
+      <AuthenicatedTopBar user={user}></AuthenicatedTopBar>
 
       <div className={classes.main}>
         <img
@@ -75,7 +96,7 @@ const HomePage = () => {
 
         <CollectionsCarousel books={books}></CollectionsCarousel>
         <h2 className={classes.TopBooks}>Top Books</h2>
-        <TopBookGrid books={books}></TopBookGrid>
+        <TopBookGrid books={books} user={user}></TopBookGrid>
       </div>
     </div>
   );

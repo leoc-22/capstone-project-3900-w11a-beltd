@@ -41,7 +41,9 @@ export default function TopBookItem(props) {
   return (
     <div clase={classes.main}>
       <img
-        onClick={() => history.push("/book-profile"+"?"+props["book"]["_id"])}
+        onClick={() =>
+          history.push("/book-profile" + "?" + props["book"]["_id"])
+        }
         className={classes.img}
         src={
           props.book.image == undefined ? "PlaceHolder.png" : props.book.image
@@ -68,4 +70,5 @@ export default function TopBookItem(props) {
 }
 TopBookItem.propTypes = {
   book: PropTypes.object,
+  user: PropTypes.object,
 };
