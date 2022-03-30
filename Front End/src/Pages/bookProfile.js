@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import AuthenicatedTopBar from "../Components/AuthenticatedTopBar";
+// import AuthenicatedTopBar from "../Components/AuthenticatedTopBar";
 import { makeStyles } from "@material-ui/core";
 import Grid from "@mui/material/Grid";
 import Stack from "@mui/material/Stack";
@@ -13,7 +13,8 @@ import Typography from "@mui/material/Typography";
 import Rating from "@mui/material/Rating";
 import TextField from "@mui/material/TextField";
 import axios from "axios";
-import { useLocation } from "react-router-dom";
+// import { useLocation } from "react-router-dom";
+import Navbar from "../Components/Navbar";
 
 const useStyles = makeStyles({
   main: {
@@ -31,7 +32,7 @@ const useStyles = makeStyles({
 });
 
 const bookProfilePage = () => {
-  const location = useLocation();
+  // const location = useLocation();
   window.scrollTo(0, 0);
 
   const [title, setTitle] = useState(null);
@@ -84,7 +85,7 @@ const bookProfilePage = () => {
 
   return (
     <div>
-      <AuthenicatedTopBar user={location.state.user}></AuthenicatedTopBar>
+      <Navbar></Navbar>
       <div className={classes.main}>
         <Grid container spacing={3}>
           <Grid item xs={12} md={3}>

@@ -42,10 +42,7 @@ export default function TopBookItem(props) {
     <div clase={classes.main}>
       <img
         onClick={() =>
-          history.push({
-            pathname: "/book-profile" + "?" + props["book"]["_id"],
-            state: { user: props.user },
-          })
+          history.push("/book-profile" + "?" + props["book"]["_id"])
         }
         className={classes.img}
         src={
