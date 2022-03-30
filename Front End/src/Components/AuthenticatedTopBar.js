@@ -67,9 +67,15 @@ export default function AuthenicatedTopBar(props) {
         state: { user: props.user },
       });
     } else if (targetPage === "Settings") {
-      history.push("/user-settings");
+      history.push({
+        pathname: "/user-settings",
+        state: { user: props.user },
+      });
     } else if (targetPage === "My goals") {
-      history.push("/reading-goal");
+      history.push({
+        pathname: "/reading-goal",
+        state: { user: props.user },
+      });
     } else if (targetPage === "Logout") {
       sessionStorage.clear();
       history.push("/");
