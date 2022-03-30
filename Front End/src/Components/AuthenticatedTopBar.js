@@ -84,6 +84,8 @@ export default function AuthenicatedTopBar(props) {
     }
   }
 
+  // var userName = localStorage.getItem("name");
+
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
