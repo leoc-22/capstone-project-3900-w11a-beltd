@@ -21,15 +21,15 @@ app.get("/myGoals", async (req, res) => {
 app.post("/goal", async (req, res) => {
 
   // Find user
-  //var query = mongoose.Types.ObjectId(req.body.user); // user id
   const _id = req.body.user;
   const currentUser = userModel.findById({_id}, function(err,doc) {
     console.log(doc)
   });
 
+  // Create new goal
   var goal = new goalModel({
     user: req.body.user,
-    //endDate: req.body.endDate,
+    endDate: req.body.endDate,
     target: req.body.target,
     current: 0,
     completed: false,
@@ -42,14 +42,7 @@ app.post("/goal", async (req, res) => {
   } catch (error) {
       res.status(500).send(error);
   }
-
-
-  // Populate
-  //var query2 = { user: req.body.user }; // user id
-  // const foundGoal = goalModel.findById({_id}).populate('user').exec(function(err,goal) {
-  //   if (err) return handleError(err);
-  //   console.log("goal populated with user id");
-  // })
+  
   // Link up with users model (push to array)
   const updatedUser = await userModel.findByIdAndUpdate(
     {_id},
@@ -59,30 +52,9 @@ app.post("/goal", async (req, res) => {
 
   console.log(updatedUser);
 
-  // currentUser.goals.push(foundGoal);
-  // await currentUser.save(function(err) {
-  //   if (err) return handleError(err);
-  // });
-  // currentUser.save(callback);
 
+  // TODO might need populate later on/// or just query
 
-
-  // push onto goals array in users
-  //const goals = await goalModel.
-  
-
-  
-
-  // console.log(userModel.findOne(query));
-
-  // userModel.findOne(query).
-  // populate('goals').
-  // exec(function(err, user) {
-  //   if (err) return handleError(err);
-  //   console.log("goals" + goals);
-  // });
-  
-  
 
 });
 
