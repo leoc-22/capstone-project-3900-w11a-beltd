@@ -36,7 +36,7 @@ const userProfilePage = () => {
 
   return (
     <div>
-      <AuthenicatedTopBar user={location.state.user}></AuthenicatedTopBar>
+      <AuthenicatedTopBar></AuthenicatedTopBar>
       <div className={classes.main}>
         <Avatar sx={{ width: 80, height: 80 }}>{userDetails.name}</Avatar>
         <h1>Welcome back, {userDetails.name}</h1>
