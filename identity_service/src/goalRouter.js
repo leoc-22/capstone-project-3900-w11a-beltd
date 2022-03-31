@@ -1,4 +1,5 @@
 const express = require("express");
+const mongoose = require("mongoose");
 const goalModel = require("./models/goalModel");
 const userModel = require("./models/userModel");
 
@@ -19,27 +20,67 @@ app.get("/myGoals", async (req, res) => {
 // Create goal
 app.post("/goal", async (req, res) => {
 
-    const goal = new goalModel({
-        user: req.body._id,
-        //endDate: req.body.endDate,
-        target: req.body.target,
-        current: 0,
-        completed: false,
-    });
+  // Find user
+  //var query = mongoose.Types.ObjectId(req.body.user); // user id
+  const _id = req.body.user;
+  const currentUser = userModel.findById({_id}, function(err,doc) {
+    console.log(doc)
+  });
 
-    try {
-      await goal.save();
-      res.send(goal);
-      console.log("Goal created");
-    } catch (error) {
-        res.status(500).send(error);
-    }
+  var goal = new goalModel({
+    user: req.body.user,
+    //endDate: req.body.endDate,
+    target: req.body.target,
+    current: 0,
+    completed: false,
+  });
+
+  try {
+    await goal.save();
+    res.send(goal);
+    console.log("Goal created");
+  } catch (error) {
+      res.status(500).send(error);
+  }
+
+
+  // Populate
+  //var query2 = { user: req.body.user }; // user id
+  // const foundGoal = goalModel.findById({_id}).populate('user').exec(function(err,goal) {
+  //   if (err) return handleError(err);
+  //   console.log("goal populated with user id");
+  // })
+  // Link up with users model (push to array)
+  const updatedUser = await userModel.findByIdAndUpdate(
+    {_id},
+    { $push: { 'goals': goal._id } },
+    { new: true }
+    );
+
+  console.log(updatedUser);
+
+  // currentUser.goals.push(foundGoal);
+  // await currentUser.save(function(err) {
+  //   if (err) return handleError(err);
+  // });
+  // currentUser.save(callback);
+
+
+
+  // push onto goals array in users
+  //const goals = await goalModel.
   
 
-  var query = { _id: req.body._id }; // user id
-  userModel.findOne(query).populate("goals").exec((err, goals) => {
-    console.log("goals" + goals);
-  });
+  
+
+  // console.log(userModel.findOne(query));
+
+  // userModel.findOne(query).
+  // populate('goals').
+  // exec(function(err, user) {
+  //   if (err) return handleError(err);
+  //   console.log("goals" + goals);
+  // });
   
   
 
