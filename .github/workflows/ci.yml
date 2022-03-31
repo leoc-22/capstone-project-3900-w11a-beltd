@@ -1,0 +1,18 @@
+name: CI
+
+on: [pull_request]
+
+jobs:
+  lint:
+    name: Lint (${{ matrix.component }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        component: [Front\ End/, identity_service]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "17"
+      - run: npm --prefix ${{ matrix.component }} ci
+      - run: npm run --prefix ${{ matrix.component }} lint

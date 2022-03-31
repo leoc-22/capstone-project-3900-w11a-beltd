@@ -1,23 +1,26 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
 const userRouter = require("./userRouter.js");
+const bookRouter = require("./userBookRouter.js");
+const goalRouter = require("./goalRouter.js");
+const collectionRouter = require("./collectionRouter.js");
+const reviewRouter = require("./reviewRouter");
+const bodyParser = require("body-parser");
 
-//
-const tokenRouter = require("./tokenRouter.js");
-//
-
-const isProduction = process.env.NODE_ENV === "production";
-const port = isProduction ? 8000 : 8001;
+const port = 8001;
 const app = express();
 
-app.use(express.json());
+app.use(cors());
+app.use("/uploads", express.static("uploads"));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 const name = "identity-service";
 const connectionStr = `mongodb+srv://w11a-beltd:comp3900-w11a-beltd@cluster0.3myyc.mongodb.net/${name}?retryWrites=true&w=majority`;
 try {
   mongoose.connect(connectionStr, {
     useNewUrlParser: true,
-    // useFindAndModify: false,
     useUnifiedTopology: true,
   });
   console.log("Connected to MongoDB");
@@ -26,12 +29,12 @@ try {
 }
 
 app.use(userRouter);
+app.use(bookRouter);
+app.use(goalRouter);
+app.use(collectionRouter);
+app.use(reviewRouter);
 
-//
-app.use(tokenRouter);
-//
-
-// Drop the entire database, development only, use for testing
+// Drop the entire database, development only, use only for testing
 app.delete("/drop", async (req, res) => {
   try {
     await mongoose.connection.dropCollection("Users");

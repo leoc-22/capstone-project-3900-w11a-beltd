@@ -1,10 +1,8 @@
 const express = require("express");
 const userModel = require("./models/userModel");
 const app = express();
-const crypto = require("crypto");
-
-const secret = "This is a company secret";
-const Hasher = crypto.createHmac("sha256", secret);
+const sha256 = require("js-sha256");
+const multer = require("multer");
 
 // Get all users in the database
 app.get("/users", async (req, res) => {
@@ -17,21 +15,34 @@ app.get("/users", async (req, res) => {
   }
 });
 
+// Get a user by email
+app.get("/oneuser/:email", async (req, res) => {
+  console.log(req.params.email);
+  const user = await userModel.findOne({ email: req.params.email });
+
+  try {
+    console.log(user);
+    res.send(user);
+  } catch (error) {
+    console.log("Cannot find this user");
+    res.status(500).send(error);
+  }
+});
+
+// Create a new user
 app.post("/user", async (req, res) => {
   // Look up if the user already exists
   userModel.countDocuments(
     { email: req.body.email },
     async function (err, count) {
       if (count > 0) {
-        //document exists
         console.log("User already exists");
         res.status(400).send("User already exists");
       } else {
-        const hash = Hasher.update(req.body.password);
         const user = new userModel({
           name: req.body.name,
           email: req.body.email,
-          password: hash.digest("hex"),
+          password: sha256.hex(req.body.password),
         });
 
         try {
@@ -48,18 +59,17 @@ app.post("/user", async (req, res) => {
 
 // update password or name by querying the email
 app.patch("/user", async (req, res) => {
-  var query = { email: req.body.email };
+  let query = { email: req.body.email };
 
-  const hash = Hasher.update(req.body.password);
   userModel.findOneAndUpdate(
     query,
     {
       name: req.body.name,
       email: req.body.email,
-      password: hash.digest("hex"),
+      password: sha256.hex(req.body.password),
     },
     { upsert: true },
-    (err, doc) => {
+    (err) => {
       if (err) return res.status(500).send(err);
       console.log("User updated");
       res.send("Succesfully updated.");
@@ -71,7 +81,7 @@ app.patch("/user", async (req, res) => {
 app.delete("/user", async (req, res) => {
   var query = { email: req.body.email };
 
-  userModel.findOneAndRemove(query, (err, doc) => {
+  userModel.findOneAndRemove(query, (err) => {
     if (err) return res.send(500, { error: err });
     console.log("User deleted");
     res.send("Succesfully deleted.");
@@ -79,20 +89,63 @@ app.delete("/user", async (req, res) => {
 });
 
 // return the user detail if the look-up is successful
-app.get("/login", async (req, res) => {
-  const hash = Hasher.update(req.body.password);
+app.post("/login", async (req, res) => {
   const user = await userModel.findOne({
     email: req.body.email,
-    password: hash.digest("hex"),
+    password: sha256.hex(req.body.password),
   });
 
   try {
-    console.log("Found user");
     console.log(user);
-    res.send(user);
+    res.send(user); // user === '' if no user is found
   } catch (error) {
     res.status(500).send(error);
   }
+});
+
+// Upload profile picture
+
+// Specifying the storage location
+var storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./uploads/");
+  },
+  filename: (req, file, cb) => {
+    cb(null, new Date().toISOString() + file.originalname);
+  },
+});
+
+// Specifying the required file type
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
+    cb(null, true);
+  } else {
+    cb(new Error("Incorrect Image File Type"), false);
+  }
+};
+
+const upload = multer({
+  storage: storage,
+  fileFilter: fileFilter,
+});
+
+// Find the tuple by email, update the image field,
+// and send the stored image route as res
+app.patch("/upload", upload.single("image"), async (req, res) => {
+  console.log(req.file);
+  let query = { email: req.body.email };
+  userModel.findOneAndUpdate(
+    query,
+    {
+      image: req.file.path,
+    },
+    { upsert: true },
+    (err) => {
+      if (err) return res.status(500).send(err);
+      console.log("User image stored");
+      res.send("http://localhost:8001/" + req.file.path);
+    }
+  );
 });
 
 module.exports = app;
