@@ -52,7 +52,7 @@ export default function AuthenicatedTopBar(props) {
     if (targetPage === "Explore") {
       history.push({
         pathname: "/search",
-        state: { user: props.user },
+        //state: { user: props.user },
       });
     } else {
       return;
@@ -64,17 +64,17 @@ export default function AuthenicatedTopBar(props) {
     if (targetPage === "Profile") {
       history.push({
         pathname: "/user-profile",
-        state: { user: props.user },
+        //state: { user: props.user },
       });
     } else if (targetPage === "Settings") {
       history.push({
         pathname: "/user-settings",
-        state: { user: props.user },
+        //state: { user: props.user },
       });
     } else if (targetPage === "My goals") {
       history.push({
         pathname: "/reading-goal",
-        state: { user: props.user },
+        //state: { user: props.user },
       });
     } else if (targetPage === "Logout") {
       sessionStorage.clear();

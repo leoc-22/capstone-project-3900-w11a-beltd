@@ -10,7 +10,7 @@ import Chip from "@mui/material/Chip";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import reset from "../Images/reset.svg";
-import { useLocation } from "react-router-dom";
+//import { useLocation } from "react-router-dom";
 
 const useStyles = makeStyles({
   main: {
@@ -24,9 +24,9 @@ const useStyles = makeStyles({
 
 const userProfilePage = () => {
   const classes = useStyles();
-  const location = useLocation();
+  //const location = useLocation();
 
-  const userDetails = location.state.user;
+  //const userDetails = location.state.user;
 
   useEffect(() => {
     document.title = "User Profile | Booklab";
@@ -38,8 +38,8 @@ const userProfilePage = () => {
     <div>
       <AuthenicatedTopBar></AuthenicatedTopBar>
       <div className={classes.main}>
-        <Avatar sx={{ width: 80, height: 80 }}>{userDetails.name}</Avatar>
-        <h1>Welcome back, {userDetails.name}</h1>
+        <Avatar sx={{ width: 80, height: 80 }}></Avatar>
+        <h1>Welcome back,</h1>
         {/* update grid with user info */}
         <Grid container spacing={3}>
           <Grid item xs={12} md={4}>
