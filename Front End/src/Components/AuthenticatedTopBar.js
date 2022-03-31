@@ -1,3 +1,5 @@
+/* eslint-disable */ 
+
 import * as React from "react";
 import { useHistory } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
@@ -26,7 +28,7 @@ const useStyles = makeStyles({
 const pages = ["Explore", "Recommended for you", "Book store", "Leader board"];
 const settings = ["Profile", "Settings", "My goals", "Logout"];
 
-export default function AuthenicatedTopBar(props) {
+export default function AuthenicatedTopBar() {
   const classes = useStyles();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -98,7 +100,7 @@ export default function AuthenicatedTopBar(props) {
             onClick={() =>
               history.push({
                 pathname: "/home",
-                state: { email: sessionStorage.getItem("email") },
+                //state: { email: sessionStorage.getItem("email") },
               })
             }
             className={classes.BookLabTitle}
@@ -173,8 +175,8 @@ export default function AuthenicatedTopBar(props) {
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar
-                  alt={props.user.name}
-                  src="/static/images/avatar/2.jpg"
+                  //alt={props.user.name}
+                  //src="/static/images/avatar/2.jpg"
                 />
               </IconButton>
             </Tooltip>
@@ -209,6 +211,3 @@ export default function AuthenicatedTopBar(props) {
     </AppBar>
   );
 }
-AuthenicatedTopBar.propTypes = {
-  user: PropTypes.object,
-};

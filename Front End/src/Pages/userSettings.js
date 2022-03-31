@@ -1,3 +1,5 @@
+/* eslint-disable */ 
+
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core";
 import update from "../Images/update.svg";
@@ -73,7 +75,7 @@ export default function UserSettingsPage() {
 
   return (
     <div>
-      <AuthenicatedTopBar user={location.state.user}></AuthenicatedTopBar>
+      <AuthenicatedTopBar></AuthenicatedTopBar>
       <div className={classes.body}>
         <Grid container spacing={3}>
           <Grid item xs={5}>

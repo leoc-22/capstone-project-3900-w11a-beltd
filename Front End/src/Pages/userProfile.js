@@ -1,4 +1,6 @@
-import React, { useEffect } from "react";
+/* eslint-disable */ 
+
+import React, { useEffect,useState } from "react";
 import AuthenicatedTopBar from "../Components/AuthenticatedTopBar";
 import { makeStyles } from "@material-ui/core";
 import Avatar from "@mui/material/Avatar";
@@ -24,14 +26,21 @@ const useStyles = makeStyles({
 
 const userProfilePage = () => {
   const classes = useStyles();
+  const [name, setName ] = useState(null);
+  
   //const location = useLocation();
 
   //const userDetails = location.state.user;
 
   useEffect(() => {
+    getUserData()
     document.title = "User Profile | Booklab";
   }, []);
 
+  function getUserData(){
+    setName(sessionStorage.getItem("name"));
+
+  }
   // var userName = localStorage.getItem("name");
 
   return (
@@ -39,7 +48,7 @@ const userProfilePage = () => {
       <AuthenicatedTopBar></AuthenicatedTopBar>
       <div className={classes.main}>
         <Avatar sx={{ width: 80, height: 80 }}></Avatar>
-        <h1>Welcome back,</h1>
+        <h1>Welcome back, {name}</h1>
         {/* update grid with user info */}
         <Grid container spacing={3}>
           <Grid item xs={12} md={4}>

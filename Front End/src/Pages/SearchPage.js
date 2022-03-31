@@ -1,3 +1,4 @@
+/* eslint-disable */ 
 import React from "react";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Button from "@mui/material/Button";
@@ -79,7 +80,7 @@ export default function SearchPage() {
 
   return (
     <div className={classes.main}>
-      <AuthenicatedTopBar user={location.state.user}></AuthenicatedTopBar>
+      <AuthenicatedTopBar></AuthenicatedTopBar>
 
       <div className={classes.serachBarBox}>
         <ButtonGroup

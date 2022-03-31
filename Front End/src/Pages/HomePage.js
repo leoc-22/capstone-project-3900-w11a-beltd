@@ -84,7 +84,7 @@ const HomePage = () => {
 
   return (
     <div>
-      <AuthenicatedTopBar user={user}></AuthenicatedTopBar>
+      <AuthenicatedTopBar></AuthenicatedTopBar>
 
       <div className={classes.main}>
         <img

@@ -12,7 +12,6 @@ import Typography from "@mui/material/Typography";
 import ClearIcon from "@mui/icons-material/Clear";
 import TextField from "@mui/material/TextField";
 import Alert from "@mui/material/Alert";
-import { useLocation } from "react-router-dom";
 
 const useStyles = makeStyles({
   main: {
@@ -26,7 +25,7 @@ const useStyles = makeStyles({
 
 const goalSettingPage = () => {
   const classes = useStyles();
-  const location = useLocation();
+  //const location = useLocation();
 
   useEffect(() => {
     document.title = "Reading goal | Booklab";
@@ -34,7 +33,7 @@ const goalSettingPage = () => {
 
   return (
     <div>
-      <AuthenicatedTopBar user={location.state.user}></AuthenicatedTopBar>
+      <AuthenicatedTopBar></AuthenicatedTopBar>
       <div className={classes.main}>
         <Alert severity="info">
           Reading goal updated. Progress 8/10 books completed!
