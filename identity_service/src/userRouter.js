@@ -132,18 +132,18 @@ const upload = multer({
 // Find the tuple by email, update the image field,
 // and send the stored image route as res
 app.patch("/upload", upload.single("image"), async (req, res) => {
-  console.log(req.file);
   let query = { email: req.body.email };
+
   userModel.findOneAndUpdate(
     query,
     {
-      image: req.file.path,
+      image: req.body.image,
     },
     { upsert: true },
     (err) => {
       if (err) return res.status(500).send(err);
       console.log("User image stored");
-      res.send("http://localhost:8001/" + req.file.path);
+      res.send("http://localhost:8001/" + req.body.image);
     }
   );
 });

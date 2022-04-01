@@ -38,14 +38,25 @@ const useStyles = makeStyles({
   }
 });
 
+
+
 export default function TopBookItem(props) {
   const classes = useStyles();
   const history = useHistory();
+
+  function routeUser(){
+    if (sessionStorage.getItem("email") == null){
+      history.push("/login");
+    } else {
+      history.push("/book-profile" + "?" + props["book"]["_id"]);
+
+    }
+  }
+
   return (
     <div className={classes.main}>
       <img
-        onClick={() =>
-          history.push("/book-profile" + "?" + props["book"]["_id"])
+        onClick={() =>routeUser()
         }
         className={classes.img}
         src={
