@@ -151,6 +151,18 @@ app.patch("/upload", upload.single("image"), async (req, res) => {
 
 // Send a url to the user's email to reset the password
 app.post("/forgetpassword", async (req, res) => {
+  userModel.countDocuments(
+    { email: req.body.email },
+    async function (err, count) {
+      if (count > 0) {
+        console.log("Found the user in the database");
+      } else {
+        console.log("User not found");
+        return res.status(400).send("User not found");
+      }
+    }
+  );
+
   let transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
