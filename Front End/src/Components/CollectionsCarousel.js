@@ -1,3 +1,5 @@
+/* eslint-disable */ 
+
 import React from "react";
 import Carousel from "react-grid-carousel";
 import { makeStyles } from "@material-ui/core";
@@ -16,18 +18,22 @@ const useStyles = makeStyles({
   img: {
     borderRadius: "10px",
     width: "90%",
-    height: "90%",
+    height: "200px",
     "&:hover": {
       cursor: "pointer",
     },
   },
+  name : {
+    color :"black"
+  }
 });
 
 export default function CollectionsCarousel(props) {
   const classes = useStyles();
-
+  console.log(props.collections);
   return (
     <div className={classes.main} zindex="999">
+   
       <Carousel
         className={classes.PopCollections}
         cols={4}
@@ -35,70 +41,18 @@ export default function CollectionsCarousel(props) {
         gap={5}
         loop
       >
-        <Carousel.Item>
+        {props.collections.map((Item) =>(
+          <Carousel.Item>
           <img
+            src = "PlaceHolder.png"
             className={classes.img}
-            src={props.books[Math.floor(Math.random() * 48)].image}
-          />
-        </Carousel.Item>
-        <Carousel.Item>
-          <img
-            className={classes.img}
-            src={props.books[Math.floor(Math.random() * 48)].image}
-          />
-        </Carousel.Item>
-        <Carousel.Item>
-          <img
-            className={classes.img}
-            src={props.books[Math.floor(Math.random() * 48)].image}
-          />
-        </Carousel.Item>
-        <Carousel.Item>
-          <img
-            className={classes.img}
-            src={props.books[Math.floor(Math.random() * 48)].image}
-          />
-        </Carousel.Item>
-        <Carousel.Item>
-          <img
-            className={classes.img}
-            src={props.books[Math.floor(Math.random() * 48)].image}
-          />
-        </Carousel.Item>
-        <Carousel.Item>
-          <img
-            className={classes.img}
-            src={props.books[Math.floor(Math.random() * 48)].image}
-          />
-        </Carousel.Item>
-        <Carousel.Item>
-          <img
-            className={classes.img}
-            src={props.books[Math.floor(Math.random() * 48)].image}
-          />
-        </Carousel.Item>
-        <Carousel.Item>
-          <img
-            className={classes.img}
-            src={props.books[Math.floor(Math.random() * 48)].image}
-          />
-        </Carousel.Item>
-        <Carousel.Item>
-          <img
-            className={classes.img}
-            src={props.books[Math.floor(Math.random() * 48)].image}
-          />
-        </Carousel.Item>
-        <Carousel.Item>
-          <img
-            className={classes.img}
-            src={props.books[Math.floor(Math.random() * 48)].image}
-          />
-        </Carousel.Item>
+            alt = "collection img"
+            />
+            <h3>{Item.name}</h3>
+
+          </Carousel.Item>
+        ))}
       </Carousel>
     </div>
   );
 }
-CollectionsCarousel.propTypes = {
-  books: PropTypes.array,
-};

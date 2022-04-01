@@ -64,7 +64,7 @@ export default function LogInPage() {
     } else {
       sessionStorage.setItem("email", res["data"]["email"]);
       sessionStorage.setItem("name", res["data"]["name"]);
-      console.log("login success, redirecting to home");
+      //console.log("login success, redirecting to home");
       // history.push("/home");
       history.push({
         pathname: "/home",

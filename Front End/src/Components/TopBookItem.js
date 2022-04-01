@@ -6,12 +6,12 @@ import PropTypes from "prop-types";
 
 const useStyles = makeStyles({
   main: {
-    height: "160px",
+    height: "500px",
   },
   img: {
     borderRadius: "10px",
     width: "100%",
-    height: "150%",
+    height: "320px",
     "&:hover": {
       cursor: "pointer",
     },
@@ -33,23 +33,37 @@ const useStyles = makeStyles({
       cursor: "pointer",
     },
   },
+  bookData : {
+    minHeight : "70px"
+  }
 });
+
+
 
 export default function TopBookItem(props) {
   const classes = useStyles();
   const history = useHistory();
+
+  function routeUser(){
+    if (sessionStorage.getItem("email") == null){
+      history.push("/login");
+    } else {
+      history.push("/book-profile" + "?" + props["book"]["_id"]);
+
+    }
+  }
+
   return (
-    <div clase={classes.main}>
+    <div className={classes.main}>
       <img
-        onClick={() =>
-          history.push("/book-profile" + "?" + props["book"]["_id"])
+        onClick={() =>routeUser()
         }
         className={classes.img}
         src={
           props.book.image == undefined ? "PlaceHolder.png" : props.book.image
         }
       />
-      <div>
+      <div className={classes.bookData}>
         <span className="bookTitle">
           <b>{props.book.title}</b>
         </span>

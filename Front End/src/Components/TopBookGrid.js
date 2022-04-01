@@ -23,23 +23,23 @@ export default function TopBooksGrid(props) {
     <div className={classes.main}>
       <Grid container spacing={2}>
         <Grid item xs={4} sm={3} md={2} className={classes.gridClass}>
-          <TopBookItem book={props.books[0]} user={props.user}></TopBookItem>
+          <TopBookItem book={props.books[Math.floor(Math.random() * 48)]} user={props.user}></TopBookItem>
         </Grid>
         <br></br>
         <Grid item xs={4} sm={3} md={2} className={classes.gridClass}>
-          <TopBookItem book={props.books[1]} user={props.user}></TopBookItem>
+          <TopBookItem book={props.books[Math.floor(Math.random() * 48)]} user={props.user}></TopBookItem>
         </Grid>
         <Grid item xs={4} sm={3} md={2} className={classes.gridClass}>
-          <TopBookItem book={props.books[2]} user={props.user}></TopBookItem>
+          <TopBookItem book={props.books[Math.floor(Math.random() * 48)]} user={props.user}></TopBookItem>
         </Grid>
         <Grid item xs={4} sm={3} md={2} className={classes.gridClass}>
-          <TopBookItem book={props.books[3]} user={props.user}></TopBookItem>
+          <TopBookItem book={props.books[Math.floor(Math.random() * 48)]} user={props.user}></TopBookItem>
         </Grid>
         <Grid item xs={4} sm={3} md={2} className={classes.gridClass}>
-          <TopBookItem book={props.books[4]} user={props.user}></TopBookItem>
+          <TopBookItem book={props.books[Math.floor(Math.random() * 48)]} user={props.user}></TopBookItem>
         </Grid>
         <Grid item xs={4} sm={3} md={2} className={classes.gridClass}>
-          <TopBookItem book={props.books[5]} user={props.user}></TopBookItem>
+          <TopBookItem book={props.books[Math.floor(Math.random() * 48)]} user={props.user}></TopBookItem>
         </Grid>
       </Grid>
     </div>

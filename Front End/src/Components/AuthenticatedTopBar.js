@@ -1,3 +1,4 @@
+
 import * as React from "react";
 import { useHistory } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
@@ -13,7 +14,6 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { makeStyles } from "@material-ui/core";
-import PropTypes from "prop-types";
 
 const useStyles = makeStyles({
   BookLabTitle: {
@@ -23,10 +23,10 @@ const useStyles = makeStyles({
   },
 });
 
-const pages = ["Explore", "Recommended for you", "Book store", "Leader board"];
+const pages = ["Explore", "Collections","Recommended for you", "Leader board"];
 const settings = ["Profile", "Settings", "My goals", "Logout"];
 
-export default function AuthenicatedTopBar(props) {
+export default function AuthenicatedTopBar() {
   const classes = useStyles();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -52,9 +52,17 @@ export default function AuthenicatedTopBar(props) {
     if (targetPage === "Explore") {
       history.push({
         pathname: "/search",
-        state: { user: props.user },
+        //state: { user: props.user },
       });
-    } else {
+    
+    } else if (targetPage === "Collections"){
+      history.push({
+        pathname: "/collections",
+        //state: { user: props.user },
+      });
+    }
+    
+    else {
       return;
     }
   }
@@ -64,17 +72,17 @@ export default function AuthenicatedTopBar(props) {
     if (targetPage === "Profile") {
       history.push({
         pathname: "/user-profile",
-        state: { user: props.user },
+        //state: { user: props.user },
       });
     } else if (targetPage === "Settings") {
       history.push({
         pathname: "/user-settings",
-        state: { user: props.user },
+        //state: { user: props.user },
       });
     } else if (targetPage === "My goals") {
       history.push({
         pathname: "/reading-goal",
-        state: { user: props.user },
+        //state: { user: props.user },
       });
     } else if (targetPage === "Logout") {
       sessionStorage.clear();
@@ -98,7 +106,7 @@ export default function AuthenicatedTopBar(props) {
             onClick={() =>
               history.push({
                 pathname: "/home",
-                state: { email: sessionStorage.getItem("email") },
+                //state: { email: sessionStorage.getItem("email") },
               })
             }
             className={classes.BookLabTitle}
@@ -173,8 +181,8 @@ export default function AuthenicatedTopBar(props) {
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar
-                  alt={props.user.name}
-                  src="/static/images/avatar/2.jpg"
+                  //alt={props.user.name}
+                  //src="/static/images/avatar/2.jpg"
                 />
               </IconButton>
             </Tooltip>
@@ -209,6 +217,3 @@ export default function AuthenicatedTopBar(props) {
     </AppBar>
   );
 }
-AuthenicatedTopBar.propTypes = {
-  user: PropTypes.object,
-};
