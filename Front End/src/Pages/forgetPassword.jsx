@@ -1,9 +1,10 @@
 import React, { useState } from "react";
+import { useParams } from "react-router-dom";
 import Navbar from "../Components/Navbar";
-import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
 import update from "../Images/update.svg";
 import { Grid, TextField, Button } from "@mui/material";
+import axios from "axios";
 
 const useStyles = makeStyles({
   body: {
@@ -21,8 +22,12 @@ const useStyles = makeStyles({
 });
 
 export default function UpdatePasswordPage() {
-  const history = useHistory();
   const classes = useStyles();
+  const { email } = useParams();
+  const { token } = useParams();
+
+  console.log(`email: ${email}`);
+  console.log(`token: ${token}`);
 
   const [passwordError, setPasswordError] = useState("");
   const validatePassword = (p) => {
@@ -47,6 +52,27 @@ export default function UpdatePasswordPage() {
       setMatchError("Passwords match!");
     }
   };
+
+  function updatePassword() {
+    var newPassword = document.getElementById("passwordInput").value;
+    if (matchError == "Passwords match!") {
+      axios({
+        method: "patch",
+        url: "http://localhost:8001/user",
+        headers: {},
+        data: {
+          email: email,
+          password: newPassword,
+        },
+      }).then((res) => handleReset(res));
+    }
+    return;
+  }
+
+  function handleReset(data) {
+    console.log(data);
+    document.getElementById("successUpdate").hidden = false;
+  }
 
   return (
     <div>
@@ -91,7 +117,9 @@ export default function UpdatePasswordPage() {
                     marginBottom: 20,
                   }}
                   variant="contained"
-                  onClick={() => history.push("/login")}
+                  onClick={() => {
+                    updatePassword();
+                  }}
                   id="submit"
                   value="Submit"
                   type="submit"

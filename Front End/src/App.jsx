@@ -57,7 +57,7 @@ function App() {
       <Switch>
         <Route
           exact
-          path="/forget-password"
+          path="/forget-password/:email/:token"
           component={ForgetPasswordPage}
         ></Route>
       </Switch>
