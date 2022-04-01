@@ -9,9 +9,7 @@ const crypto = require("crypto");
 const secret = "This is a company secret";
 const Hasher = crypto.createHmac("sha256", secret);
 
-//const app = require("./userRouter");
 const bcrypt = require("bcrypt");
-//const { modelName } = require("../../../../../../../../identity_service/src/models/userModel");
 
 const token = null;
 
@@ -79,7 +77,7 @@ const requestPasswordReset = async (email) => {
     "Password Reset Request",
     {
       name: user.name, // delete later don't need custom greeting
-      link: link, 
+      link: link,
     },
     "./util/forgotPassword.handlebars"
   );

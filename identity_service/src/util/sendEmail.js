@@ -1,6 +1,6 @@
 //TODO CREDIT
 
-require('dotenv').config()
+require("dotenv").config();
 
 const nodemailer = require("nodemailer");
 const handlebars = require("handlebars");
@@ -10,44 +10,38 @@ const { getMaxListeners } = require("process");
 
 const sendEmail = async (email, subject, payload, template) => {
   try {
-
     // Create transporter object
     let transporter = nodemailer.createTransport({
-      service: 'gmail',
+      service: "gmail",
       auth: {
-        type: 'OAuth2',
-        user: 'booklab3900@gmail.com',
-        pass: 'Beltd3900'
+        type: "OAuth2",
+        user: "booklab3900@gmail.com",
+        pass: "Beltd3900",
         //user: process.env.MAIL_USERNAME,
         //pass: process.env.MAIL_PASSWORD,
         //clientId: process.env.OAUTH_CLIENTID, // TODO ADD TO .env
         //clientSecret: process.env.OAUTH_CLIENT_SECRET,
         //refreshToken: process.env.OAUTH_REFRESH_TOKEN
-      }
+      },
     });
 
     // Create mailOptions object
     // TO DO CHANGE WHEN TESTING FR
     let mailOptions = {
-      from: "booklab3900@gmail.com", 
+      from: "booklab3900@gmail.com",
       to: "booklab3900@gmail.com", // email
       subject: "Email test 1", // subject
-      text: "Helo" // template or in html field
+      text: "Helo", // template or in html field
     };
 
     // Send mail!!
-    transporter.sendMail(mailOptions, function(err, data) {
+    transporter.sendMail(mailOptions, function (err, data) {
       if (err) {
         console.log("Error " + err);
       } else {
-        console.log("Email sent!")
+        console.log("Email sent!");
       }
     });
-
-
-
-
-
 
     /*
     // Generest test SMTP service from ethereal.email
