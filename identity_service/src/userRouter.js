@@ -3,6 +3,7 @@ const userModel = require("./models/userModel");
 const app = express();
 const sha256 = require("js-sha256");
 const multer = require("multer");
+const nodemailer = require("nodemailer");
 
 // Get all users in the database
 app.get("/users", async (req, res) => {
@@ -146,6 +147,38 @@ app.patch("/upload", upload.single("image"), async (req, res) => {
       res.send("http://localhost:8001/" + req.file.path);
     }
   );
+});
+
+// Send a url to the user's email to reset the password
+app.post("/forgetpassword", async (req, res) => {
+  let transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: "booklab3900@gmail.com",
+      pass: "Beltd3900",
+    },
+    tls: {
+      rejectUnauthorized: false,
+    },
+  });
+
+  const msg = {
+    from: "booklab3900@gmail.com",
+    to: req.body.email,
+    subject: "Forget your email? - Booklab",
+    text: "Sup, this Booklab.",
+    html: "<p>You requested for reset your password, </p><p>Click the link below to reset your password</p><p>http://localhost:3000/update-password</p>",
+  };
+
+  await transporter.sendMail(msg, (err, info) => {
+    if (err) {
+      console.log(err);
+      res.send(err);
+    } else {
+      console.log("Email sent: " + info.messageId);
+      res.sendStatus(200);
+    }
+  });
 });
 
 module.exports = app;
