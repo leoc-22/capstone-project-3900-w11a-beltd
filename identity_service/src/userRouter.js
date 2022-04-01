@@ -19,15 +19,18 @@ app.get("/users", async (req, res) => {
 // Get a user by email
 app.get("/oneuser/:email", async (req, res) => {
   console.log(req.params.email);
-  const user = await userModel.findOne({ email: req.params.email });
 
-  try {
-    console.log(user);
-    res.send(user);
-  } catch (error) {
-    console.log("Cannot find this user");
-    res.status(500).send(error);
-  }
+  await userModel
+    .findOne({ email: req.params.email })
+    .exec()
+    .then((doc) => {
+      console.log(doc);
+      res.send(doc); // returns null if doesnt exist such a user
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send(err);
+    });
 });
 
 // Create a new user
@@ -69,11 +72,10 @@ app.patch("/user", async (req, res) => {
       email: req.body.email,
       password: sha256.hex(req.body.password),
     },
-    { upsert: true },
-    (err) => {
+    { upsert: false },
+    (err, doc) => {
       if (err) return res.status(500).send(err);
-      console.log("User updated");
-      res.send("Succesfully updated.");
+      res.send(doc); // returns null if doesnt exist such a user
     }
   );
 });
@@ -140,7 +142,7 @@ app.patch("/upload", upload.single("image"), async (req, res) => {
     {
       image: req.file.path,
     },
-    { upsert: true },
+    { upsert: false },
     (err) => {
       if (err) return res.status(500).send(err);
       console.log("User image stored");
@@ -175,12 +177,15 @@ app.post("/forgetpassword", async (req, res) => {
     },
   });
 
+  const token = 123; // change this
+  const link = `http://localhost:3000/forget-password/${req.body.email}/${token}`;
+
   const msg = {
     from: "booklab3900@gmail.com",
     to: req.body.email,
     subject: "Forget your email? - Booklab",
     text: "Sup, this Booklab.",
-    html: "<p>You requested for reset your password, </p><p>Click the link below to reset your password</p><p>http://localhost:3000/update-password</p>",
+    html: `<p>You requested for reset your password, </p><p>Click the link below to reset your password</p><p>${link}</p>`,
   };
 
   await transporter.sendMail(msg, (err, info) => {
