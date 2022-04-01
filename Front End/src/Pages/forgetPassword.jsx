@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import Navbar from "../Components/Navbar";
 import { makeStyles } from "@material-ui/core";
 import update from "../Images/update.svg";
-import { Grid, TextField, Button } from "@mui/material";
+import { Grid, TextField, Button, Alert } from "@mui/material";
 import axios from "axios";
 
 const useStyles = makeStyles({
@@ -81,6 +81,9 @@ export default function UpdatePasswordPage() {
         <Grid container spacing={3}>
           <Grid item xs={4}>
             <h1>Forget your password?</h1>
+            <div id="successUpdate" hidden>
+              <Alert severity="success">Password updated</Alert>
+            </div>
             <div>
               <form>
                 <TextField

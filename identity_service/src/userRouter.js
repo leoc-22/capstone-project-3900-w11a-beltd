@@ -4,7 +4,7 @@ const sha256 = require("js-sha256");
 const multer = require("multer");
 const nodemailer = require("nodemailer");
 const userModel = require("./models/userModel");
-const tokenModel = require("./models/tokenModel");
+// const tokenModel = require("./models/tokenModel");
 
 // Get all users in the database
 app.get("/users", async (req, res) => {
@@ -20,18 +20,15 @@ app.get("/users", async (req, res) => {
 // Get a user by email
 app.get("/oneuser/:email", async (req, res) => {
   console.log(req.params.email);
+  const user = await userModel.findOne({ email: req.params.email });
 
-  await userModel
-    .findOne({ email: req.params.email })
-    .exec()
-    .then((doc) => {
-      console.log(doc);
-      res.send(doc); // returns null if doesnt exist such a user
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).send(err);
-    });
+  try {
+    console.log(user);
+    res.send(user);
+  } catch (error) {
+    console.log("Cannot find this user");
+    res.status(500).send(error);
+  }
 });
 
 // Create a new user
