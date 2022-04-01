@@ -12,6 +12,7 @@ import UserSettingsPage from "./Pages/userSettings";
 import UserProfilePage from "./Pages/userProfile";
 import GoalSettingPage from "./Pages/goalSetting";
 import BookProfilePage from "./Pages/bookProfile";
+import ForgetPasswordPage from "./Pages/forgetPassword";
 
 function App() {
   return (
@@ -29,7 +30,11 @@ function App() {
         <Route exact path="/reset" component={ResetPasswordPage}></Route>
       </Switch>
       <Switch>
-        <Route exact path="/update-password" component={UpdatePasswordPage}></Route>
+        <Route
+          exact
+          path="/update-password"
+          component={UpdatePasswordPage}
+        ></Route>
       </Switch>
       <Switch>
         <Route exact path="/user-settings" component={UserSettingsPage}></Route>
@@ -48,6 +53,13 @@ function App() {
       </Switch>
       <Switch>
         <Route exact path="/search" component={SearchPage}></Route>
+      </Switch>
+      <Switch>
+        <Route
+          exact
+          path="/forget-password"
+          component={ForgetPasswordPage}
+        ></Route>
       </Switch>
     </Router>
   );

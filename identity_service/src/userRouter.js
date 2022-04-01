@@ -151,6 +151,7 @@ app.patch("/upload", upload.single("image"), async (req, res) => {
 
 // Send a url to the user's email to reset the password
 app.post("/forgetpassword", async (req, res) => {
+  // can mute this function during testing
   userModel.countDocuments(
     { email: req.body.email },
     async function (err, count) {
