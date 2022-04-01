@@ -1,9 +1,10 @@
 const express = require("express");
-const userModel = require("./models/userModel");
 const app = express();
 const sha256 = require("js-sha256");
 const multer = require("multer");
 const nodemailer = require("nodemailer");
+const userModel = require("./models/userModel");
+const tokenModel = require("./models/tokenModel");
 
 // Get all users in the database
 app.get("/users", async (req, res) => {
@@ -198,5 +199,7 @@ app.post("/forgetpassword", async (req, res) => {
     }
   });
 });
+
+const genToken = () => {};
 
 module.exports = app;
