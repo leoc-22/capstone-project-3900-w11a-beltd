@@ -1,5 +1,6 @@
+
 import React, { useEffect, useState } from "react";
-// import AuthenicatedTopBar from "../Components/AuthenticatedTopBar";
+import AuthenicatedTopBar from "../Components/AuthenticatedTopBar";
 import { makeStyles } from "@material-ui/core";
 import Grid from "@mui/material/Grid";
 import Stack from "@mui/material/Stack";
@@ -14,7 +15,6 @@ import Rating from "@mui/material/Rating";
 import TextField from "@mui/material/TextField";
 import axios from "axios";
 // import { useLocation } from "react-router-dom";
-import Navbar from "../Components/Navbar";
 
 const useStyles = makeStyles({
   main: {
@@ -29,6 +29,10 @@ const useStyles = makeStyles({
   bookImage: {
     width: "100%",
   },
+  reviewBar : {
+    padding : "10px",
+    marginBottom : "20px"
+  }
 });
 
 const bookProfilePage = () => {
@@ -50,7 +54,7 @@ const bookProfilePage = () => {
 
   async function getData() {
     await axios
-      .get("http://localhost:8001/books")
+      .get("http://localhost:8002/books")
       .then((res) => {
         getTargetBook(res.data);
       })
@@ -77,6 +81,20 @@ const bookProfilePage = () => {
     window.open(amzLink, "_blank").focus();
   }
 
+  async function submitReview(){
+    await axios({
+      method: "post",
+      url : "http://localhost:8001/review",
+      data : {
+        title : title,
+        review : document.getElementById("myReview").value
+      }
+
+    });
+    document.getElementById("myReview").value = "";
+    return;
+  }
+
   useEffect(() => {
     document.title = "Book profile | Booklab";
   }, []);
@@ -85,7 +103,7 @@ const bookProfilePage = () => {
 
   return (
     <div>
-      <Navbar></Navbar>
+      <AuthenicatedTopBar></AuthenicatedTopBar>
       <div className={classes.main}>
         <Grid container spacing={3}>
           <Grid item xs={12} md={3}>
@@ -237,7 +255,9 @@ const bookProfilePage = () => {
           </Grid>
         </Grid>
         <br />
+
         <h2>Write a review</h2>
+        
         <Rating
           name="simple-controlled"
           value={value}
@@ -247,15 +267,23 @@ const bookProfilePage = () => {
         />
         <br />
         <TextField
-          id="standard-multiline-static"
-          label="Comment"
-          multiline
-          style={{ width: "40%", marginBottom: "20px" }}
-          rows={4}
+          className={classes.reviewBar}
+          id="myReview"
+          label="Review"
           variant="standard"
+          style={{
+            width: "50%",
+            marginTop: 20,
+            marginBottom :20,
+            marginLeft: "0%",
+          }}
         />
+
         <br />
-        <Button variant="contained">submit review</Button>
+        <Button 
+          variant="contained"
+          onClick={() => submitReview()}
+        >submit review</Button>
         <br />
         <h2>Community reviews</h2>
         <Card sx={{ width: "50%" }}>

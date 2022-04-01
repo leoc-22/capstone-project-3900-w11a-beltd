@@ -6,7 +6,6 @@ import TextField from "@mui/material/TextField";
 import { createTheme } from "@material-ui/core/styles";
 import Typewriter from "typewriter-effect";
 import { makeStyles } from "@material-ui/core";
-import { useLocation } from "react-router-dom";
 
 const useStyles = makeStyles({
   main: {
@@ -65,7 +64,6 @@ const useStyles = makeStyles({
 });
 
 export default function SearchPage() {
-  const location = useLocation();
 
   const theme = createTheme({
     palette: {
@@ -79,7 +77,7 @@ export default function SearchPage() {
 
   return (
     <div className={classes.main}>
-      <AuthenicatedTopBar user={location.state.user}></AuthenicatedTopBar>
+      <AuthenicatedTopBar></AuthenicatedTopBar>
 
       <div className={classes.serachBarBox}>
         <ButtonGroup
