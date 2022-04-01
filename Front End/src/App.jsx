@@ -12,6 +12,7 @@ import UserSettingsPage from "./Pages/userSettings";
 import UserProfilePage from "./Pages/userProfile";
 import GoalSettingPage from "./Pages/goalSetting";
 import BookProfilePage from "./Pages/bookProfile";
+import CollectionPage from "./Pages/CollectionPage";
 
 function App() {
   return (
@@ -49,6 +50,10 @@ function App() {
       <Switch>
         <Route exact path="/search" component={SearchPage}></Route>
       </Switch>
+      <Switch>
+        <Route exact path="/collections" component={CollectionPage}></Route>
+      </Switch>
+
     </Router>
   );
 }

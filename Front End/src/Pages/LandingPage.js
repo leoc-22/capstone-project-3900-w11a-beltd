@@ -35,11 +35,23 @@ export default function LandingPage() {
   const [books, setBooks] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [collectionArr, setCollectionArr] = useState([]);
 
   useEffect(() => {
     getData();
+    getCollectionData();
     document.title = "Welcome to Booklab";
   }, []);
+
+  async function getCollectionData(){
+    let res = await axios({
+      method : "get",
+      url : "http://localhost:8001/myCollections"
+    });
+    //console.log(res.data);
+    setCollectionArr(res.data);
+  }
+
 
   async function getData() {
     await axios
@@ -71,7 +83,7 @@ export default function LandingPage() {
           alt={"booklab: collect and share your favourite books"}
         />
         <h2 className={classes.popularCollections}>Popular Collections</h2>
-        <CollectionsCarousel books={books}></CollectionsCarousel>
+        <CollectionsCarousel collections = {collectionArr}></CollectionsCarousel>
         <h2 className={classes.TopBooks}>Top Books</h2>
         <TopBookGrid books={books}></TopBookGrid>
       </div>

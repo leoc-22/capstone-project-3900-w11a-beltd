@@ -69,7 +69,6 @@ export default function UserSettingsPage() {
   }
 
   function handleReset(data) {
-    console.log(data);
     document.getElementById("successUpdate").hidden = false;
   }
 
@@ -111,11 +110,6 @@ export default function UserSettingsPage() {
                   onChange={(p) => passwordMatch(p)}
                   helperText={matchError}
                 ></TextField>
-                <h2 style={{ marginTop: 50 }}>Upload a new profile picture</h2>
-                <Button variant="outlined" component="label">
-                  Upload a file
-                  <input type="file" hidden />
-                </Button>
                 <br />
                 <br />
                 <Button

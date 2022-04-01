@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import CollectionsCarousel from "../Components/CollectionsCarousel";
 import TopBookGrid from "../Components/TopBookGrid";
@@ -5,7 +6,7 @@ import AuthenicatedTopBar from "../Components/AuthenticatedTopBar";
 import { makeStyles } from "@material-ui/core";
 import axios from "axios";
 import headerHome from "../Images/headerHome.svg";
-import { useLocation } from "react-router-dom";
+//import { useLocation } from "react-router-dom";
 
 const useStyles = makeStyles({
   main: {
@@ -32,20 +33,32 @@ const useStyles = makeStyles({
 
 const HomePage = () => {
   const classes = useStyles();
-  const location = useLocation();
+  //const location = useLocation();
 
   const [books, setBooks] = useState(null);
-  const [user, setUser] = useState(null);
+  //const [user, setUser] = useState(null);
   const [loadingBooks, setLoadingBooks] = useState(true);
   const [loadingUser, setLoadingUser] = useState(true);
   const [error, setError] = useState(null);
+  const [collectionArr, setCollectionArr] = useState([]);
 
   useEffect(() => {
-    console.log(location.state.email);
+    //console.log(location.state.email);
     getBookData();
     getUserData();
+    getCollectionData();
     document.title = "Home Page | Booklab";
   }, []);
+
+  async function getCollectionData(){
+    let res = await axios({
+      method : "get",
+      url : "http://localhost:8001/myCollections"
+    });
+    //console.log(res.data);
+    setCollectionArr(res.data);
+  }
+
 
   async function getBookData() {
     await axios
@@ -59,15 +72,17 @@ const HomePage = () => {
       })
       .finally(() => {
         setLoadingBooks(false);
+
       });
   }
 
   async function getUserData() {
+    let userEmail = sessionStorage.getItem("email");
     await axios
-      .get(`http://localhost:8001/oneuser/${location.state.email}`)
+      .get("http://localhost:8001/oneuser/" + userEmail)
       .then((res) => {
         console.log(res.data);
-        setUser(res.data);
+        //setUser(res.data);
       })
       .catch((error) => {
         console.error(`Error: ${error}`);
@@ -81,7 +96,6 @@ const HomePage = () => {
   // TODO Beautify this
   if (loadingBooks || loadingUser) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
-
   return (
     <div>
       <AuthenicatedTopBar></AuthenicatedTopBar>
@@ -94,9 +108,9 @@ const HomePage = () => {
         />
         <h2 className={classes.popularCollections}>Popular Collections</h2>
 
-        <CollectionsCarousel books={books}></CollectionsCarousel>
+        <CollectionsCarousel collections = {collectionArr}></CollectionsCarousel>
         <h2 className={classes.TopBooks}>Top Books</h2>
-        <TopBookGrid books={books} user={user}></TopBookGrid>
+        <TopBookGrid books={books}></TopBookGrid>
       </div>
     </div>
   );

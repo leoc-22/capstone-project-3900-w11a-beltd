@@ -1,4 +1,3 @@
-/* eslint-disable */ 
 
 import * as React from "react";
 import { useHistory } from "react-router-dom";
@@ -15,7 +14,6 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { makeStyles } from "@material-ui/core";
-import PropTypes from "prop-types";
 
 const useStyles = makeStyles({
   BookLabTitle: {
@@ -25,7 +23,7 @@ const useStyles = makeStyles({
   },
 });
 
-const pages = ["Explore", "Recommended for you", "Book store", "Leader board"];
+const pages = ["Explore", "Collections","Recommended for you", "Leader board"];
 const settings = ["Profile", "Settings", "My goals", "Logout"];
 
 export default function AuthenicatedTopBar() {
@@ -56,7 +54,15 @@ export default function AuthenicatedTopBar() {
         pathname: "/search",
         //state: { user: props.user },
       });
-    } else {
+    
+    } else if (targetPage === "Collections"){
+      history.push({
+        pathname: "/collections",
+        //state: { user: props.user },
+      });
+    }
+    
+    else {
       return;
     }
   }

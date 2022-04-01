@@ -1,4 +1,3 @@
-/* eslint-disable */ 
 import React from "react";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Button from "@mui/material/Button";
@@ -7,7 +6,6 @@ import TextField from "@mui/material/TextField";
 import { createTheme } from "@material-ui/core/styles";
 import Typewriter from "typewriter-effect";
 import { makeStyles } from "@material-ui/core";
-import { useLocation } from "react-router-dom";
 
 const useStyles = makeStyles({
   main: {
@@ -66,7 +64,6 @@ const useStyles = makeStyles({
 });
 
 export default function SearchPage() {
-  const location = useLocation();
 
   const theme = createTheme({
     palette: {
