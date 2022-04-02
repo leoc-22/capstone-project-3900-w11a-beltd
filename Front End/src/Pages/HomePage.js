@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import CollectionsCarousel from "../Components/CollectionsCarousel";
 import TopBookGrid from "../Components/TopBookGrid";
@@ -50,15 +49,14 @@ const HomePage = () => {
     document.title = "Home Page | Booklab";
   }, []);
 
-  async function getCollectionData(){
+  async function getCollectionData() {
     let res = await axios({
-      method : "get",
-      url : "http://localhost:8001/myCollections"
+      method: "get",
+      url: "http://localhost:8001/myCollections",
     });
     //console.log(res.data);
     setCollectionArr(res.data);
   }
-
 
   async function getBookData() {
     await axios
@@ -72,7 +70,6 @@ const HomePage = () => {
       })
       .finally(() => {
         setLoadingBooks(false);
-
       });
   }
 
@@ -108,7 +105,7 @@ const HomePage = () => {
         />
         <h2 className={classes.popularCollections}>Popular Collections</h2>
 
-        <CollectionsCarousel collections = {collectionArr}></CollectionsCarousel>
+        <CollectionsCarousel collections={collectionArr}></CollectionsCarousel>
         <h2 className={classes.TopBooks}>Top Books</h2>
         <TopBookGrid books={books}></TopBookGrid>
       </div>

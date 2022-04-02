@@ -3,8 +3,9 @@ import Navbar from "../Components/Navbar";
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
 import reset from "../Images/reset.svg";
-import { Grid, TextField, Button } from "@mui/material";
+import { Grid, TextField, Button, Alert } from "@mui/material";
 import validator from "validator";
+import axios from "axios";
 
 const useStyles = makeStyles({
   body: {
@@ -37,6 +38,25 @@ export default function ResetPassword() {
     }
   };
 
+  function handleForgetPassword() {
+    var newEmail = document.getElementById("emailInput").value;
+    console.log(`newEmail ${newEmail}`);
+    axios({
+      method: "post",
+      url: "http://localhost:8001/forgetpassword",
+      headers: {},
+      data: {
+        email: newEmail,
+      },
+    }).then((res) => handleAlert(res));
+    return;
+  }
+
+  function handleAlert(data) {
+    console.log(data);
+    document.getElementById("successUpdate").hidden = false;
+  }
+
   return (
     <div>
       <Navbar></Navbar>
@@ -45,9 +65,13 @@ export default function ResetPassword() {
           <Grid item xs={4}>
             <h1>Forgotten your password?</h1>
             <p>No worries, let's reset it!</p>
+            <div id="successUpdate" hidden>
+              <Alert severity="success">Email sent!</Alert>
+            </div>
             <div>
               <form>
                 <TextField
+                  id="emailInput"
                   required
                   label="Email"
                   variant="standard"
@@ -63,10 +87,13 @@ export default function ResetPassword() {
                   disableRipple
                   style={{
                     marginTop: 20,
-                    marginBottom: 20
+                    marginBottom: 20,
                   }}
                   variant="contained"
-                  onClick={() => history.push("/update-password")}
+                  onClick={() => {
+                    handleForgetPassword();
+                    // history.push("/update-password");
+                  }}
                   id="submit"
                   value="Submit"
                   type="submit"
