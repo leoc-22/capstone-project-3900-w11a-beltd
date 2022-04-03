@@ -11,7 +11,7 @@ app.post("/review", async (req, res) => {
   // Create review
   var review = new reviewModel({
     user: req.body.user,
-    book: req.body.book,
+    //book: req.body.book,
     title: req.body.title,
     review: req.body.review,
   });
@@ -25,22 +25,22 @@ app.post("/review", async (req, res) => {
   }
 
   // Link up with users model
-  const u_id = req.body.user;
+  const _id = req.body.user;
   const updatedUser = await userModel.findByIdAndUpdate(
-    {u_id},
+    {_id},
     { $push: { "reviews": review._id } },
     { new: true }
   );
   console.log(updatedUser);
 
-  // Link up with book model
-  const b_id = req.body.book;
-  const updatedBook = await bookModel.findByIdAndUpdate(
-    {b_id},
-    { $push: { "reviews": review._id } },
-    { new: true }
-  );
-  console.log(updatedBook);
+  // // Link up with book model
+  // const b_id = req.body.book;
+  // const updatedBook = await bookModel.findByIdAndUpdate(
+  //   {b_id},
+  //   { $push: { "reviews": review._id } },
+  //   { new: true }
+  // );
+  // console.log(updatedBook);
 });
 
 
