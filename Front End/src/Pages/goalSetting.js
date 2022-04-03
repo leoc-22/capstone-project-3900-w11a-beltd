@@ -1,3 +1,4 @@
+/* eslint-disable */ 
 import React, { useEffect } from "react";
 import AuthenicatedTopBar from "../Components/AuthenticatedTopBar";
 import { makeStyles } from "@material-ui/core";
@@ -12,6 +13,7 @@ import Typography from "@mui/material/Typography";
 import ClearIcon from "@mui/icons-material/Clear";
 import TextField from "@mui/material/TextField";
 import Alert from "@mui/material/Alert";
+import axios from "axios";
 
 const useStyles = makeStyles({
   main: {
@@ -30,6 +32,20 @@ const goalSettingPage = () => {
   useEffect(() => {
     document.title = "Reading goal | Booklab";
   }, []);
+
+  async function saveGoal(){
+    console.log("pressend save goal")
+    let res = await  axios({
+      method : "post",
+      url : "http://localhost:8001/goal",
+      data: {
+        user: sessionStorage.getItem("id"),
+        endDate: "10/20/2022",
+        target : 999,
+      }
+    })
+    return; 
+  }
 
   return (
     <div>
@@ -66,7 +82,9 @@ const goalSettingPage = () => {
             </Card>
             <br />
             <h3>Read x of x books. Completed on date.</h3>
-            <Button variant="contained">Save reading goal</Button>
+            <Button 
+            onClick = {()=>saveGoal()}
+            variant="contained">Save reading goal</Button>
           </Grid>
           <Grid item xs={12} md={4}>
             <h2>Previous reading goals</h2>

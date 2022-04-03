@@ -64,12 +64,17 @@ export default function LogInPage() {
     } else {
       sessionStorage.setItem("email", res["data"]["email"]);
       sessionStorage.setItem("name", res["data"]["name"]);
+      sessionStorage.setItem("id", res["data"]["_id"]);
+
       //console.log("login success, redirecting to home");
       // history.push("/home");
+      // console.log(res.data);
+      
       history.push({
         pathname: "/home",
         state: { email: sessionStorage.getItem("email") },
       });
+      
     }
   }
 
