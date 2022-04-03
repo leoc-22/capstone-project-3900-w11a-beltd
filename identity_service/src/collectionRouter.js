@@ -50,7 +50,7 @@ app.post("/collection", async (req, res) => {
 // TODO Can probably combine two endpoints below??
 // Mark a collection as private post creation
 app.patch("/collectionPriv", async (req, res) => {
-  var query = { _id: req.body._id } // collection id
+  var query = { _id: req.body._id }; // collection id
 
   collectionModel.findOneAndUpdate(
     query,
@@ -68,7 +68,7 @@ app.patch("/collectionPriv", async (req, res) => {
 
 // Mark a collection as public post creation
 app.patch("/collectionPub", async (req, res) => {
-  var query = { _id: req.body._id } // collection id
+  var query = { _id: req.body._id }; // collection id
 
   collectionModel.findOneAndUpdate(
     query,
