@@ -1,3 +1,4 @@
+/* eslint-disable */
 import axios from "axios";
 import React, { useEffect,useState } from "react";
 import AuthenicatedTopBar from "../Components/AuthenticatedTopBar";
@@ -37,11 +38,12 @@ const useStyles = makeStyles({
 export default function CollectionPage(){
   const classes = useStyles();
   const [collectionArr, setCollectionArr] = useState([]);
+  const [newCollection, setNewCollection] = useState(0);
 
   useEffect(() => {
     getCollectionData();
     //document.title = "User Profile | Booklab";
-  }, [collectionArr]);
+  }, []);
 
   async function getCollectionData(){
     let res = await axios({
@@ -58,14 +60,18 @@ export default function CollectionPage(){
       method : "post",
       url : "http://localhost:8001/collection",
       data : {
+        user : sessionStorage.getItem("id"),
         name : document.getElementById("newCollection").value,
-        status : true
+        public : true
       }
     });
     document.getElementById("newCollection").value = "";
     let tmp = collectionArr;
     tmp.unshift(res.data);
     setCollectionArr(tmp);
+    let tmp2 =newCollection;
+    tmp2+=1;
+    setNewCollection(tmp2);
   }
 
 

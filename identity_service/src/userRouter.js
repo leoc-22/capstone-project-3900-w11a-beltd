@@ -1,8 +1,13 @@
 const express = require("express");
-const userModel = require("./models/userModel");
 const app = express();
 const sha256 = require("js-sha256");
+const crypto = require("crypto");
+const bcrypt = require("bcrypt");
 const multer = require("multer");
+const nodemailer = require("nodemailer");
+const userModel = require("./models/userModel");
+const tokenModel = require("./models/tokenModel");
+// const tokenModel = require("./models/tokenModel");
 
 // Get all users in the database
 app.get("/users", async (req, res) => {
@@ -68,11 +73,10 @@ app.patch("/user", async (req, res) => {
       email: req.body.email,
       password: sha256.hex(req.body.password),
     },
-    { upsert: true },
-    (err) => {
+    { upsert: false },
+    (err, doc) => {
       if (err) return res.status(500).send(err);
-      console.log("User updated");
-      res.send("Succesfully updated.");
+      res.send(doc); // returns null if doesnt exist such a user
     }
   );
 });
@@ -139,11 +143,103 @@ app.patch("/upload", upload.single("image"), async (req, res) => {
     {
       image: req.body.image,
     },
-    { upsert: true },
+    { upsert: false },
     (err) => {
       if (err) return res.status(500).send(err);
       console.log("User image stored");
       res.send("http://localhost:8001/" + req.body.image);
+    }
+  );
+});
+
+// Send a url to the user's email to reset the password
+app.post("/forgetpassword", async (req, res) => {
+  // can mute this function during testing
+  let query = { email: req.body.email };
+  let user = await userModel.findOne(query);
+
+  if (!user) {
+    console.log("User not found");
+    return res.status(400).send("User not found");
+  } else {
+    console.log("User found");
+  }
+
+  let token = await tokenModel.findOne({ userId: user._id });
+  if (token) {
+    await token.deleteOne();
+  }
+  // create a new randomised reset token
+  let resetToken = crypto.randomBytes(32).toString("hex");
+  // stores the hash into db, emails the unhashed reset token to the user
+  const hash = await bcrypt.hash(resetToken, Number(10));
+
+  // set up the email sending transporter
+  await new tokenModel({
+    uid: user._id,
+    token: hash,
+    createdAt: Date.now(),
+  }).save();
+
+  let transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: "booklab3900@gmail.com",
+      pass: "Beltd3900",
+    },
+    tls: {
+      rejectUnauthorized: false,
+    },
+  });
+
+  const link = `http://localhost:3000/forget-password/${user._id}/${resetToken}`;
+
+  const msg = {
+    from: "booklab3900@gmail.com",
+    to: req.body.email,
+    subject: "Forget your email? - Booklab",
+    text: "Sup, this Booklab.",
+    html: `<p>You requested for reset your password, </p><p>Click the link below to reset your password</p><p>${link}</p>`,
+  };
+
+  await transporter.sendMail(msg, (err, info) => {
+    if (err) {
+      console.log(err);
+      res.send(err);
+    } else {
+      console.log("Email sent: " + info.messageId);
+      res.sendStatus(200);
+    }
+  });
+});
+
+// update password or name by querying the email
+app.patch("/verifyandreset", async (req, res) => {
+  let resetToken = await tokenModel.findOne({
+    uid: req.body.id,
+  });
+  if (!resetToken) {
+    throw new Error("Invalid or expired password reset token");
+  }
+
+  console.log(`req: ${req.body.token}`);
+  console.log(`resetToken: ${resetToken.token}`);
+  const isValid = await bcrypt.compare(req.body.token, resetToken.token);
+  if (!isValid) {
+    throw new Error("Invalid or expired password reset token");
+  }
+
+  let query = { _id: req.body.id };
+  userModel.findOneAndUpdate(
+    query,
+    {
+      password: sha256.hex(req.body.password),
+    },
+    { upsert: false },
+    (err, doc) => {
+      if (err) return res.status(500).send(err);
+      console.log("Password updated");
+      res.send(doc); // returns null if doesnt exist such a user
     }
   );
 });

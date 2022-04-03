@@ -52,9 +52,12 @@ app.post("/goal", async (req, res) => {
 
   console.log(updatedUser);
 
+  // // TODO might need populate later on/// or just query
+  // const populated = userModel.findById({_id}).populate("goals").exec((err, user) => {
+  //   console.log("goals populated");
+  // });
 
-  // TODO might need populate later on/// or just query
-
+  // console.log(populated)
 
 });
 

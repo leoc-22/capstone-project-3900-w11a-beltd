@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const goalSchema = new mongoose.Schema(
   {
-    user: { type: mongoose.Schema.Types.ObjectId, ref: "Users"},
+    user: { type: mongoose.Schema.Types.ObjectId, ref: "Users" },
     endDate: { type: Date, default: Date.now, require: false }, // REMOVE FALSE
     target: { type: Number, require: true },
     current: { type: Number },
