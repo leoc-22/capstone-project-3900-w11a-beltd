@@ -53,7 +53,8 @@ export default function ForgetPasswordPage() {
     }
   };
 
-  function updatePassword() {
+  function updatePassword(e) {
+    e.preventDefault();
     var newPassword = document.getElementById("passwordInput").value;
     if (matchError == "Passwords match!") {
       axios({
@@ -121,8 +122,8 @@ export default function ForgetPasswordPage() {
                     marginBottom: 20,
                   }}
                   variant="contained"
-                  onClick={() => {
-                    updatePassword();
+                  onClick={(e) => {
+                    updatePassword(e);
                   }}
                   id="submit"
                   value="Submit"
