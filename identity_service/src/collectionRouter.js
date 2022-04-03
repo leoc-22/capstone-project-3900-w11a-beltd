@@ -4,18 +4,30 @@ const userModel = require("./models/userModel");
 
 const app = express();
 
-// Get all collections for user
-app.get("/myCollections", async (req, res) => {
-  const collections = await collectionModel.find({});
+// 1. Get all PUBLIC collections for user homepage TODO TEST
+app.get("/collections", async (req, res) => {
+  const collections = await collectionModel.find({ public: true }, function (err, docs) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(docs);
+    }
+  });
+});
+ 
 
-  try {
-    res.send(collections);
-  } catch (error) {
-    res.status(500).send(error);
-  }
+// 2. Get all USER OWNED collections by user id TODO TEST
+app.get("/myCollections", async (req, res) => {
+  const collections = await collectionModel.find({ user: req.body.user }, function (err, docs) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(docs);
+    }
+  });
 });
 
-// Create a new collection
+// 3. Create a new collection
 app.post("/collection", async (req, res) => {
   // Create collection
   const collection = new collectionModel({
@@ -41,14 +53,8 @@ app.post("/collection", async (req, res) => {
   console.log(updatedUser);
 });
 
-
-// Add book to collection (add by id)
-
-// Remove book from collection
-
-
 // TODO Can probably combine two endpoints below??
-// Mark a collection as private post creation
+// 4. Mark a collection as PRIVATE post creation
 app.patch("/collectionPriv", async (req, res) => {
   var query = { _id: req.body._id }; // collection id
 
@@ -66,7 +72,7 @@ app.patch("/collectionPriv", async (req, res) => {
   );
 });
 
-// Mark a collection as public post creation
+// 5. Mark a collection as PUBLIC post creation
 app.patch("/collectionPub", async (req, res) => {
   var query = { _id: req.body._id }; // collection id
 
@@ -83,5 +89,9 @@ app.patch("/collectionPub", async (req, res) => {
     }
   );
 });
+
+// Add a book to a collection (take in b_id + c_id)
+
+// Remove a book from a collection (take in b_id + c_id)
 
 module.exports = app;
