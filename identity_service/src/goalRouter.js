@@ -1,5 +1,5 @@
 const express = require("express");
-const mongoose = require("mongoose");
+//const mongoose = require("mongoose");
 const goalModel = require("./models/goalModel");
 const userModel = require("./models/userModel");
 
@@ -22,9 +22,9 @@ app.post("/goal", async (req, res) => {
 
   // Find user
   const _id = req.body.user;
-  const currentUser = userModel.findById({_id}, function(err,doc) {
-    console.log(doc)
-  });
+  // const currentUser = userModel.findById({_id}, function(err,doc) {
+  //   console.log(doc)
+  // });
 
   // Create new goal
   var goal = new goalModel({
@@ -46,9 +46,9 @@ app.post("/goal", async (req, res) => {
   // Link up with users model (push to array)
   const updatedUser = await userModel.findByIdAndUpdate(
     {_id},
-    { $push: { 'goals': goal._id } },
+    { $push: { "goals": goal._id } },
     { new: true }
-    );
+  );
 
   console.log(updatedUser);
 
