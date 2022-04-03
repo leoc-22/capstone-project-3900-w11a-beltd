@@ -38,7 +38,8 @@ export default function ResetPassword() {
     }
   };
 
-  function handleForgetPassword() {
+  async function handleForgetPassword(e) {
+    e.preventDefault();
     var newEmail = document.getElementById("emailInput").value;
     console.log(`newEmail ${newEmail}`);
     axios({
@@ -65,7 +66,7 @@ export default function ResetPassword() {
           <Grid item xs={4}>
             <h1>Forgotten your password?</h1>
             <p>No worries, let's reset it!</p>
-            <div id="successUpdate" hidden>
+            <div id="successUpdate" hidden={true}>
               <Alert severity="success">Email sent!</Alert>
             </div>
             <div>
@@ -90,9 +91,8 @@ export default function ResetPassword() {
                     marginBottom: 20,
                   }}
                   variant="contained"
-                  onClick={() => {
-                    handleForgetPassword();
-                    // history.push("/update-password");
+                  onClick={(e) => {
+                    handleForgetPassword(e);
                   }}
                   id="submit"
                   value="Submit"

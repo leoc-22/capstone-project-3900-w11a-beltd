@@ -176,7 +176,7 @@ app.post("/forgetpassword", async (req, res) => {
 
   // set up the email sending transporter
   await new tokenModel({
-    userId: user._id,
+    uid: user._id,
     token: hash,
     createdAt: Date.now(),
   }).save();
@@ -216,12 +216,14 @@ app.post("/forgetpassword", async (req, res) => {
 // update password or name by querying the email
 app.patch("/verifyandreset", async (req, res) => {
   let resetToken = await tokenModel.findOne({
-    userid: req.body.id,
+    uid: req.body.id,
   });
   if (!resetToken) {
     throw new Error("Invalid or expired password reset token");
   }
 
+  console.log(`req: ${req.body.token}`);
+  console.log(`resetToken: ${resetToken.token}`);
   const isValid = await bcrypt.compare(req.body.token, resetToken.token);
   if (!isValid) {
     throw new Error("Invalid or expired password reset token");
@@ -236,6 +238,7 @@ app.patch("/verifyandreset", async (req, res) => {
     { upsert: false },
     (err, doc) => {
       if (err) return res.status(500).send(err);
+      console.log("Password updated");
       res.send(doc); // returns null if doesnt exist such a user
     }
   );

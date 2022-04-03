@@ -21,7 +21,7 @@ const useStyles = makeStyles({
   },
 });
 
-export default function UpdatePasswordPage() {
+export default function ForgetPasswordPage() {
   const classes = useStyles();
   const { id } = useParams();
   const { token } = useParams();
