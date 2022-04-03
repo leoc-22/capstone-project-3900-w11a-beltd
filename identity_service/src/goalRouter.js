@@ -40,7 +40,7 @@ app.post("/goal", async (req, res) => {
     res.send(goal);
     console.log("Goal created");
   } catch (error) {
-      res.status(500).send(error);
+    res.status(500).send(error);
   }
   
   // Link up with users model (push to array)
@@ -105,6 +105,5 @@ app.delete("/goal", async (req, res) => {
 });
 
 // TODO UPDATE GOAL
-
 
 module.exports = app;

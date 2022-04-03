@@ -1,4 +1,3 @@
-
 import React from "react";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Button from "@mui/material/Button";
@@ -58,13 +57,14 @@ const useStyles = makeStyles({
     borderColor: "#C1C1C1",
     borderRadius: "3px",
   },
-  btnGroup : {
-    height : "25px",
-    marginTop : "2%"
-  }
+  btnGroup: {
+    height: "25px",
+    marginTop: "2%",
+  },
 });
 
 export default function SearchPage() {
+
   const theme = createTheme({
     palette: {
       secondary: {
@@ -75,13 +75,17 @@ export default function SearchPage() {
 
   const classes = useStyles();
 
-
   return (
     <div className={classes.main}>
       <AuthenicatedTopBar></AuthenicatedTopBar>
 
       <div className={classes.serachBarBox}>
-        <ButtonGroup className={classes.btnGroup} color="secondary" theme={theme} variant="text">
+        <ButtonGroup
+          className={classes.btnGroup}
+          color="secondary"
+          theme={theme}
+          variant="text"
+        >
           <Button>
             <span className={classes.Categorybtn}>All Categories</span>
           </Button>
@@ -145,10 +149,7 @@ export default function SearchPage() {
           <option value="4">1 - 2 Stars</option>
         </select>
       </div>
-      <h2 className={classes.TopBooks}>search results....</h2>  
+      <h2 className={classes.TopBooks}>search results....</h2>
     </div>
-
-
   );
 }
-

@@ -64,8 +64,12 @@ export default function LogInPage() {
     } else {
       sessionStorage.setItem("email", res["data"]["email"]);
       sessionStorage.setItem("name", res["data"]["name"]);
-      console.log("login success, redirecting to home");
-      history.push("/home");
+      //console.log("login success, redirecting to home");
+      // history.push("/home");
+      history.push({
+        pathname: "/home",
+        state: { email: sessionStorage.getItem("email") },
+      });
     }
   }
 
@@ -76,7 +80,7 @@ export default function LogInPage() {
         <Grid container spacing={3}>
           <Grid item xs={4}>
             <h1>Log In</h1>
-            <div id="loginFailed" hidden>   
+            <div id="loginFailed" hidden>
               <Alert severity="error" id="userError">
                 ERROR: Log in failed
               </Alert>

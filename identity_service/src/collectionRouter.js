@@ -5,7 +5,7 @@ const app = express();
 
 // Get all collections for user
 app.get("/myCollections", async (req, res) => {
-  const collections = await collectionModel.find({}); 
+  const collections = await collectionModel.find({});
 
   try {
     res.send(collections);
@@ -32,10 +32,9 @@ app.post("/collection", async (req, res) => {
 
 // Add book to collection (add by id)
 
-// Remove book from collection 
+// Remove book from collection
 
 // Mark a collection as private/public
 
 
 module.exports = app;
-

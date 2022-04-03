@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from "react";
 import AuthenicatedTopBar from "../Components/AuthenticatedTopBar";
 import { makeStyles } from "@material-ui/core";
@@ -13,6 +14,7 @@ import Typography from "@mui/material/Typography";
 import Rating from "@mui/material/Rating";
 import TextField from "@mui/material/TextField";
 import axios from "axios";
+// import { useLocation } from "react-router-dom";
 
 const useStyles = makeStyles({
   main: {
@@ -24,13 +26,17 @@ const useStyles = makeStyles({
   image: {
     width: "100%",
   },
-  bookImage : {
+  bookImage: {
     width: "100%",
-
+  },
+  reviewBar : {
+    padding : "10px",
+    marginBottom : "20px"
   }
 });
 
 const bookProfilePage = () => {
+  // const location = useLocation();
   window.scrollTo(0, 0);
 
   const [title, setTitle] = useState(null);
@@ -38,7 +44,6 @@ const bookProfilePage = () => {
   const [bookImg, setImg] = useState(null);
   const [amzLink, setAmzLink] = useState(null);
   const [rating, setRating] = useState(null);
-
 
   const classes = useStyles();
   const queryString = window.location.search.slice(1);
@@ -49,7 +54,7 @@ const bookProfilePage = () => {
 
   async function getData() {
     await axios
-      .get("http://localhost:8001/books")
+      .get("http://localhost:8002/books")
       .then((res) => {
         getTargetBook(res.data);
       })
@@ -58,24 +63,37 @@ const bookProfilePage = () => {
       });
   }
 
-  function getTargetBook(res){
-    for (let i =0 ;i < res.length ; i++){
-      if (res[i]["_id"] == queryString){
+  function getTargetBook(res) {
+    for (let i = 0; i < res.length; i++) {
+      if (res[i]["_id"] == queryString) {
         setTitle(res[i]["title"]);
         setAuthor(res[i]["authors"]);
         setImg(res[i]["image"]);
         setAmzLink(res[i]["link"]);
-        setRating("Rating: " +res[i]["rating"]);
+        setRating("Rating: " + res[i]["rating"]);
         console.log(res[i]);
         return;
       }
     }
   }
 
-  function amzPage(){
+  function amzPage() {
     window.open(amzLink, "_blank").focus();
   }
 
+  async function submitReview(){
+    await axios({
+      method: "post",
+      url : "http://localhost:8001/review",
+      data : {
+        title : title,
+        review : document.getElementById("myReview").value
+      }
+
+    });
+    document.getElementById("myReview").value = "";
+    return;
+  }
 
   useEffect(() => {
     document.title = "Book profile | Booklab";
@@ -100,9 +118,25 @@ const bookProfilePage = () => {
             <h2>{author}</h2>
             <h5>{rating}</h5>
 
-            <Button variant="outlined" sx={{ marginRight: "16px", marginBottom: "20px" }} >Add to collection</Button>
-            <Button variant="contained" sx={{marginRight: "16px", marginBottom: "20px" }} >Mark as read</Button>
-            <Button onClick={()=>amzPage()} variant="contained" sx={{ marginBottom: "20px" }} >View on Amazon</Button>
+            <Button
+              variant="outlined"
+              sx={{ marginRight: "16px", marginBottom: "20px" }}
+            >
+              Add to collection
+            </Button>
+            <Button
+              variant="contained"
+              sx={{ marginRight: "16px", marginBottom: "20px" }}
+            >
+              Mark as read
+            </Button>
+            <Button
+              onClick={() => amzPage()}
+              variant="contained"
+              sx={{ marginBottom: "20px" }}
+            >
+              View on Amazon
+            </Button>
             <br />
             <Chip label="Category 1" sx={{ marginRight: "16px" }} />
             <Chip label="Category 2" />
@@ -124,7 +158,10 @@ const bookProfilePage = () => {
                 <Typography sx={{ fontSize: 16 }} color="text.primary">
                   Source
                 </Typography>
-                <Typography sx={{ fontSize: 14, textTransform: "uppercase" }} color="text.secondary">
+                <Typography
+                  sx={{ fontSize: 14, textTransform: "uppercase" }}
+                  color="text.secondary"
+                >
                   $0.00
                 </Typography>
               </CardContent>
@@ -139,7 +176,10 @@ const bookProfilePage = () => {
                 <Typography sx={{ fontSize: 16 }} color="text.primary">
                   Source
                 </Typography>
-                <Typography sx={{ fontSize: 14, textTransform: "uppercase" }} color="text.secondary">
+                <Typography
+                  sx={{ fontSize: 14, textTransform: "uppercase" }}
+                  color="text.secondary"
+                >
                   $0.00
                 </Typography>
               </CardContent>
@@ -154,7 +194,10 @@ const bookProfilePage = () => {
                 <Typography sx={{ fontSize: 16 }} color="text.primary">
                   Source
                 </Typography>
-                <Typography sx={{ fontSize: 14, textTransform: "uppercase" }} color="text.secondary">
+                <Typography
+                  sx={{ fontSize: 14, textTransform: "uppercase" }}
+                  color="text.secondary"
+                >
                   $0.00
                 </Typography>
               </CardContent>
@@ -166,7 +209,7 @@ const bookProfilePage = () => {
         </Grid>
         <br />
         <h2>Recommendations</h2>
-        <Button variant="outlined" >View more</Button>
+        <Button variant="outlined">View more</Button>
         <Grid container spacing={3}>
           <Grid item xs={12} md={2}>
             <img
@@ -212,7 +255,9 @@ const bookProfilePage = () => {
           </Grid>
         </Grid>
         <br />
+
         <h2>Write a review</h2>
+        
         <Rating
           name="simple-controlled"
           value={value}
@@ -222,26 +267,36 @@ const bookProfilePage = () => {
         />
         <br />
         <TextField
-          id="standard-multiline-static"
-          label="Comment"
-          multiline
-          style={{ width: "40%", marginBottom: "20px" }}
-          rows={4}
+          className={classes.reviewBar}
+          id="myReview"
+          label="Review"
           variant="standard"
+          style={{
+            width: "50%",
+            marginTop: 20,
+            marginBottom :20,
+            marginLeft: "0%",
+          }}
         />
+
         <br />
-        <Button variant="contained">submit review</Button>
+        <Button 
+          variant="contained"
+          onClick={() => submitReview()}
+        >submit review</Button>
         <br />
         <h2>Community reviews</h2>
         <Card sx={{ width: "50%" }}>
           <CardContent>
-            <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+            <Typography
+              sx={{ fontSize: 14 }}
+              color="text.secondary"
+              gutterBottom
+            >
               Review author
             </Typography>
             <Rating name="read-only" value={value} readOnly />
-            <Typography variant="body2">
-              well meaning and kindly.
-            </Typography>
+            <Typography variant="body2">well meaning and kindly.</Typography>
           </CardContent>
         </Card>
       </div>

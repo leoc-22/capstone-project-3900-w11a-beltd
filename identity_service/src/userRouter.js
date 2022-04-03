@@ -2,6 +2,7 @@ const express = require("express");
 const userModel = require("./models/userModel");
 const app = express();
 const sha256 = require("js-sha256");
+const multer = require("multer");
 
 // Get all users in the database
 app.get("/users", async (req, res) => {
@@ -14,6 +15,21 @@ app.get("/users", async (req, res) => {
   }
 });
 
+// Get a user by email
+app.get("/oneuser/:email", async (req, res) => {
+  console.log(req.params.email);
+  const user = await userModel.findOne({ email: req.params.email });
+
+  try {
+    console.log(user);
+    res.send(user);
+  } catch (error) {
+    console.log("Cannot find this user");
+    res.status(500).send(error);
+  }
+});
+
+// Create a new user
 app.post("/user", async (req, res) => {
   // Look up if the user already exists
   userModel.countDocuments(
@@ -43,7 +59,7 @@ app.post("/user", async (req, res) => {
 
 // update password or name by querying the email
 app.patch("/user", async (req, res) => {
-  var query = { email: req.body.email };
+  let query = { email: req.body.email };
 
   userModel.findOneAndUpdate(
     query,
@@ -85,6 +101,51 @@ app.post("/login", async (req, res) => {
   } catch (error) {
     res.status(500).send(error);
   }
+});
+
+// Upload profile picture
+
+// Specifying the storage location
+var storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./uploads/");
+  },
+  filename: (req, file, cb) => {
+    cb(null, new Date().toISOString() + file.originalname);
+  },
+});
+
+// Specifying the required file type
+const fileFilter = (req, file, cb) => {
+  if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
+    cb(null, true);
+  } else {
+    cb(new Error("Incorrect Image File Type"), false);
+  }
+};
+
+const upload = multer({
+  storage: storage,
+  fileFilter: fileFilter,
+});
+
+// Find the tuple by email, update the image field,
+// and send the stored image route as res
+app.patch("/upload", upload.single("image"), async (req, res) => {
+  let query = { email: req.body.email };
+
+  userModel.findOneAndUpdate(
+    query,
+    {
+      image: req.body.image,
+    },
+    { upsert: true },
+    (err) => {
+      if (err) return res.status(500).send(err);
+      console.log("User image stored");
+      res.send("http://localhost:8001/" + req.body.image);
+    }
+  );
 });
 
 module.exports = app;
