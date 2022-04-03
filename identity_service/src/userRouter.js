@@ -1,9 +1,11 @@
 const express = require("express");
 const app = express();
 const sha256 = require("js-sha256");
+const crypto = require("crypto");
 const multer = require("multer");
 const nodemailer = require("nodemailer");
 const userModel = require("./models/userModel");
+const tokenModel = require("./models/tokenModel");
 // const tokenModel = require("./models/tokenModel");
 
 // Get all users in the database
@@ -152,17 +154,31 @@ app.patch("/upload", upload.single("image"), async (req, res) => {
 // Send a url to the user's email to reset the password
 app.post("/forgetpassword", async (req, res) => {
   // can mute this function during testing
-  userModel.countDocuments(
-    { email: req.body.email },
-    async function (err, count) {
-      if (count > 0) {
-        console.log("Found the user in the database");
-      } else {
-        console.log("User not found");
-        return res.status(400).send("User not found");
-      }
-    }
-  );
+  let query = { email: req.body.email };
+  let user = await userModel.findOne(query);
+
+  if (!user) {
+    console.log("User not found");
+    return res.status(400).send("User not found");
+  } else {
+    console.log("User found");
+  }
+
+  let token = await tokenModel.findOne({ userId: user._id });
+  if (token) {
+    await token.deleteOne();
+  }
+  // create a new randomised reset token
+  let resetToken = crypto.randomBytes(32).toString("hex");
+  // stores the hash into db, emails the unhashed reset token to the user
+  const hash = sha256.hex(resetToken);
+
+  // set up the email sending transporter
+  await new tokenModel({
+    userId: user._id,
+    token: hash,
+    createdAt: Date.now(),
+  }).save();
 
   let transporter = nodemailer.createTransport({
     service: "gmail",
@@ -175,8 +191,7 @@ app.post("/forgetpassword", async (req, res) => {
     },
   });
 
-  const token = 123; // change this
-  const link = `http://localhost:3000/forget-password/${req.body.email}/${token}`;
+  const link = `http://localhost:3000/forget-password/${user._id}/${resetToken}`;
 
   const msg = {
     from: "booklab3900@gmail.com",
