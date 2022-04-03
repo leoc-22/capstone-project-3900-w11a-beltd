@@ -34,7 +34,42 @@ app.post("/collection", async (req, res) => {
 
 // Remove book from collection
 
-// Mark a collection as private/public
 
+// TODO Can probably combine two endpoints below??
+// Mark a collection as private post creation
+app.patch("/collectionPriv", async (req, res) => {
+  var query = { _id: req.body._id } // collection id
+
+  collectionModel.findOneAndUpdate(
+    query,
+    {
+      public: false
+    },
+    { upsert: true },
+    (err) => {
+      if (err) return res.status(500).send(err);
+      console.log("Collection now private");
+      res.send("Successfully updated.");
+    }
+  );
+});
+
+// Mark a collection as public post creation
+app.patch("/collectionPub", async (req, res) => {
+  var query = { _id: req.body._id } // collection id
+
+  collectionModel.findOneAndUpdate(
+    query,
+    {
+      public: true
+    },
+    { upsert: true },
+    (err) => {
+      if (err) return res.status(500).send(err);
+      console.log("Collection now public");
+      res.send("Successfully updated.");
+    }
+  );
+});
 
 module.exports = app;
