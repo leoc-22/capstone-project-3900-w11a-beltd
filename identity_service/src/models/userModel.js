@@ -8,6 +8,7 @@ const userSchema = new mongoose.Schema(
     image: { type: String, required: false },
     goals: [{ type: mongoose.Schema.Types.ObjectId, ref: "Goals" }],
     collections: [{ type: mongoose.Schema.Types.ObjectId, ref: "Collections" }],
+    reviews: [{type: mongoose.Schema.Types.ObjectId, ref: "Reviews" }],
   },
   { collection: "Users" }
 );
