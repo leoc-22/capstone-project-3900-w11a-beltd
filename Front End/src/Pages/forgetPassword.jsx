@@ -23,10 +23,10 @@ const useStyles = makeStyles({
 
 export default function UpdatePasswordPage() {
   const classes = useStyles();
-  const { email } = useParams();
+  const { id } = useParams();
   const { token } = useParams();
 
-  console.log(`email: ${email}`);
+  console.log(`id: ${id}`);
   console.log(`token: ${token}`);
 
   const [passwordError, setPasswordError] = useState("");
@@ -58,10 +58,11 @@ export default function UpdatePasswordPage() {
     if (matchError == "Passwords match!") {
       axios({
         method: "patch",
-        url: "http://localhost:8001/user",
+        url: "http://localhost:8001/verifyandreset",
         headers: {},
         data: {
-          email: email,
+          id: id,
+          token: token,
           password: newPassword,
         },
       }).then((res) => handleReset(res));

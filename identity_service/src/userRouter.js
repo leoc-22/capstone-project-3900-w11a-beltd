@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const sha256 = require("js-sha256");
 const crypto = require("crypto");
+const bcrypt = require("bcrypt");
 const multer = require("multer");
 const nodemailer = require("nodemailer");
 const userModel = require("./models/userModel");
@@ -171,7 +172,7 @@ app.post("/forgetpassword", async (req, res) => {
   // create a new randomised reset token
   let resetToken = crypto.randomBytes(32).toString("hex");
   // stores the hash into db, emails the unhashed reset token to the user
-  const hash = sha256.hex(resetToken);
+  const hash = await bcrypt.hash(resetToken, Number(10));
 
   // set up the email sending transporter
   await new tokenModel({
@@ -212,6 +213,32 @@ app.post("/forgetpassword", async (req, res) => {
   });
 });
 
-const genToken = () => {};
+// update password or name by querying the email
+app.patch("/verifyandreset", async (req, res) => {
+  let resetToken = await tokenModel.findOne({
+    userid: req.body.id,
+  });
+  if (!resetToken) {
+    throw new Error("Invalid or expired password reset token");
+  }
+
+  const isValid = await bcrypt.compare(req.body.token, resetToken.token);
+  if (!isValid) {
+    throw new Error("Invalid or expired password reset token");
+  }
+
+  let query = { _id: req.body.id };
+  userModel.findOneAndUpdate(
+    query,
+    {
+      password: sha256.hex(req.body.password),
+    },
+    { upsert: false },
+    (err, doc) => {
+      if (err) return res.status(500).send(err);
+      res.send(doc); // returns null if doesnt exist such a user
+    }
+  );
+});
 
 module.exports = app;
