@@ -34,4 +34,7 @@ app.post("/collection", async (req, res) => {
 
 // Remove book from collection
 
+// Mark a collection as private/public
+
+
 module.exports = app;
