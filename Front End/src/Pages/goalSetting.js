@@ -23,6 +23,9 @@ const useStyles = makeStyles({
     margin: "0 auto",
     marginTop: "100px",
   },
+  goalSection : {
+    marginTop : "50px"
+  }
 });
 
 const goalSettingPage = () => {
@@ -34,16 +37,17 @@ const goalSettingPage = () => {
   }, []);
 
   async function saveGoal(){
-    console.log("pressend save goal")
     let res = await  axios({
       method : "post",
       url : "http://localhost:8001/goal",
       data: {
         user: sessionStorage.getItem("id"),
-        endDate: "10/20/2022",
-        target : 999,
+        endDate: document.getElementById("endDate").value,
+        target : document.getElementById("target").value,
       }
     })
+    document.getElementById("target").value ="";
+    document.getElementById("endDate").value = ""
     return; 
   }
 
@@ -58,8 +62,8 @@ const goalSettingPage = () => {
         <Grid container spacing={3}>
           <Grid item xs={12} md={8}>
             <h2>
-              I want to read <TextField variant="standard" placeholder="10" />{" "}
-              books by <TextField variant="standard" placeholder="date" />
+              I want to read <TextField id = "target" variant="standard" placeholder="10" />{" "}
+              books by <TextField id = "endDate" variant="standard" placeholder="date" />
             </h2>
             <br />
             <TextField
@@ -68,7 +72,15 @@ const goalSettingPage = () => {
               sx={{ width: "80%", marginBottom: "50px" }}
             />
             <br />
-            <Card>
+            <br />
+            <Button 
+            onClick = {()=>saveGoal()}
+            variant="contained">Save reading goal</Button>
+          </Grid>
+        </Grid>
+
+        <div className={classes.goalSection}>
+        <Card>
               {/* template for books added to reading goal */}
               <CardHeader
                 action={
@@ -80,49 +92,9 @@ const goalSettingPage = () => {
                 subheader="Book author"
               />
             </Card>
-            <br />
-            <h3>Read x of x books. Completed on date.</h3>
-            <Button 
-            onClick = {()=>saveGoal()}
-            variant="contained">Save reading goal</Button>
-          </Grid>
-          <Grid item xs={12} md={4}>
-            <h2>Previous reading goals</h2>
-            <div hidden>
-              <Card>
-                <CardContent>
-                  <Typography sx={{ fontSize: 16 }} color="text.primary">
-                    No goals to display
-                  </Typography>
-                </CardContent>
-              </Card>
-              <br />
-            </div>
-            <Card>
-              <CardContent>
-                <Typography sx={{ fontSize: 16 }} color="text.primary">
-                  February goal
-                </Typography>
-                <Typography
-                  sx={{
-                    fontSize: 14,
-                    textTransform: "uppercase",
-                    marginBottom: "20px",
-                  }}
-                  color="text.secondary"
-                >
-                  Completed
-                </Typography>
-                <Typography variant="body2">
-                  You completed 5/5 books on 28/02/2021.
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <Button size="small">View goal</Button>
-              </CardActions>
-            </Card>
-          </Grid>
-        </Grid>
+          </div>
+
+
       </div>
     </div>
   );
