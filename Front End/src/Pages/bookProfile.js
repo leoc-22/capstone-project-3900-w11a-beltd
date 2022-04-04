@@ -29,9 +29,12 @@ const useStyles = makeStyles({
   bookImage: {
     width: "100%",
   },
-  reviewBar : {
+  reviewBar: {
     padding : "10px",
     marginBottom : "20px"
+  },
+  h2: {
+    color: "rgb(51, 153, 255)"
   }
 });
 
@@ -44,12 +47,13 @@ const bookProfilePage = () => {
   const [bookImg, setImg] = useState(null);
   const [amzLink, setAmzLink] = useState(null);
   const [rating, setRating] = useState(null);
-
+  
   const classes = useStyles();
   const queryString = window.location.search.slice(1);
-
+  
   useEffect(() => {
     getData();
+    document.title = "Book profile | Booklab";
   }, []);
 
   async function getData() {
@@ -70,7 +74,7 @@ const bookProfilePage = () => {
         setAuthor(res[i]["authors"]);
         setImg(res[i]["image"]);
         setAmzLink(res[i]["link"]);
-        setRating("Rating: " + res[i]["rating"]);
+        setRating(res[i]["rating"]);
         console.log(res[i]);
         return;
       }
@@ -95,10 +99,6 @@ const bookProfilePage = () => {
     return;
   }
 
-  useEffect(() => {
-    document.title = "Book profile | Booklab";
-  }, []);
-
   const [value, setValue] = React.useState(2);
 
   return (
@@ -115,9 +115,7 @@ const bookProfilePage = () => {
           </Grid>
           <Grid item xs={12} md={9}>
             <h1>{title}</h1>
-            <h2>{author}</h2>
-            <h5>{rating}</h5>
-
+            <h2>by {author}</h2>
             <Button
               variant="outlined"
               sx={{ marginRight: "16px", marginBottom: "20px" }}
@@ -130,13 +128,6 @@ const bookProfilePage = () => {
             >
               Mark as read
             </Button>
-            <Button
-              onClick={() => amzPage()}
-              variant="contained"
-              sx={{ marginBottom: "20px" }}
-            >
-              View on Amazon
-            </Button>
             <br />
             <Chip label="Category 1" sx={{ marginRight: "16px" }} />
             <Chip label="Category 2" />
@@ -144,26 +135,47 @@ const bookProfilePage = () => {
             <Stack direction="row" alignItems="center" spacing={2}>
               <p>Publisher</p>
               <p>Publication date</p>
-              <p>Total number of readers</p>
+            </Stack>
+            <Stack direction="row" alignItems="center" spacing={2}>
+              <p>Average rating: {rating}</p>
+              <p>Number of readers</p>
               <p>Number of collections</p>
             </Stack>
             <p>Book description</p>
           </Grid>
         </Grid>
-        <h2>Compare pricing</h2>
+        <h2 className={classes.h2}>Compare pricing</h2>
         <Grid container spacing={3}>
           <Grid item xs={12} md={3}>
             <Card>
               <CardContent>
                 <Typography sx={{ fontSize: 16 }} color="text.primary">
-                  Source
+                  Amazon
                 </Typography>
-                <Typography
+                {/* <Typography
                   sx={{ fontSize: 14, textTransform: "uppercase" }}
                   color="text.secondary"
                 >
                   $0.00
+                </Typography> */}
+              </CardContent>
+              <CardActions>
+                <Button size="small" onClick={() => amzPage()}>View on Amazon</Button>
+              </CardActions>
+            </Card>
+          </Grid>
+          <Grid item xs={12} md={3}>
+            <Card>
+              <CardContent>
+                <Typography sx={{ fontSize: 16 }} color="text.primary">
+                  Source
                 </Typography>
+                {/* <Typography
+                  sx={{ fontSize: 14, textTransform: "uppercase" }}
+                  color="text.secondary"
+                >
+                  $0.00
+                </Typography> */}
               </CardContent>
               <CardActions>
                 <Button size="small">purchase this book</Button>
@@ -176,30 +188,12 @@ const bookProfilePage = () => {
                 <Typography sx={{ fontSize: 16 }} color="text.primary">
                   Source
                 </Typography>
-                <Typography
+                {/* <Typography
                   sx={{ fontSize: 14, textTransform: "uppercase" }}
                   color="text.secondary"
                 >
                   $0.00
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <Button size="small">purchase this book</Button>
-              </CardActions>
-            </Card>
-          </Grid>
-          <Grid item xs={12} md={3}>
-            <Card>
-              <CardContent>
-                <Typography sx={{ fontSize: 16 }} color="text.primary">
-                  Source
-                </Typography>
-                <Typography
-                  sx={{ fontSize: 14, textTransform: "uppercase" }}
-                  color="text.secondary"
-                >
-                  $0.00
-                </Typography>
+                </Typography> */}
               </CardContent>
               <CardActions>
                 <Button size="small">purchase this book</Button>
@@ -208,8 +202,7 @@ const bookProfilePage = () => {
           </Grid>
         </Grid>
         <br />
-        <h2>Recommendations</h2>
-        <Button variant="outlined">View more</Button>
+        <h2 className={classes.h2}>Recommendations</h2>
         <Grid container spacing={3}>
           <Grid item xs={12} md={2}>
             <img
@@ -256,8 +249,7 @@ const bookProfilePage = () => {
         </Grid>
         <br />
 
-        <h2>Write a review</h2>
-        
+        <h2 className={classes.h2}>Write a review</h2>
         <Rating
           name="simple-controlled"
           value={value}
@@ -278,14 +270,13 @@ const bookProfilePage = () => {
             marginLeft: "0%",
           }}
         />
-
         <br />
         <Button 
           variant="contained"
           onClick={() => submitReview()}
         >submit review</Button>
         <br />
-        <h2>Community reviews</h2>
+        <h2 className={classes.h2}>Community reviews</h2>
         <Card sx={{ width: "50%" }}>
           <CardContent>
             <Typography
@@ -295,7 +286,7 @@ const bookProfilePage = () => {
             >
               Review author
             </Typography>
-            <Rating name="read-only" value={value} readOnly />
+            <Rating name="read-only" value="2" readOnly />
             <Typography variant="body2">well meaning and kindly.</Typography>
           </CardContent>
         </Card>
