@@ -210,6 +210,8 @@ const bookProfilePage = () => {
               src={login}
               alt="two people standing"
             />
+            <p>Title</p>
+            <p>Author</p>
           </Grid>
           <Grid item xs={12} md={2}>
             <img
@@ -217,6 +219,8 @@ const bookProfilePage = () => {
               src={login}
               alt="two people standing"
             />
+            <p>Title</p>
+            <p>Author</p>
           </Grid>
           <Grid item xs={12} md={2}>
             <img
@@ -224,6 +228,8 @@ const bookProfilePage = () => {
               src={login}
               alt="two people standing"
             />
+            <p>Title</p>
+            <p>Author</p>
           </Grid>
           <Grid item xs={12} md={2}>
             <img
@@ -231,6 +237,8 @@ const bookProfilePage = () => {
               src={login}
               alt="two people standing"
             />
+            <p>Title</p>
+            <p>Author</p>
           </Grid>
           <Grid item xs={12} md={2}>
             <img
@@ -238,6 +246,8 @@ const bookProfilePage = () => {
               src={login}
               alt="two people standing"
             />
+            <p>Title</p>
+            <p>Author</p>
           </Grid>
           <Grid item xs={12} md={2}>
             <img
@@ -245,6 +255,8 @@ const bookProfilePage = () => {
               src={login}
               alt="two people standing"
             />
+            <p>Title</p>
+            <p>Author</p>
           </Grid>
         </Grid>
         <br />
