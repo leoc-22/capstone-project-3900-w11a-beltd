@@ -30,7 +30,6 @@ const useStyles = makeStyles({
 
 export default function CollectionsCarousel(props) {
   const classes = useStyles();
-  console.log(props.collections);
   return (
     <div className={classes.main} zindex="999">
    
