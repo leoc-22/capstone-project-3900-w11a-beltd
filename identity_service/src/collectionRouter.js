@@ -1,6 +1,7 @@
 const express = require("express");
 const collectionModel = require("./models/collectionModel");
 const userModel = require("./models/userModel");
+const bookModel = require("./models/userBookModel");
 
 const app = express();
 
@@ -91,8 +92,34 @@ app.patch("/collectionPub", async (req, res) => {
   );
 });
 
-// Add a book to a collection (take in b_id + c_id)
+// TODO Get all books in a collection
 
-// Remove a book from a collection (take in b_id + c_id)
+// TODO Add a book to a collection (take in b_id + c_id) NOT SURE THSI WORKS
+app.patch("/addBook", async (req, res) => {
+  let _id = req.body._id;
+
+  // Add book to collection
+  const updatedCollection = await collectionModel.findByIdAndUpdate(
+    {_id},
+    { $push: { "books": req.body.book } },
+    { new: true }
+  );
+  console.log(updatedCollection);
+
+  // Add collection to book
+  _id = req.body.book;
+  const updatedBook = bookModel.findByIdAndUpdate(
+    {_id},
+    { $push: { "collections": req.body.id } },
+    { new: true }
+  );
+  console.log(updatedBook);
+}
+
+// TODO Remove a book from a collection (take in b_id + c_id)
+
+// TODO Move book to "Read" collection
+
+// TODO Remove a collection??
 
 module.exports = app;
