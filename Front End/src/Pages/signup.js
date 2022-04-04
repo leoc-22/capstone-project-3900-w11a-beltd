@@ -84,6 +84,8 @@ export default function SignUpPage() {
         if (res.status === 200) {
           sessionStorage.setItem("email", res["data"]["email"]);
           sessionStorage.setItem("name", res["data"]["name"]);
+          sessionStorage.setItem("id", res["data"]["_id"]);
+
           history.push("/home");
         } else {
           document.getElementById("userError").innerText = "ERROR: " + res.status;

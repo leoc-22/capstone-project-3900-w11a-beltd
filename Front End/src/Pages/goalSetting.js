@@ -42,8 +42,8 @@ const goalSettingPage = () => {
       url : "http://localhost:8001/goal",
       data: {
         user: sessionStorage.getItem("id"),
-        endDate: document.getElementById("endDate").value,
-        target : document.getElementById("target").value,
+        endDate: "20/20/2000",
+        target : 89,
       }
     })
     document.getElementById("target").value ="";
