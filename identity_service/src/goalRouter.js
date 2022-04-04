@@ -7,26 +7,14 @@ const app = express();
 
 // Get all USER OWNED goals by user id
 app.get("/myGoals", async (req, res) => {
-  const goals = await goalModel.find({}); 
-
-  try {
-    res.send(goals);
-  } catch (error) {
-    res.status(500).send(error);
-  }
+  const goals = await collectionModel.find({ user: req.body.user }, function (err, docs) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(docs)
+    }
+  }).clone().catch(function(err){ console.log(err)});
 });
-
-// // TODO ^ replace above when collections is tested
-// // 2. Get all USER OWNED collections by user id 
-// app.get("/myGoals", async (req, res) => {
-//   const goals = await collectionModel.find({ user: req.body.user }, function (err, docs) {
-//     if (err) {
-//       console.log(err);
-//     } else {
-//       console.log(docs);
-//     }
-//   });
-// });
 
 
 // Create goal

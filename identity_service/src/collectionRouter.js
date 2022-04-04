@@ -24,13 +24,14 @@ app.get("/myCollections", async (req, res) => {
     } else {
       console.log(docs);
     }
-  });
+  }).clone().catch(function(err){ console.log(err)});
 });
 
 // 3. Create a new collection
 app.post("/collection", async (req, res) => {
   // Create collection
   const collection = new collectionModel({
+    user: req.body.user,
     name: req.body.name,
     public: req.body.public,
   });
