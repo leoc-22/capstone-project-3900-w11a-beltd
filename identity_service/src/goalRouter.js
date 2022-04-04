@@ -18,6 +18,7 @@ app.get("/myGoals", async (req, res) => {
 
 
 // Create goal
+// Create goal
 app.post("/goal", async (req, res) => {
 
   // Find user
@@ -34,6 +35,9 @@ app.post("/goal", async (req, res) => {
     current: 0,
     completed: false,
   });
+  console.log(req.body.endDate);
+  console.log(req.body.target);
+  console.log(req.body.user);
 
   try {
     await goal.save();
