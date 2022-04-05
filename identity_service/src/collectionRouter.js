@@ -114,7 +114,7 @@ app.patch("/addBook", async (req, res) => {
     { new: true }
   );
   console.log(updatedBook);
-}
+});
 
 // TODO Remove a book from a collection (take in b_id + c_id)
 
