@@ -49,9 +49,10 @@ const goalSettingPage = () => {
             <TextField
               label="Search for books to add to your goal"
               variant="standard"
-              sx={{ width: "80%", marginBottom: "50px" }}
+              sx={{ width: "50%", marginRight: "20px" }}
             />
-            <br />
+            <Button variant="text" sx={{ marginBottom: "50px" }} >Add book to reading goal</Button>
+            <br/>
             <Card>
               {/* template for books added to reading goal */}
               <CardHeader

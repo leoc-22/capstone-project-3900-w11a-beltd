@@ -11,22 +11,20 @@ const useStyles = makeStyles({
   main: {
     minHeight: "1100px",
     minWidth: "500px",
+    width: "80%",
+    margin: "0 auto",
+    marginTop: "100px",
   },
   popularCollections: {
-    marginLeft: "7%",
     marginTop: "5%",
   },
   TopBooks: {
-    marginLeft: "7%",
     marginTop: "5%",
   },
 
   headerImg: {
-    minHeight: "300px",
-    marginTop: "100px",
-    marginLeft: "10%",
     borderRadius: "8px",
-    width: "80%",
+    width: "100%",
   },
 });
 
@@ -104,7 +102,6 @@ const HomePage = () => {
           alt={"booklab: collect and share your favourite books"}
         />
         <h2 className={classes.popularCollections}>Popular Collections</h2>
-
         <CollectionsCarousel collections={collectionArr}></CollectionsCarousel>
         <h2 className={classes.TopBooks}>Top Books</h2>
         <TopBookGrid books={books}></TopBookGrid>

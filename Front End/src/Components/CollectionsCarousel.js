@@ -7,17 +7,13 @@ import PropTypes from "prop-types";
 
 const useStyles = makeStyles({
   main: {
-    marginLeft: "5%",
-    marginRight: "5%",
     position: "relative",
   },
   PopCollections: {
-    marginLeft: "20%",
     marginTop: "10%",
   },
   img: {
-    borderRadius: "10px",
-    width: "90%",
+    borderRadius: "8px",
     height: "200px",
     "&:hover": {
       cursor: "pointer",
@@ -38,7 +34,7 @@ export default function CollectionsCarousel(props) {
         className={classes.PopCollections}
         cols={4}
         rows={1}
-        gap={5}
+        gap={20}
         loop
       >
         {props.collections.map((Item) =>(
