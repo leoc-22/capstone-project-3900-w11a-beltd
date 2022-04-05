@@ -44,7 +44,7 @@ const userProfilePage = () => {
 
   useEffect(() => {
     getUserData();
-    //document.title = "User Profile | Booklab";
+    document.title = "User Profile | Booklab";
   }, [img]);
 
   async function getUserData(){
@@ -222,20 +222,20 @@ const userProfilePage = () => {
         </Grid>
         <h2 style={{ marginTop: "80px" }}>My collections</h2>
         <Button variant="outlined">View all my collections</Button>
-        {/* map the first 4 collections for user */}
         <Grid container spacing={2}>
           <Grid item xs={3}>
             <img src={reset} alt="one person sitting, one person standing" />
-            <Button variant="text">Collection title</Button>
+            <Button variant="text">Main collection</Button>
             <br />
             <Chip label="Public" size="small" />
           </Grid>
           <Grid item xs={3}>
             <img src={reset} alt="one person sitting, one person standing" />
-            <Button variant="text">Collection title</Button>
+            <Button variant="text">Read collection</Button>
             <br />
             <Chip label="Private" size="small" />
           </Grid>
+          {/* map the first 2 collections for user */}
           <Grid item xs={3}>
             <img src={reset} alt="one person sitting, one person standing" />
             <Button variant="text">Collection title</Button>

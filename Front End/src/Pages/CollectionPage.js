@@ -58,7 +58,7 @@ export default function CollectionPage(){
 
   useEffect(() => {
     getCollectionData();
-    //document.title = "User Profile | Booklab";
+    document.title = "Collections | Booklab";
   }, [newCollection]);
 
   async function getCollectionData(){
@@ -146,7 +146,7 @@ export default function CollectionPage(){
           <br></br>
           <TextField
             id="newCollection"
-            label="Add Collection"
+            label="Create a New Collection"
             variant="standard"
             style={{
               width: "40%",
@@ -175,7 +175,6 @@ export default function CollectionPage(){
           
         <h2 className={classes.subTitle}>my Collections</h2>
         <CollectionsCarousel collections = {myCollections}></CollectionsCarousel>
-
 
         <h2 className={classes.subTitle}>Popular Collections</h2>
         <CollectionsCarousel collections = {collectionArr}></CollectionsCarousel>

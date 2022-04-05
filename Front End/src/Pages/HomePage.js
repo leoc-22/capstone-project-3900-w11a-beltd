@@ -104,7 +104,6 @@ const HomePage = () => {
           alt={"booklab: collect and share your favourite books"}
         />
         <h2 className={classes.popularCollections}>Popular Collections</h2>
-
         <CollectionsCarousel collections={collectionArr}></CollectionsCarousel>
         <h2 className={classes.TopBooks}>Top Books</h2>
         <TopBookGrid books={books}></TopBookGrid>
