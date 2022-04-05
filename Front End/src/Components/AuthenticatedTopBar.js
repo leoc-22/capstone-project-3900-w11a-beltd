@@ -1,4 +1,4 @@
-
+/* eslint-disable */
 import * as React from "react";
 import { useHistory } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
@@ -14,6 +14,7 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { makeStyles } from "@material-ui/core";
+import { createTheme } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
   BookLabTitle: {
@@ -27,6 +28,15 @@ const pages = ["Explore", "Collections","Recommended for you", "Leader board"];
 const settings = ["Profile", "Settings", "My goals", "Logout"];
 
 export default function AuthenicatedTopBar() {
+
+  const theme = createTheme({
+    palette: {
+      secondary: {
+        main: "#0097a7",
+      },
+    },
+  });
+
   const classes = useStyles();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -95,7 +105,10 @@ export default function AuthenicatedTopBar() {
   // var userName = localStorage.getItem("name");
 
   return (
-    <AppBar position="static">
+    <AppBar position="static"
+      color="primary"
+      //theme={theme}
+    >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography

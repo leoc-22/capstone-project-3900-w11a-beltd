@@ -1,4 +1,4 @@
-/* eslint-disable */ 
+
 import React, { useEffect, useState } from "react";
 import AuthenicatedTopBar from "../Components/AuthenticatedTopBar";
 import { makeStyles } from "@material-ui/core";
@@ -6,16 +6,12 @@ import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import IconButton from "@mui/material/IconButton";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import ClearIcon from "@mui/icons-material/Clear";
 import TextField from "@mui/material/TextField";
-import Alert from "@mui/material/Alert";
 import axios from "axios";
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 
 const useStyles = makeStyles({
   main: {
@@ -26,7 +22,7 @@ const useStyles = makeStyles({
     marginTop: "100px",
   },
   goalSection : {
-    marginTop : "50px"
+    marginTop : "50px",
   },
   subGoals : {
     marginLeft : "20px",
@@ -36,6 +32,20 @@ const useStyles = makeStyles({
     position:"absolute",
     marginLeft : "60%",
     marginTop: "-75px"
+  },
+  successText :{
+    fontSize : 20,
+    color: "rgb(90, 184, 95)",
+    marginTop : "20px"
+  },
+  invalidText : {
+    fontSize : 20,
+    color: "rgb(252, 99, 88)",
+    marginTop : "20px"
+
+  },
+  curGoals : {
+    marginTop : "80px",
   }
 });
 
@@ -57,16 +67,14 @@ const goalSettingPage = () => {
     let res = await axios({
       method : "get",
       url : "http://localhost:8001/oneuser/" + userEmail,
-    })
+    });
     let myGoals = res.data.goals;
-    //console.log(myGoals);
 
     let allGoals = await axios({
       method : "get",
       url : "http://localhost:8001/myGoals",
-    })
-    //console.log(allGoals.data);
-    let allMygoals = []
+    });
+    let allMygoals = [];
 
     for (let i =0 ;i < allGoals.data.length ; i++){
       let curGoal = allGoals.data[i]["_id"];
@@ -76,16 +84,21 @@ const goalSettingPage = () => {
         }
       }
     }
-    setGoalsArr(allMygoals)
+    setGoalsArr(allMygoals);
     console.log(allMygoals);
   }
 
   async function saveGoal(){
-    console.log("save");
+    let newEndDate = document.getElementById("endDate").value;
+    let newTarget = document.getElementById("target").value;
 
+    if (newEndDate == ""|| newTarget == ""){
+      document.getElementById("sucessGoal").hidden = true;
+      document.getElementById("failedGoal").hidden = false;
+      return;
+    }
     //let date = parseInt(document.getElementById("target").value);
-    //console.log(date);
-    let res = await  axios({
+    await  axios({
       method : "post",
       url : "http://localhost:8001/goal",
       data: {
@@ -93,12 +106,18 @@ const goalSettingPage = () => {
         endDate: document.getElementById("endDate").value,
         target : document.getElementById("target").value,
       }
-    })
+    });
     document.getElementById("target").value ="";
-    document.getElementById("endDate").value = ""
+    document.getElementById("endDate").value = "";
+    document.getElementById("sucessGoal").hidden = false;
+    document.getElementById("failedGoal").hidden = true;
+
+
     let tmp = goalsCreated;
     tmp +=1;
     setGoalsCreated(tmp);
+
+
     return; 
   }
 
@@ -110,7 +129,7 @@ const goalSettingPage = () => {
       data:{
         _id : goalId
       }
-    })
+    });
     let tmp = goalsCreated;
     tmp +=1;
     setGoalsCreated(tmp);
@@ -125,7 +144,7 @@ const goalSettingPage = () => {
       data:{
         _id : goalId
       }
-    })
+    });
     let tmp = goalsCreated;
     tmp +=1;
     setGoalsCreated(tmp);
@@ -140,7 +159,7 @@ const goalSettingPage = () => {
       data:{
         _id : goalId
       }
-    })
+    });
     let tmp = goalsCreated;
     tmp +=1;
     setGoalsCreated(tmp);
@@ -151,68 +170,73 @@ const goalSettingPage = () => {
     <div>
       <AuthenicatedTopBar></AuthenicatedTopBar>
       <div className={classes.main}>
-        <Alert severity="info">
-          Reading goal updated. Progress 8/10 books completed!
-        </Alert>
         <h1>Set your reading goal for this month!</h1>
         <Grid container spacing={3}>
           <Grid item xs={12} md={8}>
             <h2>
               I want to read <TextField id = "target" variant="standard" placeholder="10" />{" "}
-              books by <TextField id = "endDate" variant="standard" placeholder="date" />
+              books by <TextField id = "endDate" variant="standard" placeholder="dd/mm/yyyy" />
             </h2>
             <br />
-            <br />
-            <br />
             <Button 
-            onClick = {()=>saveGoal()}
-            variant="contained">Save reading goal</Button>
+              onClick = {()=>saveGoal()}
+              variant="contained">Save reading goal</Button>
           </Grid>
         </Grid>
-      
-        {goalsArr.map((goal) => (
-        <div className={classes.goalSection}>
-          <Card> 
-        
-
-            {/* template for books added to reading goal */}
-            <CardHeader
-              action={
-                <IconButton>
-                  <ClearIcon
-                  onClick = {()=>deleteGoal({goal})}
-                  />
-                </IconButton> 
-              }
+        <div hidden id ="sucessGoal" className={classes.successText}>Goal Created</div>
+        <div hidden id ="failedGoal" className={classes.invalidText}>Fields cannot be Empty</div>
+        <h2 className={classes.curGoals}>
+          Current Goals
+        </h2>
+        {goalsArr.map((goal, index) => (
+          <div key = {index} className={classes.goalSection}>
+            <Card
+              style = {{background : "#E5F6FD"}}
+            > 
+              {/* template for books added to reading goal */}
+              <CardHeader
+                action={
+                  <IconButton>
+                    <ClearIcon
+                      onClick = {()=>deleteGoal({goal})}
+                    />
+                  </IconButton> 
+                }
               
               
-              title = {goal.target + " Books"}
-              subheader={"By: " + goal.endDate}
-            />
+                title = {goal.target + " Books"}
+                subheader={"By: " + goal.endDate}
+              />
               <div className={classes.inline}>
-              <IconButton>
-                <PlayCircleOutlineIcon
-                  onClick = {()=>advanceGoal({goal})}
-                ></PlayCircleOutlineIcon>
-              </IconButton> 
+                <IconButton
+                >
+                  <PlayCircleOutlineIcon
+                    style = {{
+                      width: 50,
+                      height: 50,
 
-              <IconButton>
-                <CheckCircleOutlineIcon
-                  onClick = {()=>markComplete({goal})}
-                ></CheckCircleOutlineIcon>
-              </IconButton> 
+                    }}
+                    onClick = {()=>advanceGoal({goal})}
+                  ></PlayCircleOutlineIcon>
+                </IconButton> 
+                <div></div>
+                <IconButton>
+                  <CheckCircleOutlineIcon
+                    style = {{
+                      width: 50,
+                      height: 50,
+                    }}
+                    onClick = {()=>markComplete({goal})}
+                  ></CheckCircleOutlineIcon>
+                </IconButton> 
               </div>
-          <div className={classes.subGoals}>
-            <p>Progress: {goal.current}</p>
-            <p id = "completed">Completed: {String(goal.completed)}</p>
+              <div className={classes.subGoals}>
+                <p>Progress: {goal.current}</p>
+                <p id = "completed">Completed: {String(goal.completed)}</p>
+              </div>
+            </Card>
           </div>
-          </Card>
-        </div>
         ))}
-
-
-
-
       </div>
     </div>
   );

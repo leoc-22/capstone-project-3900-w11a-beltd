@@ -1,4 +1,3 @@
-/* eslint-disable */
 import axios from "axios";
 import React, { useEffect,useState } from "react";
 import AuthenicatedTopBar from "../Components/AuthenticatedTopBar";
@@ -6,8 +5,7 @@ import { makeStyles } from "@material-ui/core";
 import CollectionsCarousel from "../Components/CollectionsCarousel";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import Checkbox from '@mui/material/Checkbox';
-import { borderRadius } from "@mui/system";
+import Checkbox from "@mui/material/Checkbox";
 
 
 const useStyles = makeStyles({
@@ -35,8 +33,18 @@ const useStyles = makeStyles({
     minHeight : "100px",
     marginLeft: "25%",
     borderRadius : "10px",
-    border: "1px solid"
+    border: "1px solid rgb(51, 153, 255)"
 
+  },
+  CollectionCreated :{
+    marginLeft: "30%",
+    fontSize : 20,
+    color: "rgb(90, 184, 95)"
+  },
+  invalidText : {
+    marginLeft: "30%",
+    fontSize : 20,
+    color: "rgb(252, 99, 88)"
   }
 });
   
@@ -79,12 +87,12 @@ export default function CollectionPage(){
         if (curId == allCollections[j]._id){
           allMycollection.push(allCollections[j]);
         } else if (allCollections[j].public == true){
-            publicCollections.push(allCollections[j]);
+          publicCollections.push(allCollections[j]);
         }
       }
     }
     setMyCollections(allMycollection);
-    setCollectionArr(publicCollections)
+    setCollectionArr(publicCollections);
 
   }
 
@@ -97,22 +105,36 @@ export default function CollectionPage(){
   }
   
   async function addCollection(){
+
+    let newName = document.getElementById("newCollection").value;
+    if (newName == ""){
+      document.getElementById("failedCollectionText").hidden = false;
+      document.getElementById("newCollectionText").hidden = true;
+
+      return;
+    }
+    
     let res = await axios({
       method : "post",
       url : "http://localhost:8001/collection",
       data : {
         user : sessionStorage.getItem("id"),
-        name : document.getElementById("newCollection").value,
+        name : newName,
         public : collectionPublic
       }
     });
-    document.getElementById("newCollection").value = "";
     let tmp = collectionArr;
     tmp.unshift(res.data);
     setCollectionArr(tmp);
     let tmp2 =newCollection;
     tmp2+=1;
     setNewCollection(tmp2);
+
+    
+    document.getElementById("newCollectionText").hidden = false;
+    document.getElementById("failedCollectionText").hidden = true;
+    document.getElementById("newCollection").value = "";
+
   }
 
 
@@ -121,7 +143,7 @@ export default function CollectionPage(){
       <AuthenicatedTopBar></AuthenicatedTopBar>
       <div className={classes.main}>
         <div className={classes.textField}> 
-        <br></br>
+          <br></br>
           <TextField
             id="newCollection"
             label="Add Collection"
@@ -135,8 +157,8 @@ export default function CollectionPage(){
             }}
           />
           Public<Checkbox
-          checked = {collectionPublic}
-          onClick={()=>handlePublic()}
+            checked = {collectionPublic}
+            onClick={()=>handlePublic()}
           />
 
           <Button 
@@ -146,6 +168,9 @@ export default function CollectionPage(){
               marginLeft : "100px"
             }}
           >New Collection</Button>
+          <div hidden id ="newCollectionText" className={classes.CollectionCreated}>Collection Created</div>
+          <div hidden id ="failedCollectionText" className={classes.invalidText}>Name cannot be Empty</div>
+
         </div>
           
         <h2 className={classes.subTitle}>my Collections</h2>

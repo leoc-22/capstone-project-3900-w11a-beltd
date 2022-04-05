@@ -11,7 +11,6 @@ import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import Rating from "@mui/material/Rating";
 import TextField from "@mui/material/TextField";
 import axios from "axios";
 // import { useLocation } from "react-router-dom";
@@ -32,25 +31,30 @@ const useStyles = makeStyles({
   reviewBar : {
     padding : "10px",
     marginBottom : "20px"
+  },
+  reviewDiv :{
+    marginTop : "20px",
   }
 });
 
 const bookProfilePage = () => {
   // const location = useLocation();
-  window.scrollTo(0, 0);
 
   const [title, setTitle] = useState(null);
   const [author, setAuthor] = useState(null);
   const [bookImg, setImg] = useState(null);
   const [amzLink, setAmzLink] = useState(null);
   const [rating, setRating] = useState(null);
+  const [bookReviews , setBookReviews] = useState([]);
+  const [changed , setChanged] = useState(0);
 
   const classes = useStyles();
   const queryString = window.location.search.slice(1);
 
   useEffect(() => {
+    document.title = "Book profile | Booklab";
     getData();
-  }, []);
+  }, [changed]);
 
   async function getData() {
     await axios
@@ -71,7 +75,7 @@ const bookProfilePage = () => {
         setImg(res[i]["image"]);
         setAmzLink(res[i]["link"]);
         setRating("Rating: " + res[i]["rating"]);
-        console.log(res[i]);
+        getReviews(res[i]["title"]);
         return;
       }
     }
@@ -86,20 +90,37 @@ const bookProfilePage = () => {
       method: "post",
       url : "http://localhost:8001/review",
       data : {
+        user : sessionStorage.getItem("id"),
         title : title,
         review : document.getElementById("myReview").value
       }
 
     });
     document.getElementById("myReview").value = "";
+    let tmp = changed;
+    tmp+=1;
+    setChanged(tmp);
     return;
   }
 
-  useEffect(() => {
-    document.title = "Book profile | Booklab";
-  }, []);
-
-  const [value, setValue] = React.useState(2);
+  async function getReviews(bookTitle){
+    let res = await axios({
+      method: "get",
+      url : "http://localhost:8001/review",
+    });
+    //console.log(res.data);
+    let curBookReviews = [];
+    for (let i =0; i < res.data.length; i ++){
+      if (res.data[i].title == bookTitle){
+        curBookReviews.push(res.data[i]);
+      }
+    }
+    //console.log(curBookReviews);
+    setBookReviews(curBookReviews);
+  }
+  if (changed == 0){
+    window.scrollTo(0, 0);
+  }
 
   return (
     <div>
@@ -258,13 +279,6 @@ const bookProfilePage = () => {
 
         <h2>Write a review</h2>
         
-        <Rating
-          name="simple-controlled"
-          value={value}
-          onChange={(event, newValue) => {
-            setValue(newValue);
-          }}
-        />
         <br />
         <TextField
           className={classes.reviewBar}
@@ -272,7 +286,7 @@ const bookProfilePage = () => {
           label="Review"
           variant="standard"
           style={{
-            width: "50%",
+            width: "60%",
             marginTop: 20,
             marginBottom :20,
             marginLeft: "0%",
@@ -285,20 +299,18 @@ const bookProfilePage = () => {
           onClick={() => submitReview()}
         >submit review</Button>
         <br />
+        <br/>
         <h2>Community reviews</h2>
-        <Card sx={{ width: "50%" }}>
-          <CardContent>
-            <Typography
-              sx={{ fontSize: 14 }}
-              color="text.secondary"
-              gutterBottom
+        {bookReviews.map((rev,index) => (
+          <div key= {index} className={classes.reviewDiv}>
+            <Card sx={{ width: "60%" }}
             >
-              Review author
-            </Typography>
-            <Rating name="read-only" value={value} readOnly />
-            <Typography variant="body2">well meaning and kindly.</Typography>
-          </CardContent>
-        </Card>
+              <CardContent>
+                <Typography variant="body2">{rev.review}</Typography>
+              </CardContent>
+            </Card>
+          </div>
+        ))}
       </div>
     </div>
   );
