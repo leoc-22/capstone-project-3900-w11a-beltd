@@ -45,7 +45,7 @@ const userProfilePage = () => {
 
   useEffect(() => {
     getUserData()
-    //document.title = "User Profile | Booklab";
+    document.title = "User Profile | Booklab";
   }, [img]);
 
   async function getUserData(){
@@ -85,7 +85,7 @@ const userProfilePage = () => {
       });
   }
 
-  async function uplaodImg(){
+  async function uploadImage(){
     let res = await axios({
       method: "patch",
       url: "http://localhost:8001/upload",
@@ -121,7 +121,7 @@ const userProfilePage = () => {
 
         <div class={classes.profileSection}>
         <h2 style={{ marginTop: 50 }}>Upload a new profile picture</h2>
-        <Button variant="outlined" component="label">
+        <Button variant="outlined" component="label" size="small">
           Upload a file
           <input 
             type="file"
@@ -129,13 +129,12 @@ const userProfilePage = () => {
             id="inputImage" name="questionImage"
             accept="image/png, image/jpeg"
             onChange ={(e)=> handleImg(e)}
-
            />
         </Button>
-
+        <br/>
         <Button 
           size="small"
-          onClick={()=>uplaodImg()}
+          onClick={()=>uploadImage()}
           >Update Profile picture</Button>
 
       </div>
@@ -225,20 +224,20 @@ const userProfilePage = () => {
         </Grid>
         <h2 style={{ marginTop: "80px" }}>My collections</h2>
         <Button variant="outlined">View all my collections</Button>
-        {/* map the first 4 collections for user */}
         <Grid container spacing={2}>
           <Grid item xs={3}>
             <img src={reset} alt="one person sitting, one person standing" />
-            <Button variant="text">Collection title</Button>
+            <Button variant="text">Main collection</Button>
             <br />
             <Chip label="Public" size="small" />
           </Grid>
           <Grid item xs={3}>
             <img src={reset} alt="one person sitting, one person standing" />
-            <Button variant="text">Collection title</Button>
+            <Button variant="text">Read collection</Button>
             <br />
             <Chip label="Private" size="small" />
           </Grid>
+          {/* map the first 2 collections for user */}
           <Grid item xs={3}>
             <img src={reset} alt="one person sitting, one person standing" />
             <Button variant="text">Collection title</Button>

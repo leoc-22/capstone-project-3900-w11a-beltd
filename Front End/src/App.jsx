@@ -14,6 +14,7 @@ import GoalSettingPage from "./Pages/goalSetting";
 import BookProfilePage from "./Pages/bookProfile";
 import ForgetPasswordPage from "./Pages/forgetPassword";
 import CollectionPage from "./Pages/CollectionPage";
+import CollectionDetailPage from "./Pages/collectionDetailPage";
 
 function App() {
   return (
@@ -64,6 +65,9 @@ function App() {
       </Switch>
       <Switch>
         <Route exact path="/collections" component={CollectionPage}></Route>
+      </Switch>
+      <Switch>
+        <Route exact path="/collection-detail" component={CollectionDetailPage}></Route>
       </Switch>
     </Router>
   );

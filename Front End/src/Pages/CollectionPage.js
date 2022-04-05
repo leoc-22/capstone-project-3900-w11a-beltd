@@ -9,28 +9,20 @@ import Button from "@mui/material/Button";
 
 
 const useStyles = makeStyles({
-  
   main: {
     minHeight: "1100px",
-    marginTop: "50px",
-  },
-  inputImage : {
-    marginLeft : "0px"
-  },
-  profileSection : {
-    marginTop : "30px",
-    marginBottom : "30px"
+    minWidth: "500px",
+    width: "80%",
+    margin: "0 auto",
+    marginTop: "100px",
   },
   subTitle : {
-    marginLeft : "100px",
     marginTop : "50px",
     color : "rgb(51, 153, 255)"
   },
   textField : {
     width: "400px",
-    marginTop: 20,
     marginBottom :20,
-    marginLeft: "20%",
   }
 });
   
@@ -42,8 +34,8 @@ export default function CollectionPage(){
 
   useEffect(() => {
     getCollectionData();
-    //document.title = "User Profile | Booklab";
-  }, []);
+    document.title = "Collections | Booklab";
+  }, [collectionArr]);
 
   async function getCollectionData(){
     let res = await axios({
@@ -79,27 +71,25 @@ export default function CollectionPage(){
     <div>
       <AuthenicatedTopBar></AuthenicatedTopBar>
       <div className={classes.main}>
+        <h1>Collections</h1>
         <div className={classes.textField}> 
           <TextField
             id="newCollection"
-            label="Add Collection"
+            label="Create a New Collection"
             variant="standard"
             style={{
               width: "100%",
-              marginTop: 20,
               marginBottom :20,
-              marginLeft: "0%",
             }}
           />
           <Button 
             variant="contained"
             onClick={() => addCollection()}
-          >New Collection</Button>
+          >Add Collection</Button>
         </div>
           
-        <h2 className={classes.subTitle}>my Collections</h2>
+        <h2 className={classes.subTitle}>My Collections</h2>
         <CollectionsCarousel collections = {collectionArr}></CollectionsCarousel>
-
 
         <h2 className={classes.subTitle}>Popular Collections</h2>
         <CollectionsCarousel collections = {collectionArr}></CollectionsCarousel>
