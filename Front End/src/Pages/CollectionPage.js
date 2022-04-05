@@ -27,11 +27,11 @@ const useStyles = makeStyles({
     color : "rgb(51, 153, 255)"
   },
   textField : {
-    width: "50%",
+    width: "60%",
     marginTop: 20,
     marginBottom :20,
     minHeight : "100px",
-    marginLeft: "25%",
+    marginLeft: "20%",
     borderRadius : "10px",
     border: "1px solid rgb(51, 153, 255)"
 
@@ -165,7 +165,7 @@ export default function CollectionPage(){
             variant="contained"
             onClick={() => addCollection()}
             style = {{
-              marginLeft : "100px"
+              marginLeft : "50px"
             }}
           >New Collection</Button>
           <div hidden id ="newCollectionText" className={classes.CollectionCreated}>Collection Created</div>

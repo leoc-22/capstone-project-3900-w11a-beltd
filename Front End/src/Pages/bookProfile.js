@@ -1,3 +1,4 @@
+/* eslint-disable */
 
 import React, { useEffect, useState } from "react";
 import AuthenicatedTopBar from "../Components/AuthenticatedTopBar";
@@ -47,10 +48,12 @@ const bookProfilePage = () => {
   const [rating, setRating] = useState(null);
   const [bookReviews , setBookReviews] = useState([]);
   const [changed , setChanged] = useState(0);
+  const [goalsArr, setGoalsArr] = useState([]);
 
   const classes = useStyles();
   const queryString = window.location.search.slice(1);
-  
+  //console.log(queryString);
+
   useEffect(() => {
     document.title = "Book profile | Booklab";
     getData();
@@ -66,6 +69,9 @@ const bookProfilePage = () => {
         console.error(`Error: ${error}`);
       });
   }
+
+
+
 
   function getTargetBook(res) {
     for (let i = 0; i < res.length; i++) {
@@ -118,6 +124,71 @@ const bookProfilePage = () => {
     //console.log(curBookReviews);
     setBookReviews(curBookReviews);
   }
+
+
+  async function markRead(){
+    
+
+    let userEmail = sessionStorage.getItem("email");
+    let res = await axios({
+      method : "get",
+      url : "http://localhost:8001/oneuser/" + userEmail,
+    });
+    let myGoals = res.data.goals;
+
+    let allGoals = await axios({
+      method : "get",
+      url : "http://localhost:8001/myGoals",
+    });
+    let allMygoals = [];
+
+    for (let i =0 ;i < allGoals.data.length ; i++){
+      let curGoal = allGoals.data[i]["_id"];
+      for (let j = 0; j<myGoals.length ; j ++ ){
+        if (myGoals[j] == curGoal){
+          allMygoals.push(allGoals.data[i]);
+        }
+      }
+    }
+    setGoalsArr(allMygoals);
+    for (let i =0; i <allMygoals.length ; i++){
+      advanceGoal(allMygoals[i]);
+    } 
+    
+
+    /*
+    let res2 = await axios({
+      method : "patch",
+      url : "http://localhost:8001/read",
+      data: {
+        b_id :  queryString
+      }
+    });
+    console.log(res2);
+    */
+    let tmp = changed;
+    tmp+=1;
+    setChanged(tmp);
+
+  }
+
+
+  async function advanceGoal(goalId){
+    await axios({
+      method : "patch",
+      url : "http://localhost:8001/goal",
+      data:{
+        _id : goalId
+      }
+    });
+    //let tmp = goalsCreated;
+    //tmp +=1;
+    //setGoalsCreated(tmp);
+    return;
+  }
+
+
+
   if (changed == 0){
     window.scrollTo(0, 0);
   }
@@ -146,6 +217,7 @@ const bookProfilePage = () => {
             <Button
               variant="contained"
               sx={{ marginRight: "16px", marginBottom: "20px" }}
+              onClick = {()=>markRead()}
             >
               Mark as read
             </Button>

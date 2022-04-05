@@ -1,3 +1,4 @@
+/* eslint-disable */
 
 import React, { useEffect, useState } from "react";
 import AuthenicatedTopBar from "../Components/AuthenticatedTopBar";
@@ -85,7 +86,6 @@ const goalSettingPage = () => {
       }
     }
     setGoalsArr(allMygoals);
-    console.log(allMygoals);
   }
 
   async function saveGoal(){
@@ -111,13 +111,9 @@ const goalSettingPage = () => {
     document.getElementById("endDate").value = "";
     document.getElementById("sucessGoal").hidden = false;
     document.getElementById("failedGoal").hidden = true;
-
-
     let tmp = goalsCreated;
     tmp +=1;
     setGoalsCreated(tmp);
-
-
     return; 
   }
 
@@ -138,13 +134,38 @@ const goalSettingPage = () => {
   
   async function advanceGoal(targetGoal){
     let goalId = targetGoal.goal._id;
-    await axios({
+    let res = await axios({
       method : "patch",
       url : "http://localhost:8001/goal",
       data:{
         _id : goalId
       }
     });
+
+    let allGoals = await axios({
+      method : "get",
+      url : "http://localhost:8001/myGoals",
+    }); 
+    let curGoal;
+    for (let i = 0; i< allGoals.data.length ; i++){
+      if (allGoals.data[i]["_id"] == goalId){
+        curGoal = allGoals.data[i];
+        break;
+      }
+    }
+
+    //console.log(curGoal);
+
+    if(curGoal.current >= curGoal.target){
+      await axios({
+        method : "patch",
+        url : "http://localhost:8001/goalComplete",
+        data:{
+          _id : goalId
+        }
+      });
+    }
+
     let tmp = goalsCreated;
     tmp +=1;
     setGoalsCreated(tmp);
