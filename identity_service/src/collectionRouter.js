@@ -92,7 +92,16 @@ app.patch("/collectionPub", async (req, res) => {
   );
 });
 
-// TODO Get all books in a collection
+// Get all books in a collection
+app.get("/collectionBooks", async (req, res) => { //CHANGE FIELD DEPENDING ON BOOK MODEL
+  const books = await collectionModel.find({ b_id: req.body.b_id }, function (err, docs) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(docs);
+    }
+  }).clone().catch(function(err){ console.log(err)});
+});
 
 // TODO Add a book to a collection (take in b_id + c_id) NOT SURE THSI WORKS
 app.patch("/addBook", async (req, res) => {
@@ -117,8 +126,41 @@ app.patch("/addBook", async (req, res) => {
 });
 
 // TODO Remove a book from a collection (take in b_id + c_id)
+app.delete("/removeBook", async (req, res) => {
+  let _id = req.body._id;
+  var query = { b_id: req.body.b_id };
+  // Find and remove
+  const collection = await collectionModel.findById({_id})
+    .findOneAndRemove(query, function(err, res) {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(res);
+      }
+  });
+});
+
 
 // TODO Move book to "Read" collection
+app.update("/readBook", async (req, res) => {
+  const readCollection = await collectionModel.find({ user: req.body.user }, function (err, docs) {
+    if (err) {
+      console.log(err);
+    } else {
+      console.log(docs);
+    }
+  }).clone().catch(function(err){ console.log(err)})
+    .find({ name: "Read" });
+
+  const _id = readCollection._id;
+  const updatedReadCollection = await collectionModel.findByIdAndUpdate(
+    {_id},
+    { $push: { "books": req.body.book } },
+    { new: true }
+  );
+
+  console.log(updatedReadCollection);
+});
 
 // TODO Remove a collection??
 
