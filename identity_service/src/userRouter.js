@@ -26,7 +26,7 @@ app.get("/oneuser/:email", async (req, res) => {
   const user = await userModel.findOne({ email: req.params.email });
 
   try {
-    console.log(user);
+    // console.log(user);
     res.send(user);
   } catch (error) {
     console.log("Cannot find this user");
@@ -119,7 +119,11 @@ var storage = multer.diskStorage({
 
 // Specifying the required file type
 const fileFilter = (req, file, cb) => {
-  if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
+  if (
+    file.mimetype === "image/jpeg" ||
+    file.mimetype === "image/jpg" ||
+    file.mimetype === "image/png"
+  ) {
     cb(null, true);
   } else {
     cb(new Error("Incorrect Image File Type"), false);
@@ -137,16 +141,17 @@ app.patch("/upload", upload.single("image"), async (req, res) => {
   let query = { email: req.body.email };
   console.log(req.file);
 
+  let imgPath = "http://localhost:8001/" + req.file.path;
   userModel.findOneAndUpdate(
     query,
     {
-      image: req.file.path,
+      image: imgPath,
     },
     { upsert: false },
     (err) => {
       if (err) return res.status(500).send(err);
       console.log("User image stored");
-      res.send("http://localhost:8001/" + req.file.path);
+      res.send(imgPath);
     }
   );
 });
