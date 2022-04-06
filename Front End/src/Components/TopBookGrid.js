@@ -5,10 +5,6 @@ import TopBookItem from "./TopBookItem";
 import PropTypes from "prop-types";
 
 const useStyles = makeStyles({
-  main: {
-    marginLeft: "6%",
-    marginRight: "7%",
-  },
   gridClass: {
     marginTop: "0px",
     minWidth: "15%",
