@@ -3,17 +3,22 @@
 import React from "react";
 import Carousel from "react-grid-carousel";
 import { makeStyles } from "@material-ui/core";
-import PropTypes from "prop-types";
+import { useHistory } from "react-router-dom";
+import collectionDetailPage from "../Pages/collectionDetailPage";
 
 const useStyles = makeStyles({
   main: {
+    marginLeft: "5%",
+    marginRight: "5%",
     position: "relative",
   },
   PopCollections: {
+    marginLeft: "20%",
     marginTop: "10%",
   },
   img: {
-    borderRadius: "8px",
+    borderRadius: "10px",
+    width: "90%",
     height: "200px",
     "&:hover": {
       cursor: "pointer",
@@ -26,7 +31,16 @@ const useStyles = makeStyles({
 
 export default function CollectionsCarousel(props) {
   const classes = useStyles();
-  console.log(props.collections);
+  const history = useHistory();
+
+  function collectionDetail(){
+    history.push({
+      pathname: "/collection-detail",
+      //state: { user: props.user },
+    });
+  }
+
+
   return (
     <div className={classes.main} zindex="999">
    
@@ -43,6 +57,7 @@ export default function CollectionsCarousel(props) {
             src = "PlaceHolder.png"
             className={classes.img}
             alt = "collection img"
+            onClick = {()=>collectionDetail()}
             />
             <h3>{Item.name}</h3>
 

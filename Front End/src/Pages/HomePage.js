@@ -11,20 +11,22 @@ const useStyles = makeStyles({
   main: {
     minHeight: "1100px",
     minWidth: "500px",
-    width: "80%",
-    margin: "0 auto",
-    marginTop: "100px",
   },
   popularCollections: {
+    marginLeft: "7%",
     marginTop: "5%",
   },
   TopBooks: {
+    marginLeft: "7%",
     marginTop: "5%",
   },
 
   headerImg: {
+    minHeight: "300px",
+    marginTop: "100px",
+    marginLeft: "10%",
     borderRadius: "8px",
-    width: "100%",
+    width: "80%",
   },
 });
 

@@ -1,4 +1,3 @@
-/* eslint-disable */ 
 import axios from "axios";
 import React, { useEffect,useState } from "react";
 import AuthenicatedTopBar from "../Components/AuthenticatedTopBar";
@@ -44,7 +43,7 @@ const userProfilePage = () => {
   //const userDetails = location.state.user;
 
   useEffect(() => {
-    getUserData()
+    getUserData();
     document.title = "User Profile | Booklab";
   }, [img]);
 
@@ -53,7 +52,7 @@ const userProfilePage = () => {
     setEmail(sessionStorage.getItem("email"));
     let userEmail = sessionStorage.getItem("email");
 
-      await axios
+    await axios
       .get("http://localhost:8001/oneuser/" + userEmail)
       .then((res) => {
         //console.log(res.data);
@@ -63,30 +62,28 @@ const userProfilePage = () => {
           document.getElementById("img").hidden = false;
 
         }
-      })
-
+      });
   }
 
   const handleImg = async (e) => {
     const file = e.target.files[0];
     //console.log(file);
     uploadImg = await converBse64(file);
-  }
+  };
 
   const converBse64 = (file) => {
-      return new Promise ((resolve, reject) => {
-          const fileReader =new FileReader();
-          fileReader.readAsDataURL(file);
+    return new Promise ((resolve) => {
+      const fileReader =new FileReader();
+      fileReader.readAsDataURL(file);
 
-          fileReader.onload = (()=>{
-              resolve(fileReader.result);
-          })
-
+      fileReader.onload = (()=>{
+        resolve(fileReader.result);
       });
-  }
+    });
+  };
 
-  async function uploadImage(){
-    let res = await axios({
+  async function uplaodImg(){
+    await axios({
       method: "patch",
       url: "http://localhost:8001/upload",
       data: {
@@ -94,9 +91,9 @@ const userProfilePage = () => {
         image : uploadImg
       },
 
-    })
-      setImg(uploadImg);
-      document.getElementById("inputImage").value = "";
+    });
+    setImg(uploadImg);
+    document.getElementById("inputImage").value = "";
   }
 
 
@@ -119,25 +116,26 @@ const userProfilePage = () => {
         <h1>Welcome back, {name}</h1>
         <p>{email}</p>
 
-        <div class={classes.profileSection}>
-        <h2 style={{ marginTop: 50 }}>Upload a new profile picture</h2>
-        <Button variant="outlined" component="label" size="small">
-          Upload a file
-          <input 
-            type="file"
-            hidden 
-            id="inputImage" name="questionImage"
-            accept="image/png, image/jpeg"
-            onChange ={(e)=> handleImg(e)}
-           />
-        </Button>
-        <br/>
-        <Button 
-          size="small"
-          onClick={()=>uploadImage()}
+        <div className={classes.profileSection}>
+          <h2 style={{ marginTop: 50 }}>Upload a new profile picture</h2>
+          <Button variant="outlined" component="label">
+            Upload a file
+            <input 
+              type="file"
+              hidden 
+              id="inputImage" name="questionImage"
+              accept="image/png, image/jpeg"
+              onChange ={(e)=> handleImg(e)}
+
+            />
+          </Button>
+
+          <Button 
+            size="small"
+            onClick={()=>uplaodImg()}
           >Update Profile picture</Button>
 
-      </div>
+        </div>
 
         {/* update grid with user info */}
         <Grid container spacing={3}>

@@ -1,3 +1,4 @@
+/* eslint-disable */
 
 import React, { useEffect, useState } from "react";
 import AuthenicatedTopBar from "../Components/AuthenticatedTopBar";
@@ -11,7 +12,6 @@ import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import Rating from "@mui/material/Rating";
 import TextField from "@mui/material/TextField";
 import axios from "axios";
 // import { useLocation } from "react-router-dom";
@@ -33,28 +33,31 @@ const useStyles = makeStyles({
     padding : "10px",
     marginBottom : "20px"
   },
-  h2: {
-    color: "rgb(51, 153, 255)"
+  reviewDiv :{
+    marginTop : "20px",
   }
 });
 
 const bookProfilePage = () => {
   // const location = useLocation();
-  window.scrollTo(0, 0);
 
   const [title, setTitle] = useState(null);
   const [author, setAuthor] = useState(null);
   const [bookImg, setImg] = useState(null);
   const [amzLink, setAmzLink] = useState(null);
   const [rating, setRating] = useState(null);
-  
+  const [bookReviews , setBookReviews] = useState([]);
+  const [changed , setChanged] = useState(0);
+  const [goalsArr, setGoalsArr] = useState([]);
+
   const classes = useStyles();
   const queryString = window.location.search.slice(1);
-  
+  //console.log(queryString);
+
   useEffect(() => {
-    getData();
     document.title = "Book profile | Booklab";
-  }, []);
+    getData();
+  }, [changed]);
 
   async function getData() {
     await axios
@@ -67,6 +70,9 @@ const bookProfilePage = () => {
       });
   }
 
+
+
+
   function getTargetBook(res) {
     for (let i = 0; i < res.length; i++) {
       if (res[i]["_id"] == queryString) {
@@ -74,8 +80,8 @@ const bookProfilePage = () => {
         setAuthor(res[i]["authors"]);
         setImg(res[i]["image"]);
         setAmzLink(res[i]["link"]);
-        setRating(res[i]["rating"]);
-        console.log(res[i]);
+        setRating("Rating: " + res[i]["rating"]);
+        getReviews(res[i]["title"]);
         return;
       }
     }
@@ -90,16 +96,102 @@ const bookProfilePage = () => {
       method: "post",
       url : "http://localhost:8001/review",
       data : {
+        user : sessionStorage.getItem("id"),
         title : title,
         review : document.getElementById("myReview").value
       }
 
     });
     document.getElementById("myReview").value = "";
+    let tmp = changed;
+    tmp+=1;
+    setChanged(tmp);
     return;
   }
 
-  const [value, setValue] = React.useState(2);
+  async function getReviews(bookTitle){
+    let res = await axios({
+      method: "get",
+      url : "http://localhost:8001/review",
+    });
+    //console.log(res.data);
+    let curBookReviews = [];
+    for (let i =0; i < res.data.length; i ++){
+      if (res.data[i].title == bookTitle){
+        curBookReviews.push(res.data[i]);
+      }
+    }
+    //console.log(curBookReviews);
+    setBookReviews(curBookReviews);
+  }
+
+
+  async function markRead(){
+    
+
+    let userEmail = sessionStorage.getItem("email");
+    let res = await axios({
+      method : "get",
+      url : "http://localhost:8001/oneuser/" + userEmail,
+    });
+    let myGoals = res.data.goals;
+
+    let allGoals = await axios({
+      method : "get",
+      url : "http://localhost:8001/myGoals",
+    });
+    let allMygoals = [];
+
+    for (let i =0 ;i < allGoals.data.length ; i++){
+      let curGoal = allGoals.data[i]["_id"];
+      for (let j = 0; j<myGoals.length ; j ++ ){
+        if (myGoals[j] == curGoal){
+          allMygoals.push(allGoals.data[i]);
+        }
+      }
+    }
+    setGoalsArr(allMygoals);
+    for (let i =0; i <allMygoals.length ; i++){
+      advanceGoal(allMygoals[i]);
+    } 
+    
+
+    /*
+    let res2 = await axios({
+      method : "patch",
+      url : "http://localhost:8001/read",
+      data: {
+        b_id :  queryString
+      }
+    });
+    console.log(res2);
+    */
+    let tmp = changed;
+    tmp+=1;
+    setChanged(tmp);
+
+  }
+
+
+  async function advanceGoal(goalId){
+    await axios({
+      method : "patch",
+      url : "http://localhost:8001/goal",
+      data:{
+        _id : goalId
+      }
+    });
+    //let tmp = goalsCreated;
+    //tmp +=1;
+    //setGoalsCreated(tmp);
+    return;
+  }
+
+
+
+  if (changed == 0){
+    window.scrollTo(0, 0);
+  }
 
   return (
     <div>
@@ -125,6 +217,7 @@ const bookProfilePage = () => {
             <Button
               variant="contained"
               sx={{ marginRight: "16px", marginBottom: "20px" }}
+              onClick = {()=>markRead()}
             >
               Mark as read
             </Button>
@@ -261,14 +354,8 @@ const bookProfilePage = () => {
         </Grid>
         <br />
 
-        <h2 className={classes.h2}>Write a review</h2>
-        <Rating
-          name="simple-controlled"
-          value={value}
-          onChange={(event, newValue) => {
-            setValue(newValue);
-          }}
-        />
+        <h2>Write a review</h2>
+        
         <br />
         <TextField
           className={classes.reviewBar}
@@ -276,7 +363,7 @@ const bookProfilePage = () => {
           label="Review"
           variant="standard"
           style={{
-            width: "50%",
+            width: "60%",
             marginTop: 20,
             marginBottom :20,
             marginLeft: "0%",
@@ -288,20 +375,18 @@ const bookProfilePage = () => {
           onClick={() => submitReview()}
         >submit review</Button>
         <br />
-        <h2 className={classes.h2}>Community reviews</h2>
-        <Card sx={{ width: "50%" }}>
-          <CardContent>
-            <Typography
-              sx={{ fontSize: 14 }}
-              color="text.secondary"
-              gutterBottom
+        <br/>
+        <h2>Community reviews</h2>
+        {bookReviews.map((rev,index) => (
+          <div key= {index} className={classes.reviewDiv}>
+            <Card sx={{ width: "60%" }}
             >
-              Review author
-            </Typography>
-            <Rating name="read-only" value="2" readOnly />
-            <Typography variant="body2">well meaning and kindly.</Typography>
-          </CardContent>
-        </Card>
+              <CardContent>
+                <Typography variant="body2">{rev.review}</Typography>
+              </CardContent>
+            </Card>
+          </div>
+        ))}
       </div>
     </div>
   );

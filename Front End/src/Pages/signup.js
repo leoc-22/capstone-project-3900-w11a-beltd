@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React, { useState } from "react";
 import Navbar from "../Components/Navbar";
 import { useHistory } from "react-router-dom";
@@ -82,8 +84,11 @@ export default function SignUpPage() {
         },
       }).then((res) => {
         if (res.status === 200) {
+          makeDefaultCollections(res["data"]["_id"]);
           sessionStorage.setItem("email", res["data"]["email"]);
           sessionStorage.setItem("name", res["data"]["name"]);
+          sessionStorage.setItem("id", res["data"]["_id"]);
+
           history.push("/home");
         } else {
           document.getElementById("userError").innerText = "ERROR: " + res.status;
@@ -94,6 +99,30 @@ export default function SignUpPage() {
       console.log("Unable to create user");
       document.getElementById("signUpFailed").hidden = false;
     }
+  }
+
+  async function makeDefaultCollections(userId){
+    await axios({
+      method : "post",
+      url : "http://localhost:8001/collection",
+      data : {
+        user : userId,
+        name : "Main",
+        public : false
+      }
+    });
+
+    await axios({
+      method : "post",
+      url : "http://localhost:8001/collection",
+      data : {
+        user : userId,
+        name : "Read",
+        public : false
+      }
+    });
+
+    return;
   }
 
   return (
