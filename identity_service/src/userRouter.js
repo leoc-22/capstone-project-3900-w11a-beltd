@@ -107,7 +107,7 @@ app.post("/login", async (req, res) => {
   }
 });
 
-// Upload profile picture
+// Upload a profile picture
 
 // Specifying the storage location
 var storage = multer.diskStorage({
@@ -137,17 +137,18 @@ const upload = multer({
 // and send the stored image route as res
 app.patch("/upload", upload.single("image"), async (req, res) => {
   let query = { email: req.body.email };
+  console.log(req.file);
 
   userModel.findOneAndUpdate(
     query,
     {
-      image: req.body.image,
+      image: req.file.path,
     },
     { upsert: false },
     (err) => {
       if (err) return res.status(500).send(err);
       console.log("User image stored");
-      res.send("http://localhost:8001/" + req.body.image);
+      res.send("http://localhost:8001/" + req.file.path);
     }
   );
 });
