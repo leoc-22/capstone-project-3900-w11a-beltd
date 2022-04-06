@@ -111,9 +111,7 @@ app.post("/login", async (req, res) => {
 
 // Specifying the storage location
 var storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "./uploads/");
-  },
+  destination: "./uploads",
   filename: (req, file, cb) => {
     cb(null, new Date().toISOString() + file.originalname);
   },
