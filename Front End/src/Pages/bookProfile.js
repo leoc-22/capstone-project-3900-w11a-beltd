@@ -155,7 +155,6 @@ const bookProfilePage = () => {
       advanceGoal(allMygoals[i]);
     } 
     
-
     /*
     let res2 = await axios({
       method : "patch",
@@ -165,6 +164,7 @@ const bookProfilePage = () => {
       }
     });
     console.log(res2);
+
     */
     let tmp = changed;
     tmp+=1;

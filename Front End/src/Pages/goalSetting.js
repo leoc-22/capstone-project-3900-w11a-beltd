@@ -134,13 +134,7 @@ const goalSettingPage = () => {
   
   async function advanceGoal(targetGoal){
     let goalId = targetGoal.goal._id;
-    let res = await axios({
-      method : "patch",
-      url : "http://localhost:8001/goal",
-      data:{
-        _id : goalId
-      }
-    });
+
 
     let allGoals = await axios({
       method : "get",
@@ -153,10 +147,8 @@ const goalSettingPage = () => {
         break;
       }
     }
-
-    //console.log(curGoal);
-
-    if(curGoal.current >= curGoal.target){
+    console.log(curGoal.current +1 + "==" +curGoal.target);
+    if(curGoal.current + 1 >= curGoal.target){
       await axios({
         method : "patch",
         url : "http://localhost:8001/goalComplete",
@@ -164,8 +156,29 @@ const goalSettingPage = () => {
           _id : goalId
         }
       });
-    }
+      let tmp = goalsCreated;
+      tmp +=1;
+      setGoalsCreated(tmp);
+      if (curGoal.current + 1  == curGoal.target){
+        let res = await axios({
+          method : "patch",
+          url : "http://localhost:8001/goal",
+          data:{
+            _id : goalId
+          }
+        });  
+      }
+      return;
 
+    } else {
+      let res = await axios({ 
+        method : "patch",
+        url : "http://localhost:8001/goal",
+        data:{
+          _id : goalId
+        }
+      });
+    }
     let tmp = goalsCreated;
     tmp +=1;
     setGoalsCreated(tmp);
