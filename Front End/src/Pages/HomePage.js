@@ -16,7 +16,6 @@ const useStyles = makeStyles({
   },
   subtitle: {
     marginTop : "50px",
-    color : "rgb(51, 153, 255)"
   }
 });
 

@@ -23,7 +23,6 @@ const useStyles = makeStyles({
   },
   headerImg: {
     height: "500px",
-    borderRadius: "8px",
     width: "100%",
   },
   title: {
@@ -31,6 +30,9 @@ const useStyles = makeStyles({
     marginBottom: "10px",
     marginTop: "80px"
   },
+  subtitle: {
+    marginTop : "50px",
+  }
 });
 
 export default function LandingPage() {
@@ -97,9 +99,9 @@ export default function LandingPage() {
             />
           </Grid>
         </Grid>
-        <h2 className={classes.popularCollections}>Popular Collections</h2>
+        <h2 className={classes.subtitle}>Popular collections</h2>
         <CollectionsCarousel collections={collectionArr}></CollectionsCarousel>
-        <h2 className={classes.TopBooks}>Top Books</h2>
+        <h2 className={classes.subtitle}>Top books</h2>
         <TopBookGrid books={books}></TopBookGrid>
       </div>
     </div>

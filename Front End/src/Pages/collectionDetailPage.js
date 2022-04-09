@@ -23,9 +23,6 @@ const useStyles = makeStyles({
     margin: "0 auto",
     marginTop: "100px",
   },
-  h2: {
-    color: "rgb(51, 153, 255)"
-  }
 });
 
 const collectionDetailPage = () => {
@@ -60,8 +57,11 @@ const collectionDetailPage = () => {
           sx={{ width: "80%", marginBottom: "15px" }}
         />
         <br />
-        <Button variant="text" sx={{ marginBottom: "30px" }} >Add book to reading goal</Button>
-        <h2 style={{ color: "rgb(51, 153, 255)" }}>Books in this collection</h2>
+        <Button variant="text">Add book to reading goal</Button>
+        <br/>
+        <Button variant="contained"  sx={{ marginTop: "10px", marginBottom: "30px" }} >Save collection details</Button>
+        {/* Everything above this comment is only seen when editing */}
+        <h2>Books in this collection</h2>
         <Card sx={{ width: "80%", marginBottom: "20px" }}>
           {/* template for books added to reading goal */}
           <CardHeader
@@ -93,7 +93,6 @@ const collectionDetailPage = () => {
           </CardActions>
         </Card>
         <br />
-        <Button variant="contained">Save collection details</Button>
       </div>
     </div>
   );

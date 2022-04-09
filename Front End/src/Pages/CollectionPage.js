@@ -20,16 +20,8 @@ const useStyles = makeStyles({
     margin: "0 auto",
     marginTop: "100px",
   },
-  inputImage: {
-    marginLeft: "0px"
-  },
-  profileSection: {
-    marginTop: "30px",
-    marginBottom: "30px"
-  },
   subtitle: {
     marginTop: "50px",
-    color: "rgb(51, 153, 255)"
   },
   success: {
     marginBottom: "20px"
