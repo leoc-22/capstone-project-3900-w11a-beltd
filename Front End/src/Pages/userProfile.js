@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import AuthenicatedTopBar from "../Components/AuthenticatedTopBar";
 import CollectionsCarousel from "../Components/CollectionsCarousel";
-
+import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
 import Avatar from "@mui/material/Avatar";
 import Grid from "@mui/material/Grid";
@@ -33,6 +33,8 @@ const useStyles = makeStyles({
 
 const userProfilePage = () => {
   const classes = useStyles();
+  const history = useHistory();
+
   const [name, setName] = useState(null);
   const [email, setEmail] = useState(null);
   const [img, setImg] = useState(null);
@@ -179,7 +181,7 @@ const userProfilePage = () => {
             <Card>
               <CardContent>
                 <Typography sx={{ fontSize: 16 }} color="text.primary">
-                  Goal status
+                  Goals
                 </Typography>
                 <Typography
                   sx={{
@@ -198,7 +200,8 @@ const userProfilePage = () => {
                 </Typography>
               </CardContent>
               <CardActions>
-                <Button size="small">Update your goal</Button>
+                <Button size="small" onClick={() => history.push("/reading-goal")}>
+                  Update your goals</Button>
               </CardActions>
             </Card>
           </Grid>

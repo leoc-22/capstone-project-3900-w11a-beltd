@@ -76,7 +76,7 @@ export default function AuthenicatedTopBar() {
         pathname: "/user-settings",
         //state: { user: props.user },
       });
-    } else if (targetPage === "My goals") {
+    } else if (targetPage === "Goals") {
       history.push({
         pathname: "/reading-goal",
         //state: { user: props.user },
