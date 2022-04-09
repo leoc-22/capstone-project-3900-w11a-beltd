@@ -14,7 +14,6 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { makeStyles } from "@material-ui/core";
-import { createTheme } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
   BookLabTitle: {
@@ -25,17 +24,9 @@ const useStyles = makeStyles({
 });
 
 const pages = ["Explore", "Collections", "Recommended for you", "Leader board"];
-const settings = ["Profile", "Settings", "My goals", "Logout"];
+const settings = ["Profile", "Settings", "Goals", "Logout"];
 
 export default function AuthenicatedTopBar() {
-  const theme = createTheme({
-    palette: {
-      secondary: {
-        main: "#0097a7",
-      },
-    },
-  });
-
   const classes = useStyles();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -104,7 +95,6 @@ export default function AuthenicatedTopBar() {
     <AppBar
       position="static"
       color="primary"
-      //theme={theme}
     >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
