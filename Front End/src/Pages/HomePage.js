@@ -42,7 +42,6 @@ const HomePage = () => {
   const [collectionArr, setCollectionArr] = useState([]);
 
   useEffect(() => {
-    //console.log(location.state.email);
     getBookData();
     getUserData();
     getCollectionData();
@@ -54,7 +53,6 @@ const HomePage = () => {
       method: "get",
       url: "http://localhost:8001/myCollections",
     });
-    //console.log(res.data);
     setCollectionArr(res.data);
   }
 

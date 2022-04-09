@@ -24,11 +24,10 @@ const useStyles = makeStyles({
   },
 });
 
-const pages = ["Explore", "Collections","Recommended for you", "Leader board"];
+const pages = ["Explore", "Collections", "Recommended for you", "Leader board"];
 const settings = ["Profile", "Settings", "My goals", "Logout"];
 
 export default function AuthenicatedTopBar() {
-
   const theme = createTheme({
     palette: {
       secondary: {
@@ -64,15 +63,12 @@ export default function AuthenicatedTopBar() {
         pathname: "/search",
         //state: { user: props.user },
       });
-    
-    } else if (targetPage === "Collections"){
+    } else if (targetPage === "Collections") {
       history.push({
         pathname: "/collections",
         //state: { user: props.user },
       });
-    }
-    
-    else {
+    } else {
       return;
     }
   }
@@ -105,7 +101,8 @@ export default function AuthenicatedTopBar() {
   // var userName = localStorage.getItem("name");
 
   return (
-    <AppBar position="static"
+    <AppBar
+      position="static"
       color="primary"
       //theme={theme}
     >
@@ -195,7 +192,7 @@ export default function AuthenicatedTopBar() {
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar
                   //alt={props.user.name}
-                  //src="/static/images/avatar/2.jpg"
+                  src={sessionStorage.getItem("image")}
                 />
               </IconButton>
             </Tooltip>
