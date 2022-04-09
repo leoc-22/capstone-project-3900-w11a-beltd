@@ -50,14 +50,8 @@ export default function CollectionsCarousel(props) {
       >
         {props.collections.map((Item) =>(
           <Carousel.Item>
-          {/* <img
-            src = "PlaceHolder.png"
-            className={classes.img}
-            alt = "collection img"
-            /> */}
             <div className={classes.cover} style={{backgroundColor: randomRgbColor()}} onClick = {()=>collectionDetail()}></div>
-            <h3>{Item.name}</h3>
-
+            <p><b>{Item.name}</b></p>
           </Carousel.Item>
         ))}
       </Carousel>
