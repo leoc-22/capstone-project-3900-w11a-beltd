@@ -1,16 +1,16 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import AuthenicatedTopBar from "../Components/AuthenticatedTopBar";
+import CollectionsCarousel from "../Components/CollectionsCarousel";
+
 import { makeStyles } from "@material-ui/core";
 import Avatar from "@mui/material/Avatar";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-import Chip from "@mui/material/Chip";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import reset from "../Images/reset.svg";
 //import { useLocation } from "react-router-dom";
 
 const useStyles = makeStyles({
@@ -37,11 +37,43 @@ const userProfilePage = () => {
   const [email, setEmail] = useState(null);
   const [img, setImg] = useState(null);
   const [uploadingImg, setUploadingImg] = useState(null);
+  const [myCollections, setMyCollections] = useState([]);
 
   useEffect(() => {
     getUserData();
+    getCollectionData();
     document.title = "User Profile | Booklab";
   }, [img]);
+
+  async function getCollectionData() {
+    let userEmail = sessionStorage.getItem("email");
+    let userData = await axios({
+      method: "get",
+      url: "http://localhost:8001/oneuser/" + userEmail,
+    });
+    let myCollectionsIds = userData.data.collections;
+
+    let res = await axios({
+      method: "get",
+      url: "http://localhost:8001/myCollections"
+    });
+
+    let allCollections = res.data;
+    let allMycollection = [];
+
+    for (let i = 0; i < myCollectionsIds.length; i++) {
+      let curId = myCollectionsIds[i];
+      for (let j = 0; j < allCollections.length; j++) {
+        if (curId == allCollections[j]._id) {
+          allMycollection.push(allCollections[j]);
+        }
+        if (allCollections[j].public == true) {
+          // Set tag to show private or public depending on collection (check CollectionsCarousel.js)
+        }
+      }
+    }
+    setMyCollections(allMycollection);
+  }
 
   async function getUserData() {
     setName(sessionStorage.getItem("name"));
@@ -101,7 +133,7 @@ const userProfilePage = () => {
 
         <div className={classes.profileSection}>
           <h2 style={{ marginTop: 50 }}>Upload a new profile picture</h2>
-          <Button variant="outlined" component="label">
+          <Button component="label">
             Upload your image
             <input
               type="file"
@@ -110,7 +142,7 @@ const userProfilePage = () => {
               onChange={(e) => handleImg(e)}
             />
           </Button>
-          <Button size="small" onClick={() => upload()}>
+          <Button variant="outlined" sx={{ marginLeft: "20px" }} size="small" onClick={() => upload()}>
             Submit
           </Button>
         </div>
@@ -199,34 +231,7 @@ const userProfilePage = () => {
           </Grid>
         </Grid>
         <h2 style={{ marginTop: "80px" }}>My collections</h2>
-        <Button variant="outlined">View all my collections</Button>
-        <Grid container spacing={2}>
-          <Grid item xs={3}>
-            <img src={reset} alt="one person sitting, one person standing" />
-            <Button variant="text">Main collection</Button>
-            <br />
-            <Chip label="Public" size="small" />
-          </Grid>
-          <Grid item xs={3}>
-            <img src={reset} alt="one person sitting, one person standing" />
-            <Button variant="text">Read collection</Button>
-            <br />
-            <Chip label="Private" size="small" />
-          </Grid>
-          {/* map the first 2 collections for user */}
-          <Grid item xs={3}>
-            <img src={reset} alt="one person sitting, one person standing" />
-            <Button variant="text">Collection title</Button>
-            <br />
-            <Chip label="Public" size="small" />
-          </Grid>
-          <Grid item xs={3}>
-            <img src={reset} alt="one person sitting, one person standing" />
-            <Button variant="text">Collection title</Button>
-            <br />
-            <Chip label="Public" size="small" />
-          </Grid>
-        </Grid>
+        <CollectionsCarousel collections={myCollections}></CollectionsCarousel>
       </div>
     </div>
   );

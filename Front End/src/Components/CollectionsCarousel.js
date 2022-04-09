@@ -4,6 +4,7 @@ import React from "react";
 import Carousel from "react-grid-carousel";
 import { makeStyles } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
+import Chip from "@mui/material/Chip";
 import collectionDetailPage from "../Pages/collectionDetailPage";
 
 const useStyles = makeStyles({
@@ -40,7 +41,6 @@ export default function CollectionsCarousel(props) {
 
   return (
     <div className={classes.main} zindex="999">
-   
       <Carousel
         className={classes.PopCollections}
         cols={4}
@@ -52,6 +52,9 @@ export default function CollectionsCarousel(props) {
           <Carousel.Item>
             <div className={classes.cover} style={{backgroundColor: randomRgbColor()}} onClick = {()=>collectionDetail()}></div>
             <p><b>{Item.name}</b></p>
+            {/* Swap public tag or private tag depending on collection */}
+            <Chip label="Public" size="small" />
+            <Chip label="Private" size="small" />
           </Carousel.Item>
         ))}
       </Carousel>
