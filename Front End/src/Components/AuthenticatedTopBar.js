@@ -23,8 +23,8 @@ const useStyles = makeStyles({
   },
 });
 
-const pages = ["Explore", "Collections", "Recommended for you", "Leader board"];
-const settings = ["Profile", "Settings", "Goals", "Logout"];
+const pages = ["Explore", "Collections", "Recommendations", "Leader board"];
+const settings = ["Profile", "Change password", "Goals", "Logout"];
 
 export default function AuthenicatedTopBar() {
   const classes = useStyles();
@@ -59,6 +59,11 @@ export default function AuthenicatedTopBar() {
         pathname: "/collections",
         //state: { user: props.user },
       });
+    } else if (targetPage === "Recommendations") {
+      history.push({
+        pathname: "/recommendations",
+        //state: { user: props.user },
+      });
     } else {
       return;
     }
@@ -71,7 +76,7 @@ export default function AuthenicatedTopBar() {
         pathname: "/user-profile",
         //state: { user: props.user },
       });
-    } else if (targetPage === "Settings") {
+    } else if (targetPage === "Change password") {
       history.push({
         pathname: "/user-settings",
         //state: { user: props.user },
