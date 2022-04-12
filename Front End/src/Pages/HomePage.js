@@ -4,30 +4,19 @@ import TopBookGrid from "../Components/TopBookGrid";
 import AuthenicatedTopBar from "../Components/AuthenticatedTopBar";
 import { makeStyles } from "@material-ui/core";
 import axios from "axios";
-import headerHome from "../Images/headerHome.svg";
 //import { useLocation } from "react-router-dom";
 
 const useStyles = makeStyles({
   main: {
     minHeight: "1100px",
     minWidth: "500px",
-  },
-  popularCollections: {
-    marginLeft: "7%",
-    marginTop: "5%",
-  },
-  TopBooks: {
-    marginLeft: "7%",
-    marginTop: "5%",
-  },
-
-  headerImg: {
-    minHeight: "300px",
-    marginTop: "100px",
-    marginLeft: "10%",
-    borderRadius: "8px",
     width: "80%",
+    margin: "0 auto",
+    marginTop: "100px",
   },
+  subtitle: {
+    marginTop : "50px",
+  }
 });
 
 const HomePage = () => {
@@ -42,7 +31,6 @@ const HomePage = () => {
   const [collectionArr, setCollectionArr] = useState([]);
 
   useEffect(() => {
-    //console.log(location.state.email);
     getBookData();
     getUserData();
     getCollectionData();
@@ -54,7 +42,6 @@ const HomePage = () => {
       method: "get",
       url: "http://localhost:8001/myCollections",
     });
-    //console.log(res.data);
     setCollectionArr(res.data);
   }
 
@@ -98,15 +85,10 @@ const HomePage = () => {
       <AuthenicatedTopBar></AuthenicatedTopBar>
 
       <div className={classes.main}>
-        <img
-          className={classes.headerImg}
-          src={headerHome}
-          alt={"booklab: collect and share your favourite books"}
-        />
-        <h2 className={classes.popularCollections}>Popular Collections</h2>
-
+        <h1>Explore your new favourite books</h1>
+        <h2 className={classes.subtitle}>Popular Collections</h2>
         <CollectionsCarousel collections={collectionArr}></CollectionsCarousel>
-        <h2 className={classes.TopBooks}>Top Books</h2>
+        <h2 className={classes.subtitle}>Top Books</h2>
         <TopBookGrid books={books}></TopBookGrid>
       </div>
     </div>

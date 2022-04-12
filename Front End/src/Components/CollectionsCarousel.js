@@ -3,22 +3,15 @@
 import React from "react";
 import Carousel from "react-grid-carousel";
 import { makeStyles } from "@material-ui/core";
-import PropTypes from "prop-types";
+import { useHistory } from "react-router-dom";
+import Chip from "@mui/material/Chip";
+import collectionDetailPage from "../Pages/collectionDetailPage";
 
 const useStyles = makeStyles({
-  main: {
-    marginLeft: "5%",
-    marginRight: "5%",
-    position: "relative",
-  },
-  PopCollections: {
-    marginLeft: "20%",
-    marginTop: "10%",
-  },
-  img: {
-    borderRadius: "10px",
-    width: "90%",
+  cover: {
+    borderRadius: "8px",
     height: "200px",
+    width: "100%",
     "&:hover": {
       cursor: "pointer",
     },
@@ -30,26 +23,38 @@ const useStyles = makeStyles({
 
 export default function CollectionsCarousel(props) {
   const classes = useStyles();
-  console.log(props.collections);
+  const history = useHistory();
+
+  function collectionDetail(){
+    history.push({
+      pathname: "/collection-detail",
+      //state: { user: props.user },
+    });
+  }
+
+  const randomRgbColor = () => {
+    const r = Math.floor(Math.random() * 256);
+    const g = Math.floor(Math.random() * 256);
+    const b = Math.floor(Math.random() * 256);
+    return `rgb(${r}, ${g}, ${b})`;
+  };
+
   return (
     <div className={classes.main} zindex="999">
-   
       <Carousel
         className={classes.PopCollections}
         cols={4}
         rows={1}
-        gap={5}
+        gap={20}
         loop
       >
         {props.collections.map((Item) =>(
           <Carousel.Item>
-          <img
-            src = "PlaceHolder.png"
-            className={classes.img}
-            alt = "collection img"
-            />
-            <h3>{Item.name}</h3>
-
+            <div className={classes.cover} style={{backgroundColor: randomRgbColor()}} onClick = {()=>collectionDetail()}></div>
+            <p><b>{Item.name}</b></p>
+            {/* Swap public tag or private tag depending on collection */}
+            <Chip label="Public" size="small" />
+            <Chip label="Private" size="small" />
           </Carousel.Item>
         ))}
       </Carousel>

@@ -9,6 +9,9 @@ const bookSchema = new mongoose.Schema(
     link: { type: String, required: true },
     asin: { type: String, required: true },
     // prices in the future
+    bookid: { type: Number, required: true },
+    categories: [{ type: Object, required: true }],
+    userRating: { type: Number, required: false },
   },
   { collection: "Books" }
 );

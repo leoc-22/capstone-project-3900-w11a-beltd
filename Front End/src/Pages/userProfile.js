@@ -1,17 +1,16 @@
-/* eslint-disable */ 
 import axios from "axios";
-import React, { useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 import AuthenicatedTopBar from "../Components/AuthenticatedTopBar";
+import CollectionsCarousel from "../Components/CollectionsCarousel";
+import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
 import Avatar from "@mui/material/Avatar";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-import Chip from "@mui/material/Chip";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import reset from "../Images/reset.svg";
 //import { useLocation } from "react-router-dom";
 
 const useStyles = makeStyles({
@@ -22,123 +21,133 @@ const useStyles = makeStyles({
     margin: "0 auto",
     marginTop: "100px",
   },
-  inputImage : {
-    marginLeft : "0px"
+  inputImage: {
+    marginLeft: "0px",
+    width: "15%",
   },
-  profileSection : {
-    marginTop : "30px",
-    marginBottom : "30px"
-  }
+  profileSection: {
+    marginTop: "30px",
+    marginBottom: "30px",
+  },
 });
 
 const userProfilePage = () => {
   const classes = useStyles();
-  const [name, setName ] = useState(null);
+  const history = useHistory();
+
+  const [name, setName] = useState(null);
   const [email, setEmail] = useState(null);
   const [img, setImg] = useState(null);
-
-  let uploadImg;
-
-  //const location = useLocation();
-
-  //const userDetails = location.state.user;
+  const [uploadingImg, setUploadingImg] = useState(null);
+  const [myCollections, setMyCollections] = useState([]);
 
   useEffect(() => {
-    getUserData()
-    //document.title = "User Profile | Booklab";
+    getUserData();
+    getCollectionData();
+    document.title = "User Profile | Booklab";
   }, [img]);
 
-  async function getUserData(){
+  async function getCollectionData() {
+    let userEmail = sessionStorage.getItem("email");
+    let userData = await axios({
+      method: "get",
+      url: "http://localhost:8001/oneuser/" + userEmail,
+    });
+    let myCollectionsIds = userData.data.collections;
+
+    let res = await axios({
+      method: "get",
+      url: "http://localhost:8001/myCollections"
+    });
+
+    let allCollections = res.data;
+    let allMycollection = [];
+
+    for (let i = 0; i < myCollectionsIds.length; i++) {
+      let curId = myCollectionsIds[i];
+      for (let j = 0; j < allCollections.length; j++) {
+        if (curId == allCollections[j]._id) {
+          allMycollection.push(allCollections[j]);
+        }
+        if (allCollections[j].public == true) {
+          // Set tag to show private or public depending on collection (check CollectionsCarousel.js)
+        }
+      }
+    }
+    setMyCollections(allMycollection);
+  }
+
+  async function getUserData() {
     setName(sessionStorage.getItem("name"));
     setEmail(sessionStorage.getItem("email"));
+    // setImg(sessionStorage.setItem("image"));
     let userEmail = sessionStorage.getItem("email");
 
-      await axios
+    await axios
       .get("http://localhost:8001/oneuser/" + userEmail)
       .then((res) => {
-        //console.log(res.data);
-        if (res.data.image.length > 0){
+        console.log(`user info: ${JSON.stringify(res.data)}`);
+        if (res.data.image !== null) {
           setImg(res.data.image);
           document.getElementById("avatar").hidden = true;
           document.getElementById("img").hidden = false;
-
         }
-      })
-
-  }
-
-  const handleImg = async (e) => {
-    const file = e.target.files[0];
-    //console.log(file);
-    uploadImg = await converBse64(file);
-  }
-
-  const converBse64 = (file) => {
-      return new Promise ((resolve, reject) => {
-          const fileReader =new FileReader();
-          fileReader.readAsDataURL(file);
-
-          fileReader.onload = (()=>{
-              resolve(fileReader.result);
-          })
-
       });
   }
 
-  async function uplaodImg(){
+  const handleImg = (e) => {
+    setUploadingImg(e.target.files[0]);
+  };
+
+  async function upload() {
+    var formData = new FormData();
+    formData.append("email", sessionStorage.getItem("email"));
+    formData.append("image", uploadingImg);
+
     let res = await axios({
       method: "patch",
       url: "http://localhost:8001/upload",
-      data: {
-        email : sessionStorage.getItem("email"),
-        image : uploadImg
+      data: formData,
+      headers: {
+        "Content-Type": "multipart/form-data",
       },
+    });
 
-    })
-      setImg(uploadImg);
-      document.getElementById("inputImage").value = "";
+    setImg(uploadingImg);
+    sessionStorage.setItem("image", res.data);
+    // document.getElementById("inputImage").value = "";
   }
-
-
-  // var userName = localStorage.getItem("name");
 
   return (
     <div>
       <AuthenicatedTopBar></AuthenicatedTopBar>
       <div className={classes.main}>
-
-        <div id = "avatar">
+        <div id="avatar">
           <Avatar sx={{ width: 80, height: 80 }}></Avatar>
         </div>
 
-        <div id = "img" hidden>
-          <img src = {img}/>
+        <div id="img" hidden>
+          <img className={classes.inputImage} src={img} />
         </div>
-
 
         <h1>Welcome back, {name}</h1>
         <p>{email}</p>
 
-        <div class={classes.profileSection}>
-        <h2 style={{ marginTop: 50 }}>Upload a new profile picture</h2>
-        <Button variant="outlined" component="label">
-          Upload a file
-          <input 
-            type="file"
-            hidden 
-            id="inputImage" name="questionImage"
-            accept="image/png, image/jpeg"
-            onChange ={(e)=> handleImg(e)}
-
-           />
-        </Button>
-
-        <Button 
-          size="small"
-          onClick={()=>uplaodImg()}
-          >Update Profile picture</Button>
-
-      </div>
+        <div className={classes.profileSection}>
+          <h2 style={{ marginTop: 50 }}>Upload a new profile picture</h2>
+          <Button component="label">
+            Upload your image
+            <input
+              type="file"
+              hidden
+              id="inputImage"
+              onChange={(e) => handleImg(e)}
+            />
+          </Button>
+          <Button variant="outlined" sx={{ marginLeft: "20px" }} size="small" onClick={() => upload()}>
+            Submit
+          </Button>
+        </div>
 
         {/* update grid with user info */}
         <Grid container spacing={3}>
@@ -172,7 +181,7 @@ const userProfilePage = () => {
             <Card>
               <CardContent>
                 <Typography sx={{ fontSize: 16 }} color="text.primary">
-                  Goal status
+                  Goals
                 </Typography>
                 <Typography
                   sx={{
@@ -191,7 +200,8 @@ const userProfilePage = () => {
                 </Typography>
               </CardContent>
               <CardActions>
-                <Button size="small">Update your goal</Button>
+                <Button size="small" onClick={() => history.push("/reading-goal")}>
+                  Update your goals</Button>
               </CardActions>
             </Card>
           </Grid>
@@ -224,34 +234,7 @@ const userProfilePage = () => {
           </Grid>
         </Grid>
         <h2 style={{ marginTop: "80px" }}>My collections</h2>
-        <Button variant="outlined">View all my collections</Button>
-        {/* map the first 4 collections for user */}
-        <Grid container spacing={2}>
-          <Grid item xs={3}>
-            <img src={reset} alt="one person sitting, one person standing" />
-            <Button variant="text">Collection title</Button>
-            <br />
-            <Chip label="Public" size="small" />
-          </Grid>
-          <Grid item xs={3}>
-            <img src={reset} alt="one person sitting, one person standing" />
-            <Button variant="text">Collection title</Button>
-            <br />
-            <Chip label="Private" size="small" />
-          </Grid>
-          <Grid item xs={3}>
-            <img src={reset} alt="one person sitting, one person standing" />
-            <Button variant="text">Collection title</Button>
-            <br />
-            <Chip label="Public" size="small" />
-          </Grid>
-          <Grid item xs={3}>
-            <img src={reset} alt="one person sitting, one person standing" />
-            <Button variant="text">Collection title</Button>
-            <br />
-            <Chip label="Public" size="small" />
-          </Grid>
-        </Grid>
+        <CollectionsCarousel collections={myCollections}></CollectionsCarousel>
       </div>
     </div>
   );

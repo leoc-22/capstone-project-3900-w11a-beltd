@@ -14,6 +14,8 @@ import GoalSettingPage from "./Pages/goalSetting";
 import BookProfilePage from "./Pages/bookProfile";
 import ForgetPasswordPage from "./Pages/forgetPassword";
 import CollectionPage from "./Pages/CollectionPage";
+import CollectionDetailPage from "./Pages/collectionDetailPage";
+import RecommendationsPage from "./Pages/Recommendations";
 
 function App() {
   return (
@@ -56,6 +58,9 @@ function App() {
         <Route exact path="/search" component={SearchPage}></Route>
       </Switch>
       <Switch>
+        <Route exact path="/recommendations" component={RecommendationsPage}></Route>
+      </Switch>
+      <Switch>
         <Route
           exact
           path="/forget-password/:id/:token"
@@ -64,6 +69,9 @@ function App() {
       </Switch>
       <Switch>
         <Route exact path="/collections" component={CollectionPage}></Route>
+      </Switch>
+      <Switch>
+        <Route exact path="/collection-detail" component={CollectionDetailPage}></Route>
       </Switch>
     </Router>
   );

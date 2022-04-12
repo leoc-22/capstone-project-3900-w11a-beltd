@@ -1,4 +1,4 @@
-
+/* eslint-disable */
 import * as React from "react";
 import { useHistory } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
@@ -23,8 +23,8 @@ const useStyles = makeStyles({
   },
 });
 
-const pages = ["Explore", "Collections","Recommended for you", "Leader board"];
-const settings = ["Profile", "Settings", "My goals", "Logout"];
+const pages = ["Explore", "Collections", "Recommendations", "Leader board"];
+const settings = ["Profile", "Change password", "Goals", "Logout"];
 
 export default function AuthenicatedTopBar() {
   const classes = useStyles();
@@ -54,15 +54,17 @@ export default function AuthenicatedTopBar() {
         pathname: "/search",
         //state: { user: props.user },
       });
-    
-    } else if (targetPage === "Collections"){
+    } else if (targetPage === "Collections") {
       history.push({
         pathname: "/collections",
         //state: { user: props.user },
       });
-    }
-    
-    else {
+    } else if (targetPage === "Recommendations") {
+      history.push({
+        pathname: "/recommendations",
+        //state: { user: props.user },
+      });
+    } else {
       return;
     }
   }
@@ -74,12 +76,12 @@ export default function AuthenicatedTopBar() {
         pathname: "/user-profile",
         //state: { user: props.user },
       });
-    } else if (targetPage === "Settings") {
+    } else if (targetPage === "Change password") {
       history.push({
         pathname: "/user-settings",
         //state: { user: props.user },
       });
-    } else if (targetPage === "My goals") {
+    } else if (targetPage === "Goals") {
       history.push({
         pathname: "/reading-goal",
         //state: { user: props.user },
@@ -95,7 +97,10 @@ export default function AuthenicatedTopBar() {
   // var userName = localStorage.getItem("name");
 
   return (
-    <AppBar position="static">
+    <AppBar
+      position="static"
+      color="primary"
+    >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
@@ -182,7 +187,7 @@ export default function AuthenicatedTopBar() {
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                 <Avatar
                   //alt={props.user.name}
-                  //src="/static/images/avatar/2.jpg"
+                  src={sessionStorage.getItem("image")}
                 />
               </IconButton>
             </Tooltip>

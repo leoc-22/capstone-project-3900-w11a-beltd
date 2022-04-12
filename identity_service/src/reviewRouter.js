@@ -65,4 +65,16 @@ app.post("/review", async (req, res) => {
 });
 
 
+app.get("/review", async (req, res) => {
+  const review = await reviewModel.find({});
+
+  try {
+    res.send(review);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+
+
 module.exports = app;

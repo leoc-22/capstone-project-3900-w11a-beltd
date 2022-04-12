@@ -9,8 +9,9 @@ const bookSchema = new mongoose.Schema(
     link: { type: String, required: true },
     asin: { type: String, required: true },
     // prices in the future
-    // added new below
-    category: { type: String, required: true },
+    bookid: { type: Number, required: true },
+    categories: [{ type: Object, required: true }],
+    userRating: { type: Number, required: false },
     publisher: { type: String, required: true },
     date: { type: Date, required: true },
     read: { type: Boolean, required: true },
