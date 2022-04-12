@@ -15,6 +15,8 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Rating from "@mui/material/Rating";
 import axios from "axios";
+import { useHistory } from "react-router-dom";
+
 // import { useLocation } from "react-router-dom";
 
 const useStyles = makeStyles({
@@ -29,6 +31,7 @@ const useStyles = makeStyles({
   },
   bookImage: {
     width: "100%",
+    borderRadius : "5px"
   },
   reviewBar: {
     padding: "10px",
@@ -36,7 +39,30 @@ const useStyles = makeStyles({
   },
   reviewDiv: {
     marginTop: "20px",
+  },
+  gridClass: {
+    marginTop: "0px",
+    minWidth: "15%",
+    minHeight: "275px",
+  },
+
+  img: {
+    borderRadius: "8px",
+    width: "100%",
+    height: "275px",
+    "&:hover": {
+      cursor: "pointer",
+    },
+  },
+  bookTitle: {
+    marginTop: "0%",
+  },
+  reviewUser : {
+    "&:hover": {
+      cursor: "pointer",
+    },
   }
+
 });
 
 const bookProfilePage = () => {
@@ -47,13 +73,19 @@ const bookProfilePage = () => {
   const [bookImg, setImg] = useState(null);
   const [amzLink, setAmzLink] = useState(null);
   const [rating, setRating] = useState(null);
+  const [bookRating, setBookRating] = useState(null);
+
   const [bookReviews, setBookReviews] = useState([]);
   const [changed, setChanged] = useState(0);
   const [category, setCategory] = useState(null);
+  const [categoryId, setCategoryId] = useState(null);
+  const [books, setBooks] = useState([]);
 
   const [goalsArr, setGoalsArr] = useState([]);
 
   const classes = useStyles();
+  const history = useHistory();
+
   const queryString = window.location.search.slice(1);
   //console.log(queryString);
 
@@ -80,9 +112,13 @@ const bookProfilePage = () => {
         setAuthor(res[i]["authors"]);
         setImg(res[i]["image"]);
         setAmzLink(res[i]["link"]);
-        setRating("Rating: " + res[i]["rating"]);
+        setBookRating("Rating: " + res[i]["rating"]);
         getReviews(res[i]["title"]);
         setCategory(res[i].categories[0].name);
+        setCategoryId(res[i].categories[0].id);
+        if (changed == 0){
+          getSimilarBooks(res[i].categories[0].id);
+        }
         return;
       }
     }
@@ -93,12 +129,23 @@ const bookProfilePage = () => {
   }
 
   async function submitReview() {
+    let today = new Date();
+    let dd = String(today.getDate()).padStart(2, '0');
+    let mm = String(today.getMonth() + 1).padStart(2, '0');
+    let yyyy = today.getFullYear();
+    let dateString = dd+"/"+mm +"/"+yyyy;
+    let newRating = rating;
+    if (newRating ==null){
+      newRating = 0;
+    }
     await axios({
       method: "post",
       url: "http://localhost:8001/review",
       data: {
         user: sessionStorage.getItem("id"),
         name : sessionStorage.getItem("name"),
+        date : dateString,
+        rating : newRating,
         title: title,
         review: document.getElementById("myReview").value
       }
@@ -123,7 +170,6 @@ const bookProfilePage = () => {
         curBookReviews.push(res.data[i]);
       }
     }
-    console.log(curBookReviews);
     setBookReviews(curBookReviews);
   }
 
@@ -174,6 +220,33 @@ const bookProfilePage = () => {
     return;
   }
 
+  async function getSimilarBooks(categoryId){
+    let res = await axios({
+      method : "get",
+      url : "http://localhost:8002/similar/" + categoryId,
+   
+    })
+    let tmp = [];
+    for(let i = 0; i < res.data.length ; i++){
+      if (i == 6){
+        break;
+      }
+      tmp.push(res.data[i]);
+    }
+    setBooks(tmp);
+    return;
+  }
+
+  function routeUser(targetBook){
+    const bookId = targetBook.item._id;
+    history.push("/book-profile" + "?"+bookId);
+    location.reload();
+  }
+
+  function goToProfile(userId){
+    history.push("PublicProfiles?id="+userId);
+  }
+
   if (changed == 0) {
     window.scrollTo(0, 0);
   }
@@ -214,7 +287,7 @@ const bookProfilePage = () => {
               <p>Publication date</p>
             </Stack>
             <Stack direction="row" alignItems="center" spacing={2}>
-              <p>{rating}</p>
+              <p>{bookRating}</p>
               <p>Number of readers</p>
               <p>Number of collections</p>
             </Stack>
@@ -279,64 +352,27 @@ const bookProfilePage = () => {
           </Grid>
         </Grid>
         <br />
-        <h2 className={classes.h2}>Recommendations</h2>
-        <Grid container spacing={3}>
-          <Grid item xs={12} md={2}>
-            <img
-              className={classes.image}
-              src={login}
-              alt="two people standing"
-            />
-            <p>Title</p>
-            <p>Author</p>
+        <h2 className={classes.h2}>{"Other " + category + " books"}</h2>
+        <Grid container spacing={2}>
+          {books.map((item) =>(
+            <Grid item xs={4} sm={3} md={2} className={classes.gridClass}>
+              <img
+                key = {item._id}
+                onClick={() =>routeUser({item})}
+                className={classes.img}
+                src={item.image}
+              />
+              <div className={classes.bookData}>
+                <span className="bookTitle">
+                  <b>{item.title}</b>
+                </span>
+                <br></br>
+                <span className="bookTitle">{item.authors}</span>
+              </div>
+              <br></br>
           </Grid>
-          <Grid item xs={12} md={2}>
-            <img
-              className={classes.image}
-              src={login}
-              alt="two people standing"
-            />
-            <p>Title</p>
-            <p>Author</p>
-          </Grid>
-          <Grid item xs={12} md={2}>
-            <img
-              className={classes.image}
-              src={login}
-              alt="two people standing"
-            />
-            <p>Title</p>
-            <p>Author</p>
-          </Grid>
-          <Grid item xs={12} md={2}>
-            <img
-              className={classes.image}
-              src={login}
-              alt="two people standing"
-            />
-            <p>Title</p>
-            <p>Author</p>
-          </Grid>
-          <Grid item xs={12} md={2}>
-            <img
-              className={classes.image}
-              src={login}
-              alt="two people standing"
-            />
-            <p>Title</p>
-            <p>Author</p>
-          </Grid>
-          <Grid item xs={12} md={2}>
-            <img
-              className={classes.image}
-              src={login}
-              alt="two people standing"
-            />
-            <p>Title</p>
-            <p>Author</p>
-          </Grid>
+          ))}
         </Grid>
-        <br />
 
         <h2>Write a review</h2>
         <Rating
@@ -344,6 +380,7 @@ const bookProfilePage = () => {
           value={rating}
           onChange={(event, newValue) => {
             setRating(newValue);
+            setChanged(1);
           }}
         />
         <br />
@@ -372,9 +409,15 @@ const bookProfilePage = () => {
             <Card sx={{ width: "60%" }}>
               <CardContent>
                 {/* Add user, date, rating */}
-                <Typography variant="body2">{rev.name} / date</Typography>
-                <Rating name="read-only" value={rating} readOnly />
+                  <Rating name="read-only" value={rev.rating} readOnly />
                 <Typography variant="body2">{rev.review}</Typography>
+                <br/>
+
+                <Typography 
+                  className={classes.reviewUser}
+                  variant="body2" 
+                  onClick = {() => goToProfile(rev.user)}><b>{rev.name}</b> {rev.date}</Typography>
+
               </CardContent>
             </Card>
           </div>

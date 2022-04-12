@@ -39,6 +39,7 @@ const useStyles = makeStyles({
 });
 
 export default function TopBookItem(props) {
+  console.log(props);
   const classes = useStyles();
   const history = useHistory();
 
@@ -58,7 +59,7 @@ export default function TopBookItem(props) {
         }
         className={classes.img}
         src={
-          props.book.image == undefined ? "PlaceHolder.png" : props.book.image
+          props.book.image === undefined ? "PlaceHolder.png" : props.book.image
         }
       />
       <div className={classes.bookData}>
@@ -68,14 +69,6 @@ export default function TopBookItem(props) {
         <br></br>
         <span className="bookTitle">{props.book.authors}</span>
       </div>
-      {/* <Button
-        disableRipple
-        class={classes.addCollectionBtn}
-        //onClick={() => history.push("/")}
-      >
-        Add to Collection
-      </Button> */}
-
       <br></br>
     </div>
   );

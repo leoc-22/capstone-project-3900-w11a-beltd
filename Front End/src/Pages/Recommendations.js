@@ -51,6 +51,7 @@ const useStyles = makeStyles({
   },
   bookImg : {
     minWidth : "30%",
+    borderRadius : "5px",
     "&:hover": {
       cursor: "pointer",
     },

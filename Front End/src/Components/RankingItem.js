@@ -8,37 +8,24 @@ import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles({
   RankingDIv: {
-    minHeight : "150px",
-    maxHeight : "150px",
     minWidth : "800px",
     marginTop : "50px",
-    marginLeft : '10%',
+    marginLeft : '20%',
     borderRadius : "10px",
-    width: "80%",
-    background : "#EDEDED"    
-  },
-  innerDiv: {
-    marginLeft : "10%",
-    paddingTop : "10px",
-
+    width: "60%",
+    background : "#EDEDED",
+    alignItems : "center",
+    textAlign : "center"
   },
   picture : {
     marginTop : "5px",
-    minWidth : "200px",
-    maxWidth : "200px",
     borderRadius : "10px",
+    minWidth : "400px"
   },
-  inlineElement : {
-    paddingTop : "50px",
-    display: "inline",
-    marginLeft : "50px",
-    verticalAlign : "top"
+  Element : {
+    paddingTop : "10px",
   },
-  completedText : {
-    display: "inline",
-    marginLeft : "60px",
-    verticalAlign : "top",
-  },
+
   btn : {
         minWidth : "200px",
     maxWidth : "200px",
@@ -76,16 +63,15 @@ export default function RankingItem(props) {
 
   return (
     <div className={classes.RankingDIv}>
-      <div className={classes.innerDiv}>
+        <h2 className={classes.Element} >{props.rank +". " + name}</h2>
           <Button 
           className={classes.btn} 
           disableRipple
           onClick = {() => goToProfile()}>
             <img className={classes.picture} src = {img} alt = "Profile Img"></img>
           </Button>
-          <h2 className={classes.inlineElement} >{props.rank +". " + name}</h2>
-          <h2 className={classes.completedText} >{"Completed " + props.data.count + " Goals"}</h2>
-      </div>
+          <p >{"Completed " + props.data.count + " Goals"}</p>
+          <br/>
     </div>
   )
 }

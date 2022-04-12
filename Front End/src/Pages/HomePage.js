@@ -73,7 +73,6 @@ const HomePage = () => {
     await axios
       .get("http://localhost:8001/oneuser/" + userEmail)
       .then((res) => {
-        console.log(res.data);
         //setUser(res.data);
       })
       .catch((error) => {

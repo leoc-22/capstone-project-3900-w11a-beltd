@@ -35,6 +35,9 @@ const PublicProfiles = () => {
   const [email, setEmail] = useState("");
   const [myCollections, setMyCollections] = useState([]);
   const [img, setImg] = useState(null);
+  const [imgHidden, setImgHidden] = useState(true);
+  const [avatarHidden, setAvatarHidden] = useState(true);
+
   useEffect(() => {
     getUserData();
     //getCollectionData();
@@ -60,7 +63,15 @@ const PublicProfiles = () => {
     }
     setName(user.name);
     setEmail(user.email);
-    setImg(user.image);
+    if (user.image == null){
+      setImgHidden(true);
+      setAvatarHidden(false);
+    }else {
+      setImg(user.image);
+      setImgHidden(false);
+      setAvatarHidden(true);
+    }
+    console.log(user.image);
     getCollectionData(user.collections);
   }
 
@@ -88,14 +99,18 @@ const PublicProfiles = () => {
     }
     setMyCollections(allMycollection);
   }
+  window.scrollTo(0, 0);
 
   return (
     <div>
       <AuthenicatedTopBar></AuthenicatedTopBar>
       <div className={classes.main}>
 
+        <div id="avatar" hidden = {avatarHidden}>
+          <Avatar sx={{ width: 80, height: 80 }}></Avatar>
+        </div>
 
-        <div id="img">
+        <div id="img" hidden = {imgHidden}>
           <img className={classes.inputImage} src={img} alt ="user Img"/>
         </div>
         <h1>{name}</h1>

@@ -91,6 +91,7 @@ export default function LeaderBoard() {
       {rankings.map((item, index) => (
         <RankingItem data = {item} rank = {index+1}></RankingItem>
       ))}
+      <br/>
     </div>
   )
 }
