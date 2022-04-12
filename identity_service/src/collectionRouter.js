@@ -1,7 +1,7 @@
 const express = require("express");
 const collectionModel = require("./models/collectionModel");
 const userModel = require("./models/userModel");
-const bookModel = require("./models/userBookModel");
+const userBookModel = require("./models/userBookModel");
 
 const app = express();
 
@@ -103,41 +103,58 @@ app.get("/collectionBooks", async (req, res) => { //CHANGE FIELD DEPENDING ON BO
   }).clone().catch(function(err){ console.log(err)});
 });
 
-// TODO Add a book to a collection (take in b_id + c_id) NOT SURE THSI WORKS
-app.patch("/addBook", async (req, res) => {
+// Add a book to a collection 
+app.post("/addBook", async (req, res) => {
+  // 1. Create new userbook
+  const userBook = new userBookModel({
+    bookid: req.body.bookid,
+    read: false,
+
+  });
+  try {
+    await userBook.save();
+    res.send(userBook);
+    console.log("Userbook created");
+  } catch (error) {
+    res.status(500).send(error);
+  }
+  
+  // Save collection id from request body
   let _id = req.body._id;
 
-  // Add book to collection
+  // 2. Add book to user collection
   const updatedCollection = await collectionModel.findByIdAndUpdate(
     {_id},
-    { $push: { "books": req.body.book } },
+    { $push: { "books": userBook._id } },
     { new: true }
   );
   console.log(updatedCollection);
+  console.log("Added book to collection");
 
-  // Add collection to book
-  _id = req.body.book;
-  const updatedBook = bookModel.findByIdAndUpdate(
-    {_id},
-    { $push: { "collections": req.body.id } },
-    { new: true }
-  );
-  console.log(updatedBook);
+  // // 3. Add user collection to book
+  // var query = { _id: userBook._id };
+  // console.log("HERE");
+  
+  // const updatedBook = userBookModel.findOneAndUpdate(
+  //   query,
+  //   { $push: { "collections": req.body._id } },
+  //   { new: true }
+  // );
+  // console.log(updatedBook);
+
 });
 
 // TODO Remove a book from a collection (take in b_id + c_id)
 app.delete("/removeBook", async (req, res) => {
   let _id = req.body._id;
-  var query = { b_id: req.body.b_id };
+  var query = { bookid: req.body.bookid };
   // Find and remove
-  const collection = await collectionModel.findById({_id})
-    .findOneAndRemove(query, function(err, res) {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log(res);
-      }
-  });
+  const collection = await collectionModel.findByIdAndUpdate(
+    {_id},
+    { $pull: { "books": req.body.bookid } },
+    { new: true }
+  );
+  console.log(collection);
 });
 
 
