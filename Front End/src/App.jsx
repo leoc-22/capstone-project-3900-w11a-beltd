@@ -15,6 +15,7 @@ import BookProfilePage from "./Pages/bookProfile";
 import ForgetPasswordPage from "./Pages/forgetPassword";
 import CollectionPage from "./Pages/CollectionPage";
 import CollectionDetailPage from "./Pages/collectionDetailPage";
+import RecommendationsPage from "./Pages/Recommendations";
 
 function App() {
   return (
@@ -55,6 +56,9 @@ function App() {
       </Switch>
       <Switch>
         <Route exact path="/search" component={SearchPage}></Route>
+      </Switch>
+      <Switch>
+        <Route exact path="/recommendations" component={RecommendationsPage}></Route>
       </Switch>
       <Switch>
         <Route

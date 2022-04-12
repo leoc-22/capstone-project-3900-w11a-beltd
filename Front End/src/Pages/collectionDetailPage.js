@@ -5,10 +5,12 @@ import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import IconButton from "@mui/material/IconButton";
 import ClearIcon from "@mui/icons-material/Clear";
-import FormGroup from "@mui/material/FormGroup";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Switch from "@mui/material/Switch";
+// import FormGroup from "@mui/material/FormGroup";
+// import FormControlLabel from "@mui/material/FormControlLabel";
+// import Switch from "@mui/material/Switch";
 import TextField from "@mui/material/TextField";
+import Checkbox from "@mui/material/Checkbox";
+
 import Button from "@mui/material/Button";
 import CardActions from "@mui/material/CardActions";
 
@@ -21,9 +23,6 @@ const useStyles = makeStyles({
     margin: "0 auto",
     marginTop: "100px",
   },
-  h2: {
-    color: "rgb(51, 153, 255)"
-  }
 });
 
 const collectionDetailPage = () => {
@@ -38,7 +37,15 @@ const collectionDetailPage = () => {
     <div>
       <AuthenicatedTopBar></AuthenicatedTopBar>
       <div className={classes.main}>
-        <h1>Collection name</h1> {/* Change to Update collection when in edit mode */}
+        <h1>Update collection details</h1>
+        Public?<Checkbox
+          // checked={collectionPublic}
+          // onClick={() => handlePublic()}
+          style={{
+            margin: "10px 0",
+          }}
+        />
+        <br/>
         <TextField
           label="Name your collection"
           variant="standard"
@@ -50,8 +57,11 @@ const collectionDetailPage = () => {
           sx={{ width: "80%", marginBottom: "15px" }}
         />
         <br />
-        <Button variant="text" sx={{ marginBottom: "30px" }} >Add book to reading goal</Button>
-        <h2 style={{ color: "rgb(51, 153, 255)" }}>Books in this collection</h2>
+        <Button variant="text">Add book to reading goal</Button>
+        <br/>
+        <Button variant="contained"  sx={{ marginTop: "10px", marginBottom: "30px" }} >Save collection details</Button>
+        {/* Everything above this comment is only seen when editing */}
+        <h2>Books in this collection</h2>
         <Card sx={{ width: "80%", marginBottom: "20px" }}>
           {/* template for books added to reading goal */}
           <CardHeader
@@ -83,10 +93,6 @@ const collectionDetailPage = () => {
           </CardActions>
         </Card>
         <br />
-        <FormGroup sx={{ marginBottom: "20px" }}>
-          <FormControlLabel control={<Switch defaultChecked color="warning" />} label="Private collection?" />
-        </FormGroup>
-        <Button variant="contained">Save collection details</Button>
       </div>
     </div>
   );
