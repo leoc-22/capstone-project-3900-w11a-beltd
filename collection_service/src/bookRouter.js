@@ -7,18 +7,36 @@ let counter = 0;
 
 // Get all books in the database
 app.get("/books", async (req, res) => {
-  const books = await bookModel.find({});
-
-  try {
-    console.log(`Retrieved ${books.length} books`);
-    res.send(books);
-  } catch (error) {
-    res.status(500).send(error);
-  }
+  await bookModel
+    .find({})
+    .then((books) => {
+      console.log(`Retrieved ${books.length} books`);
+      res.send(books);
+    })
+    .catch((error) => {
+      res.status(500).send(error);
+    });
 });
 
-// WARNING: Calling this API will use Rainforest API for 23 times
-// Get all books from Rainforest API and store them in the database
+app.get("/similar/:categoryID", async (req, res) => {
+  console.log(req.params.categoryID);
+  await bookModel
+    .find({
+      categories: { $elemMatch: { id: { $eq: req.params.categoryID } } },
+    })
+    .then((books) => {
+      console.log(`Retrieved ${books.length} books with the target category`);
+      res.send(books);
+    })
+    .catch((error) => {
+      console.log("category not found");
+      res.status(500).send(error);
+    });
+});
+
+// WARNING: Calling this API will use Rainforest API for multiple times,
+// which costs api usage in the account
+// Get books from 4 categories from Rainforest API and store them in the database
 // Category API overview: https://www.rainforestapi.com/docs/categories-api/overview
 app.get("/updatebookdb1", async () => {
   const params = {
