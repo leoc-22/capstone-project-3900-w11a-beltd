@@ -1,7 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
-import Button from "@mui/material/Button";
+// import Button from "@mui/material/Button";
 import PropTypes from "prop-types";
 
 const useStyles = makeStyles({
@@ -9,9 +9,9 @@ const useStyles = makeStyles({
     height: "500px",
   },
   img: {
-    borderRadius: "10px",
+    borderRadius: "8px",
     width: "100%",
-    height: "320px",
+    height: "275px",
     "&:hover": {
       cursor: "pointer",
     },
@@ -23,7 +23,7 @@ const useStyles = makeStyles({
     marginLeft: "0px",
     width: "100%",
     height: 40,
-    borderRadius: 10,
+    borderRadius: "8px",
     fontSize: "small",
     marginTop: "5%",
     background: "transparent",
@@ -37,8 +37,6 @@ const useStyles = makeStyles({
     minHeight : "70px"
   }
 });
-
-
 
 export default function TopBookItem(props) {
   const classes = useStyles();
@@ -70,13 +68,13 @@ export default function TopBookItem(props) {
         <br></br>
         <span className="bookTitle">{props.book.authors}</span>
       </div>
-      <Button
+      {/* <Button
         disableRipple
         class={classes.addCollectionBtn}
         //onClick={() => history.push("/")}
       >
         Add to Collection
-      </Button>
+      </Button> */}
 
       <br></br>
     </div>

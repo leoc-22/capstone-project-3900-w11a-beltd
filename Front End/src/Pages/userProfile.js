@@ -1,16 +1,17 @@
+/* eslint-disable */
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import AuthenicatedTopBar from "../Components/AuthenticatedTopBar";
+import AdjustedCollections from "../Components/AdjustedCollections";
+import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
 import Avatar from "@mui/material/Avatar";
 import Grid from "@mui/material/Grid";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-import Chip from "@mui/material/Chip";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import reset from "../Images/reset.svg";
 //import { useLocation } from "react-router-dom";
 
 const useStyles = makeStyles({
@@ -33,15 +34,50 @@ const useStyles = makeStyles({
 
 const userProfilePage = () => {
   const classes = useStyles();
+  const history = useHistory();
+
   const [name, setName] = useState(null);
   const [email, setEmail] = useState(null);
   const [img, setImg] = useState(null);
   const [uploadingImg, setUploadingImg] = useState(null);
+  const [myCollections, setMyCollections] = useState([]);
 
   useEffect(() => {
     getUserData();
+    getCollectionData();
     document.title = "User Profile | Booklab";
   }, [img]);
+
+  async function getCollectionData() {
+    let userEmail = sessionStorage.getItem("email");
+    let userData = await axios({
+      method: "get",
+      url: "http://localhost:8001/oneuser/" + userEmail,
+    });
+    let myCollectionsIds = userData.data.collections;
+
+    let res = await axios({
+      method: "get",
+      url: "http://localhost:8001/myCollections"
+    });
+
+    let allCollections = res.data;
+    let allMycollection = [];
+
+    for (let i = 0; i < myCollectionsIds.length; i++) {
+      let curId = myCollectionsIds[i];
+      for (let j = 0; j < allCollections.length; j++) {
+        if (curId == allCollections[j]._id && allCollections[j].public == false) {
+          allCollections[j].public = "Private";
+          allMycollection.push(allCollections[j]);
+        } else if (curId == allCollections[j]._id){
+          allCollections[j].public = "Public";
+          allMycollection.push(allCollections[j]);
+        } 
+      }
+    }
+    setMyCollections(allMycollection);
+  }
 
   async function getUserData() {
     setName(sessionStorage.getItem("name"));
@@ -52,7 +88,7 @@ const userProfilePage = () => {
     await axios
       .get("http://localhost:8001/oneuser/" + userEmail)
       .then((res) => {
-        console.log(`user info: ${JSON.stringify(res.data)}`);
+        //console.log(`user info: ${JSON.stringify(res.data)}`);
         if (res.data.image !== null) {
           setImg(res.data.image);
           document.getElementById("avatar").hidden = true;
@@ -101,7 +137,7 @@ const userProfilePage = () => {
 
         <div className={classes.profileSection}>
           <h2 style={{ marginTop: 50 }}>Upload a new profile picture</h2>
-          <Button variant="outlined" component="label">
+          <Button component="label">
             Upload your image
             <input
               type="file"
@@ -110,7 +146,7 @@ const userProfilePage = () => {
               onChange={(e) => handleImg(e)}
             />
           </Button>
-          <Button size="small" onClick={() => upload()}>
+          <Button variant="outlined" sx={{ marginLeft: "20px" }} size="small" onClick={() => upload()}>
             Submit
           </Button>
         </div>
@@ -147,7 +183,7 @@ const userProfilePage = () => {
             <Card>
               <CardContent>
                 <Typography sx={{ fontSize: 16 }} color="text.primary">
-                  Goal status
+                  Goals
                 </Typography>
                 <Typography
                   sx={{
@@ -166,7 +202,8 @@ const userProfilePage = () => {
                 </Typography>
               </CardContent>
               <CardActions>
-                <Button size="small">Update your goal</Button>
+                <Button size="small" onClick={() => history.push("/reading-goal")}>
+                  Update your goals</Button>
               </CardActions>
             </Card>
           </Grid>
@@ -199,34 +236,7 @@ const userProfilePage = () => {
           </Grid>
         </Grid>
         <h2 style={{ marginTop: "80px" }}>My collections</h2>
-        <Button variant="outlined">View all my collections</Button>
-        <Grid container spacing={2}>
-          <Grid item xs={3}>
-            <img src={reset} alt="one person sitting, one person standing" />
-            <Button variant="text">Main collection</Button>
-            <br />
-            <Chip label="Public" size="small" />
-          </Grid>
-          <Grid item xs={3}>
-            <img src={reset} alt="one person sitting, one person standing" />
-            <Button variant="text">Read collection</Button>
-            <br />
-            <Chip label="Private" size="small" />
-          </Grid>
-          {/* map the first 2 collections for user */}
-          <Grid item xs={3}>
-            <img src={reset} alt="one person sitting, one person standing" />
-            <Button variant="text">Collection title</Button>
-            <br />
-            <Chip label="Public" size="small" />
-          </Grid>
-          <Grid item xs={3}>
-            <img src={reset} alt="one person sitting, one person standing" />
-            <Button variant="text">Collection title</Button>
-            <br />
-            <Chip label="Public" size="small" />
-          </Grid>
-        </Grid>
+        <AdjustedCollections collections={myCollections}></AdjustedCollections>
       </div>
     </div>
   );

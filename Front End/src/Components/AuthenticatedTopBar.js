@@ -14,7 +14,6 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { makeStyles } from "@material-ui/core";
-import { createTheme } from "@material-ui/core/styles";
 
 const useStyles = makeStyles({
   BookLabTitle: {
@@ -24,18 +23,10 @@ const useStyles = makeStyles({
   },
 });
 
-const pages = ["Explore", "Collections", "Recommended for you", "Leader board"];
-const settings = ["Profile", "Settings", "My goals", "Logout"];
+const pages = ["Explore", "Collections", "Recommendations", "Leader board"];
+const settings = ["Profile", "Change password", "Goals", "Logout"];
 
 export default function AuthenicatedTopBar() {
-  const theme = createTheme({
-    palette: {
-      secondary: {
-        main: "#0097a7",
-      },
-    },
-  });
-
   const classes = useStyles();
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -61,13 +52,19 @@ export default function AuthenicatedTopBar() {
     if (targetPage === "Explore") {
       history.push({
         pathname: "/search",
-        //state: { user: props.user },
       });
     } else if (targetPage === "Collections") {
       history.push({
         pathname: "/collections",
-        //state: { user: props.user },
       });
+    } else if (targetPage === "Recommendations") {
+      history.push({
+        pathname: "/recommendations",
+      });
+    } else if (targetPage === "Leader board") {
+      history.push({
+        pathname: "/LeaderBoard",
+      })
     } else {
       return;
     }
@@ -80,12 +77,12 @@ export default function AuthenicatedTopBar() {
         pathname: "/user-profile",
         //state: { user: props.user },
       });
-    } else if (targetPage === "Settings") {
+    } else if (targetPage === "Change password") {
       history.push({
         pathname: "/user-settings",
         //state: { user: props.user },
       });
-    } else if (targetPage === "My goals") {
+    } else if (targetPage === "Goals") {
       history.push({
         pathname: "/reading-goal",
         //state: { user: props.user },
@@ -104,7 +101,6 @@ export default function AuthenicatedTopBar() {
     <AppBar
       position="static"
       color="primary"
-      //theme={theme}
     >
       <Container maxWidth="xl">
         <Toolbar disableGutters>

@@ -1,0 +1,110 @@
+/* eslint-disable */
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import AuthenicatedTopBar from "../Components/AuthenticatedTopBar";
+import AdjustedCollections from "../Components/AdjustedCollections";
+import { useHistory } from "react-router-dom";
+import { makeStyles } from "@material-ui/core";
+import Avatar from "@mui/material/Avatar";
+import Grid from "@mui/material/Grid";
+//import { useLocation } from "react-router-dom";
+
+const useStyles = makeStyles({
+  main: {
+    minHeight: "1100px",
+    minWidth: "500px",
+    width: "80%",
+    margin: "0 auto",
+    marginTop: "100px",
+  },
+  inputImage: {
+    marginLeft: "0px",
+    width: "15%",
+  },
+  profileSection: {
+    marginTop: "30px",
+    marginBottom: "30px",
+  },
+});
+
+const PublicProfiles = () => {
+  const classes = useStyles();
+  const history = useHistory();
+
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [myCollections, setMyCollections] = useState([]);
+  const [img, setImg] = useState(null);
+  useEffect(() => {
+    getUserData();
+    //getCollectionData();
+    document.title = "User Profile | Booklab";
+  }, []);
+
+
+  async function getUserData() {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const userId = urlParams.get('id');
+
+    let res = await axios({
+      method : "get",
+      url : "http://localhost:8001/users"
+    })
+    let user;
+    for(let i =0; i < res.data.length; i++){
+      if (res.data[i]._id == userId){
+        user = res.data[i];
+        break;
+      }
+    }
+    setName(user.name);
+    setEmail(user.email);
+    setImg(user.image);
+    getCollectionData(user.collections);
+  }
+
+
+
+  async function getCollectionData(collectionIds) {
+    let myCollectionsIds = collectionIds;
+
+    let res = await axios({
+      method: "get",
+      url: "http://localhost:8001/myCollections"
+    });
+
+    let allCollections = res.data;
+    let allMycollection = [];
+
+    for (let i = 0; i < myCollectionsIds.length; i++) {
+      let curId = myCollectionsIds[i];
+      for (let j = 0; j < allCollections.length; j++) {
+        if (curId == allCollections[j]._id && allCollections[j].public == true) {
+          allCollections[j].public = "Public";
+          allMycollection.push(allCollections[j]);
+        } 
+      }
+    }
+    setMyCollections(allMycollection);
+  }
+
+  return (
+    <div>
+      <AuthenicatedTopBar></AuthenicatedTopBar>
+      <div className={classes.main}>
+
+
+        <div id="img">
+          <img className={classes.inputImage} src={img} alt ="user Img"/>
+        </div>
+        <h1>{name}</h1>
+        <p>{email}</p>
+        <h2 style={{ marginTop: "80px" }}>{name+ "\'s"} public collections</h2>
+        <AdjustedCollections collections={myCollections}></AdjustedCollections>
+      </div>
+    </div>
+  );
+};
+
+export default PublicProfiles;

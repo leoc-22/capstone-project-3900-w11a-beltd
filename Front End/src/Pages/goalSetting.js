@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import AuthenicatedTopBar from "../Components/AuthenticatedTopBar";
 import { makeStyles } from "@material-ui/core";
-import Grid from "@mui/material/Grid";
+import { Grid, Alert } from "@mui/material";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import IconButton from "@mui/material/IconButton";
@@ -16,14 +16,11 @@ import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 
 const useStyles = makeStyles({
   main: {
-    minHeight: "1100px",
+    minHeight: "100vh",
     minWidth: "500px",
     width: "80%",
     margin: "0 auto",
     marginTop: "100px",
-  },
-  goalSection : {
-    marginTop : "50px",
   },
   subGoals : {
     marginLeft : "20px",
@@ -31,23 +28,12 @@ const useStyles = makeStyles({
   },
   inline : {
     position:"absolute",
-    marginLeft : "60%",
+    marginLeft : "40%",
     marginTop: "-75px"
   },
-  successText :{
-    fontSize : 20,
-    color: "rgb(90, 184, 95)",
-    marginTop : "20px"
-  },
-  invalidText : {
-    fontSize : 20,
-    color: "rgb(252, 99, 88)",
-    marginTop : "20px"
-
-  },
   curGoals : {
-    marginTop : "80px",
-  }
+    marginTop : "50px",
+  },
 });
 
 const goalSettingPage = () => {
@@ -93,8 +79,8 @@ const goalSettingPage = () => {
     let newTarget = document.getElementById("target").value;
 
     if (newEndDate == ""|| newTarget == ""){
-      document.getElementById("sucessGoal").hidden = true;
-      document.getElementById("failedGoal").hidden = false;
+      document.getElementById("goalSuccess").hidden = true;
+      document.getElementById("goalError").hidden = false;
       return;
     }
     //let date = parseInt(document.getElementById("target").value);
@@ -109,8 +95,8 @@ const goalSettingPage = () => {
     });
     document.getElementById("target").value ="";
     document.getElementById("endDate").value = "";
-    document.getElementById("sucessGoal").hidden = false;
-    document.getElementById("failedGoal").hidden = true;
+    document.getElementById("goalSuccess").hidden = false;
+    document.getElementById("goalError").hidden = true;
     let tmp = goalsCreated;
     tmp +=1;
     setGoalsCreated(tmp);
@@ -205,29 +191,24 @@ const goalSettingPage = () => {
       <AuthenicatedTopBar></AuthenicatedTopBar>
       <div className={classes.main}>
         <h1>Set your reading goal for this month!</h1>
+        <div hidden id="goalSuccess" className={classes.success}><Alert severity="success">Goal created</Alert></div>
+        <div hidden id="goalError" className={classes.error}><Alert severity="error">Fields cannot be empty</Alert></div>
         <Grid container spacing={3}>
           <Grid item xs={12} md={8}>
             <h2>
-              I want to read <TextField id = "target" variant="standard" placeholder="10" />{" "}
-              books by <TextField id = "endDate" variant="standard" placeholder="dd/mm/yyyy" />
+              I want to read <TextField id="target" variant="standard" placeholder="10" />{" "}
+              books by <TextField type="date" id="endDate" variant="standard" placeholder="dd/mm/yyyy" />
             </h2>
-            <br />
+            <br/>
             <Button 
               onClick = {()=>saveGoal()}
-              variant="contained">Save reading goal</Button>
+              variant="contained">Add reading goal</Button>
           </Grid>
         </Grid>
-        <div hidden id ="sucessGoal" className={classes.successText}>Goal Created</div>
-        <div hidden id ="failedGoal" className={classes.invalidText}>Fields cannot be Empty</div>
-        <h2 className={classes.curGoals}>
-          Current Goals
-        </h2>
+        <h2 className={classes.curGoals}>Current Goals</h2>
         {goalsArr.map((goal, index) => (
-          <div key = {index} className={classes.goalSection}>
-            <Card
-              style = {{background : "#E5F6FD"}}
-            > 
-              {/* template for books added to reading goal */}
+          <div key={index}>
+            <Card style = {{ width: "80%", marginBottom: "20px"}} >
               <CardHeader
                 action={
                   <IconButton>
@@ -236,12 +217,9 @@ const goalSettingPage = () => {
                     />
                   </IconButton> 
                 }
-              
-              
-                title = {goal.target + " Books"}
-                subheader={"By: " + goal.endDate}
+                title = {"Read " + goal.target + " books by " + goal.endDate}
               />
-              <div className={classes.inline}>
+              { <div className={classes.inline}>
                 <IconButton
                 >
                   <PlayCircleOutlineIcon
@@ -263,10 +241,10 @@ const goalSettingPage = () => {
                     onClick = {()=>markComplete({goal})}
                   ></CheckCircleOutlineIcon>
                 </IconButton> 
-              </div>
+              </div>}
               <div className={classes.subGoals}>
                 <p>Progress: {goal.current}</p>
-                <p id = "completed">Completed: {String(goal.completed)}</p>
+                <p id="completed">Completed: {String(goal.completed)}</p>
               </div>
             </Card>
           </div>

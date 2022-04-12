@@ -13,6 +13,7 @@ import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
+import Rating from "@mui/material/Rating";
 import axios from "axios";
 // import { useLocation } from "react-router-dom";
 
@@ -30,11 +31,11 @@ const useStyles = makeStyles({
     width: "100%",
   },
   reviewBar: {
-    padding : "10px",
-    marginBottom : "20px"
+    padding: "10px",
+    marginBottom: "20px"
   },
-  reviewDiv :{
-    marginTop : "20px",
+  reviewDiv: {
+    marginTop: "20px",
   }
 });
 
@@ -46,8 +47,10 @@ const bookProfilePage = () => {
   const [bookImg, setImg] = useState(null);
   const [amzLink, setAmzLink] = useState(null);
   const [rating, setRating] = useState(null);
-  const [bookReviews , setBookReviews] = useState([]);
-  const [changed , setChanged] = useState(0);
+  const [bookReviews, setBookReviews] = useState([]);
+  const [changed, setChanged] = useState(0);
+  const [category, setCategory] = useState(null);
+
   const [goalsArr, setGoalsArr] = useState([]);
 
   const classes = useStyles();
@@ -60,7 +63,7 @@ const bookProfilePage = () => {
   }, [changed]);
 
   async function getData() {
-    await axios
+    let res = await axios
       .get("http://localhost:8002/books")
       .then((res) => {
         getTargetBook(res.data);
@@ -69,9 +72,6 @@ const bookProfilePage = () => {
         console.error(`Error: ${error}`);
       });
   }
-
-
-
 
   function getTargetBook(res) {
     for (let i = 0; i < res.length; i++) {
@@ -82,6 +82,7 @@ const bookProfilePage = () => {
         setAmzLink(res[i]["link"]);
         setRating("Rating: " + res[i]["rating"]);
         getReviews(res[i]["title"]);
+        setCategory(res[i].categories[0].name);
         return;
       }
     }
@@ -91,94 +92,80 @@ const bookProfilePage = () => {
     window.open(amzLink, "_blank").focus();
   }
 
-  async function submitReview(){
+  async function submitReview() {
     await axios({
       method: "post",
-      url : "http://localhost:8001/review",
-      data : {
-        user : sessionStorage.getItem("id"),
-        title : title,
-        review : document.getElementById("myReview").value
+      url: "http://localhost:8001/review",
+      data: {
+        user: sessionStorage.getItem("id"),
+        name : sessionStorage.getItem("name"),
+        title: title,
+        review: document.getElementById("myReview").value
       }
 
     });
     document.getElementById("myReview").value = "";
     let tmp = changed;
-    tmp+=1;
+    tmp += 1;
     setChanged(tmp);
     return;
   }
 
-  async function getReviews(bookTitle){
+  async function getReviews(bookTitle) {
     let res = await axios({
       method: "get",
-      url : "http://localhost:8001/review",
+      url: "http://localhost:8001/review",
     });
     //console.log(res.data);
     let curBookReviews = [];
-    for (let i =0; i < res.data.length; i ++){
-      if (res.data[i].title == bookTitle){
+    for (let i = 0; i < res.data.length; i++) {
+      if (res.data[i].title == bookTitle) {
         curBookReviews.push(res.data[i]);
       }
     }
-    //console.log(curBookReviews);
+    console.log(curBookReviews);
     setBookReviews(curBookReviews);
   }
 
 
-  async function markRead(){
-    
-
+  async function markRead() {
     let userEmail = sessionStorage.getItem("email");
     let res = await axios({
-      method : "get",
-      url : "http://localhost:8001/oneuser/" + userEmail,
+      method: "get",
+      url: "http://localhost:8001/oneuser/" + userEmail,
     });
     let myGoals = res.data.goals;
 
     let allGoals = await axios({
-      method : "get",
-      url : "http://localhost:8001/myGoals",
+      method: "get",
+      url: "http://localhost:8001/myGoals",
     });
     let allMygoals = [];
 
-    for (let i =0 ;i < allGoals.data.length ; i++){
+    for (let i = 0; i < allGoals.data.length; i++) {
       let curGoal = allGoals.data[i]["_id"];
-      for (let j = 0; j<myGoals.length ; j ++ ){
-        if (myGoals[j] == curGoal){
+      for (let j = 0; j < myGoals.length; j++) {
+        if (myGoals[j] == curGoal) {
           allMygoals.push(allGoals.data[i]);
         }
       }
     }
     setGoalsArr(allMygoals);
-    for (let i =0; i <allMygoals.length ; i++){
+    for (let i = 0; i < allMygoals.length; i++) {
       advanceGoal(allMygoals[i]);
-    } 
-    
-    /*
-    let res2 = await axios({
-      method : "patch",
-      url : "http://localhost:8001/read",
-      data: {
-        b_id :  queryString
-      }
-    });
-    console.log(res2);
-
-    */
+    }
     let tmp = changed;
-    tmp+=1;
+    tmp += 1;
     setChanged(tmp);
 
   }
 
-
-  async function advanceGoal(goalId){
+  async function advanceGoal(goalId) {
     await axios({
-      method : "patch",
-      url : "http://localhost:8001/goal",
-      data:{
-        _id : goalId
+      method: "patch",
+      url: "http://localhost:8001/goal",
+      data: {
+        _id: goalId
       }
     });
     //let tmp = goalsCreated;
@@ -187,9 +174,7 @@ const bookProfilePage = () => {
     return;
   }
 
-
-
-  if (changed == 0){
+  if (changed == 0) {
     window.scrollTo(0, 0);
   }
 
@@ -217,20 +202,19 @@ const bookProfilePage = () => {
             <Button
               variant="contained"
               sx={{ marginRight: "16px", marginBottom: "20px" }}
-              onClick = {()=>markRead()}
+              onClick={() => markRead()}
             >
               Mark as read
             </Button>
             <br />
-            <Chip label="Category 1" sx={{ marginRight: "16px" }} />
-            <Chip label="Category 2" />
+            <Chip label= {category} sx={{ marginRight: "16px" }} />
             <br />
             <Stack direction="row" alignItems="center" spacing={2}>
               <p>Publisher</p>
               <p>Publication date</p>
             </Stack>
             <Stack direction="row" alignItems="center" spacing={2}>
-              <p>Average rating: {rating}</p>
+              <p>{rating}</p>
               <p>Number of readers</p>
               <p>Number of collections</p>
             </Stack>
@@ -355,7 +339,13 @@ const bookProfilePage = () => {
         <br />
 
         <h2>Write a review</h2>
-        
+        <Rating
+          name="simple-controlled"
+          value={rating}
+          onChange={(event, newValue) => {
+            setRating(newValue);
+          }}
+        />
         <br />
         <TextField
           className={classes.reviewBar}
@@ -365,23 +355,25 @@ const bookProfilePage = () => {
           style={{
             width: "60%",
             marginTop: 20,
-            marginBottom :20,
+            marginBottom: 20,
             marginLeft: "0%",
           }}
         />
         <br />
-        <Button 
+        <Button
           variant="contained"
           onClick={() => submitReview()}
         >submit review</Button>
         <br />
-        <br/>
+        <br />
         <h2>Community reviews</h2>
-        {bookReviews.map((rev,index) => (
-          <div key= {index} className={classes.reviewDiv}>
-            <Card sx={{ width: "60%" }}
-            >
+        {bookReviews.map((rev, index) => (
+          <div key={index} className={classes.reviewDiv}>
+            <Card sx={{ width: "60%" }}>
               <CardContent>
+                {/* Add user, date, rating */}
+                <Typography variant="body2">{rev.name} / date</Typography>
+                <Rating name="read-only" value={rating} readOnly />
                 <Typography variant="body2">{rev.review}</Typography>
               </CardContent>
             </Card>

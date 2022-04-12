@@ -8,7 +8,6 @@ import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
 
 
-
 const useStyles = makeStyles({
   logoutBtn: {
     marginLeft : "70%"
@@ -39,12 +38,15 @@ const Navbar = () => {
             variant="h6"
             noWrap
             component="div"
-            sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
+            sx={{ mr: 2, display: { xs: "none", md: "flex" }, "&:hover": {
+              cursor: "pointer"} }}
+            onClick={() => history.push("/")}
           >
             BOOKLAB
           </Typography>
           <div className = {classes.logoutBtn}>
             <Button color="inherit"
+              sx={{ marginRight: "20px" }}
               onClick={() => history.push("/login")}
             >Log in</Button>
             <Button color="inherit" variant="outlined"
