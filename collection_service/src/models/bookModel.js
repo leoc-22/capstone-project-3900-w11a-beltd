@@ -9,7 +9,7 @@ const bookSchema = new mongoose.Schema(
     rating: { type: String },
     link: { type: String, required: true },
     asin: { type: String, required: true },
-    price: { type: Double, required: true },
+    price: { type: String, required: true },
     categories: [{ type: Object, required: true }],
     
     bookid: { type: Number, required: true },

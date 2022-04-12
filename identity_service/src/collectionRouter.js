@@ -142,7 +142,7 @@ app.delete("/removeBook", async (req, res) => {
 
 
 // TODO Move book to "Read" collection
-app.update("/readBook", async (req, res) => {
+app.patch("/readBook", async (req, res) => {
   const readCollection = await collectionModel.find({ user: req.body.user }, function (err, docs) {
     if (err) {
       console.log(err);
