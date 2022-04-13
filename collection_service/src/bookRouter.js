@@ -18,6 +18,19 @@ app.get("/books", async (req, res) => {
     });
 });
 
+app.get("/books/search", async (req, res) => {
+  await bookModel
+    .find({})
+    .select("title authors bookid")
+    .then((books) => {
+      console.log(`Retrieved ${books.length} books`);
+      res.send(books);
+    })
+    .catch((error) => {
+      res.status(500).send(error);
+    });
+});
+
 app.get("/similar/:categoryID", async (req, res) => {
   console.log(req.params.categoryID);
   await bookModel
