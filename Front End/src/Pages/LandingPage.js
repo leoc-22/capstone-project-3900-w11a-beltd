@@ -55,7 +55,14 @@ export default function LandingPage() {
       method: "get",
       url: "http://localhost:8001/myCollections"
     });
-    setCollectionArr(res.data);
+    let tmp = [];
+    for (let i =0; i < res.data.length; i++){
+      if (res.data[i].public == true){
+        tmp.push(res.data[i]);
+      }
+    }
+
+    setCollectionArr(tmp);
   }
 
 

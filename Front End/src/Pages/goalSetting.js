@@ -11,8 +11,8 @@ import Button from "@mui/material/Button";
 import ClearIcon from "@mui/icons-material/Clear";
 import TextField from "@mui/material/TextField";
 import axios from "axios";
-// import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-// import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import PlayCircleOutlineIcon from "@mui/icons-material/PlayCircleOutline";
 
 const useStyles = makeStyles({
   main: {
@@ -120,13 +120,7 @@ const goalSettingPage = () => {
   
   async function advanceGoal(targetGoal){
     let goalId = targetGoal.goal._id;
-    let res = await axios({
-      method : "patch",
-      url : "http://localhost:8001/goal",
-      data:{
-        _id : goalId
-      }
-    });
+
 
     let allGoals = await axios({
       method : "get",
@@ -139,10 +133,8 @@ const goalSettingPage = () => {
         break;
       }
     }
-
-    //console.log(curGoal);
-
-    if(curGoal.current >= curGoal.target){
+    console.log(curGoal.current +1 + "==" +curGoal.target);
+    if(curGoal.current + 1 >= curGoal.target){
       await axios({
         method : "patch",
         url : "http://localhost:8001/goalComplete",
@@ -150,8 +142,29 @@ const goalSettingPage = () => {
           _id : goalId
         }
       });
-    }
+      let tmp = goalsCreated;
+      tmp +=1;
+      setGoalsCreated(tmp);
+      if (curGoal.current + 1  == curGoal.target){
+        let res = await axios({
+          method : "patch",
+          url : "http://localhost:8001/goal",
+          data:{
+            _id : goalId
+          }
+        });  
+      }
+      return;
 
+    } else {
+      let res = await axios({ 
+        method : "patch",
+        url : "http://localhost:8001/goal",
+        data:{
+          _id : goalId
+        }
+      });
+    }
     let tmp = goalsCreated;
     tmp +=1;
     setGoalsCreated(tmp);
@@ -206,7 +219,7 @@ const goalSettingPage = () => {
                 }
                 title = {"Read " + goal.target + " books by " + goal.endDate}
               />
-              {/* <div className={classes.inline}>
+              { <div className={classes.inline}>
                 <IconButton
                 >
                   <PlayCircleOutlineIcon
@@ -228,7 +241,7 @@ const goalSettingPage = () => {
                     onClick = {()=>markComplete({goal})}
                   ></CheckCircleOutlineIcon>
                 </IconButton> 
-              </div> */}
+              </div>}
               <div className={classes.subGoals}>
                 <p>Progress: {goal.current}</p>
                 <p id="completed">Completed: {String(goal.completed)}</p>

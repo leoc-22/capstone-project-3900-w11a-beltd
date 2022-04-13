@@ -1,9 +1,11 @@
+/* eslint-disable */
+
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import AuthenicatedTopBar from "../Components/AuthenticatedTopBar";
-import { makeStyles } from "@material-ui/core";
+import { makeStyles, List, ListItemIcon, ListItemText,   Grid, ListItem, IconButton} from '@material-ui/core';
 import { useHistory } from "react-router-dom";
-import CollectionsCarousel from "../Components/CollectionsCarousel";
+import AdjustedCollections from "../Components/AdjustedCollections";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
@@ -12,13 +14,18 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import {Alert} from "@mui/material";
 
+
+
 const useStyles = makeStyles({
   main: {
     minHeight: "100vh",
     minWidth: "500px",
     width: "80%",
+    marginLeft : "10%",
+    marginTop: "50px",
     margin: "0 auto",
-    marginTop: "100px",
+
+    
   },
   subtitle: {
     marginTop: "50px",
@@ -38,8 +45,10 @@ const useStyles = makeStyles({
     boxShadow: 24,
     p: 4,
     padding: 40, 
-  }
+  },
+
 });
+
 
 
 export default function CollectionPage() {
@@ -58,6 +67,7 @@ export default function CollectionPage() {
     getCollectionData();
     document.title = "Collections | Booklab";
   }, [newCollection]);
+
 
   async function getCollectionData() {
     let userEmail = sessionStorage.getItem("email");
@@ -79,16 +89,22 @@ export default function CollectionPage() {
     for (let i = 0; i < myCollectionsIds.length; i++) {
       let curId = myCollectionsIds[i];
       for (let j = 0; j < allCollections.length; j++) {
-        if (curId == allCollections[j]._id) {
+        if (curId == allCollections[j]._id && allCollections[j].public == false) {
+          allCollections[j].public = "Private";
           allMycollection.push(allCollections[j]);
+          
+        } else if (curId == allCollections[j]._id){
+          allCollections[j].public = "Public";
+          allMycollection.push(allCollections[j]);
+
         } else if (allCollections[j].public == true) {
+          allCollections[j].public = "Public";
           publicCollections.push(allCollections[j]);
         }
       }
     }
     setMyCollections(allMycollection);
     setCollectionArr(publicCollections);
-
   }
 
   function handlePublic() {
@@ -136,6 +152,7 @@ export default function CollectionPage() {
     <div>
       <AuthenicatedTopBar></AuthenicatedTopBar>
       <div className={classes.main}>
+
         <h1>Create collections and share your favourite books</h1>
         <div hidden id="collectionSuccess" className={classes.success}><Alert severity="success">Collection created</Alert></div>
         <div hidden id="collectionError" className={classes.error}><Alert severity="error">Collection name cannot be empty</Alert></div>
@@ -174,10 +191,10 @@ export default function CollectionPage() {
         </Modal>
 
         <h2 className={classes.subtitle}>My Collections</h2>
-        <CollectionsCarousel collections={myCollections}></CollectionsCarousel>
+        <AdjustedCollections collections={myCollections}></AdjustedCollections>
 
         <h2 className={classes.subtitle}>Popular Collections</h2>
-        <CollectionsCarousel collections={collectionArr}></CollectionsCarousel>
+        <AdjustedCollections collections={collectionArr}></AdjustedCollections>
 
       </div>
     </div>

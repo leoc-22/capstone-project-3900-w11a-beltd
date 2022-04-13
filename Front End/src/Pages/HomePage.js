@@ -1,3 +1,5 @@
+/* eslint-disable */ 
+
 import React, { useEffect, useState } from "react";
 import CollectionsCarousel from "../Components/CollectionsCarousel";
 import TopBookGrid from "../Components/TopBookGrid";
@@ -42,7 +44,13 @@ const HomePage = () => {
       method: "get",
       url: "http://localhost:8001/myCollections",
     });
-    setCollectionArr(res.data);
+    let tmp = [];
+    for (let i =0; i < res.data.length; i++){
+      if (res.data[i].public == true){
+        tmp.push(res.data[i]);
+      }
+    }
+    setCollectionArr(tmp);
   }
 
   async function getBookData() {
@@ -65,7 +73,6 @@ const HomePage = () => {
     await axios
       .get("http://localhost:8001/oneuser/" + userEmail)
       .then((res) => {
-        console.log(res.data);
         //setUser(res.data);
       })
       .catch((error) => {

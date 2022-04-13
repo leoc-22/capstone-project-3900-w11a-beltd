@@ -16,6 +16,8 @@ import ForgetPasswordPage from "./Pages/forgetPassword";
 import CollectionPage from "./Pages/CollectionPage";
 import CollectionDetailPage from "./Pages/collectionDetailPage";
 import RecommendationsPage from "./Pages/Recommendations";
+import LeaderBoard from "./Pages/LeaderBoard";
+import PublicProfiles from "./Pages/PublicProfiles";
 
 function App() {
   return (
@@ -73,6 +75,14 @@ function App() {
       <Switch>
         <Route exact path="/collection-detail" component={CollectionDetailPage}></Route>
       </Switch>
+      <Switch>
+        <Route exact path="/LeaderBoard" component={LeaderBoard}></Route>
+      </Switch>
+      <Switch>
+        <Route exact path="/PublicProfiles" component={PublicProfiles}></Route>
+      </Switch>
+
+
     </Router>
   );
 }
