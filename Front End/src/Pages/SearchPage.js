@@ -69,6 +69,11 @@ export default function SearchPage() {
       });
   }
 
+  const handleSearch = () => {
+    // search by title
+    // search by author
+    // search by genre
+  };
   if (loadingBooks) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
@@ -82,7 +87,7 @@ export default function SearchPage() {
             <h1 className={classes.searchType}>
               <Typewriter
                 options={{
-                  strings: ["Titles", "Authors", "Topics"],
+                  strings: ["Titles", "Authors", "Genres"],
                   autoStart: true,
                   loop: true,
                   pauseFor: 3000,
@@ -92,8 +97,16 @@ export default function SearchPage() {
             <Autocomplete
               disablePortal
               id="auto-complete"
-              options={(books || []).map((book) => book.title)}
-              sx={{ width: 300 }}
+              options={books.map(
+                (book) =>
+                  book.title +
+                  " (" +
+                  book.categories[0].name +
+                  ") " +
+                  "by " +
+                  book.authors
+              )}
+              sx={{ width: 500 }}
               renderInput={(params) => (
                 <TextField
                   {...params}
@@ -123,6 +136,7 @@ export default function SearchPage() {
               style={{
                 marginTop: 20,
               }}
+              onClick={handleSearch()}
             >
               Search
             </Button>

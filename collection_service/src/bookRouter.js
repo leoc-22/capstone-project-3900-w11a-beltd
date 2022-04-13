@@ -21,14 +21,33 @@ app.get("/books", async (req, res) => {
 app.get("/books/autocomplete", async (req, res) => {
   await bookModel
     .find({})
-    .select("title authors bookid")
-    .limit(10)
+    .select("title authors bookid categories")
     .then((books) => {
       console.log(`Retrieved ${books.length} books`);
       res.send(books);
     })
     .catch((error) => {
       res.status(500).send(error);
+    });
+});
+
+app.get("/books/search/:q", async (req, res) => {
+  console.log(req.params.q);
+  await bookModel
+    .find({
+      $or: [
+        { title: { $regex: req.params.q, $options: "i" } },
+        { authors: { $regex: req.params.q, $options: "i" } },
+        {
+          categories: {
+            $elemMatch: { name: { $regex: req.params.q, $options: "i" } },
+          },
+        },
+      ],
+    })
+    .then((books) => {
+      console.log(`Found ${books.length} books`);
+      res.send(books);
     });
 });
 
