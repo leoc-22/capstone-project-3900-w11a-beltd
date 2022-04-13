@@ -1,4 +1,6 @@
-import React from "react";
+/* eslint-disable */
+
+import React, { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
 import AuthenticatedTopBar from "../Components/AuthenticatedTopBar";
 import TextField from "@mui/material/TextField";
@@ -9,8 +11,10 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import search from "../Images/search.svg";
 import Grid from "@mui/material/Grid";
-// import TopBookItem from "../Components/TopBookItem";
+import Autocomplete from "@mui/material/Autocomplete";
+import axios from "axios";
 
+// import TopBookItem from "../Components/TopBookItem";
 
 const useStyles = makeStyles({
   main: {
@@ -39,6 +43,32 @@ const useStyles = makeStyles({
 
 export default function SearchPage() {
   const classes = useStyles();
+  const [books, setBooks] = useState(null);
+  const [loadingBooks, setLoadingBooks] = useState(true);
+  const [error, setError] = useState(null);
+  const [query, setQuery] = useState("");
+
+  useEffect(() => {
+    getBookData();
+  }, []);
+
+  async function getBookData() {
+    await axios
+      .get("http://localhost:8002/books")
+      .then((res) => {
+        setBooks(res.data);
+      })
+      .catch((error) => {
+        console.error(`Error: ${error}`);
+        setError(error);
+      })
+      .finally(() => {
+        setLoadingBooks(false);
+      });
+  }
+
+  if (loadingBooks) return <p>Loading...</p>;
+  if (error) return <p>Error: {error.message}</p>;
 
   return (
     <div>
@@ -65,6 +95,30 @@ export default function SearchPage() {
                 width: "100%",
                 marginTop: 20,
               }}
+              onChange={(e) => {
+                setQuery(e.target.value);
+              }}
+            />
+            <Autocomplete
+              disablePortal
+              id="combo-box-demo"
+              options={books}
+              sx={{ width: 300 }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  id="standard-basic"
+                  label="Find your next favourite book"
+                  variant="standard"
+                  style={{
+                    width: "100%",
+                    marginTop: 20,
+                  }}
+                  onChange={(e) => {
+                    setQuery(e.target.value);
+                  }}
+                />
+              )}
             />
             <p style={{ fontSize: "16pt" }}>Filter by:</p>
             <FormGroup row>
@@ -74,9 +128,14 @@ export default function SearchPage() {
               <FormControlLabel control={<Checkbox />} label="2+ stars" />
               <FormControlLabel control={<Checkbox />} label="1+ stars" />
             </FormGroup>
-            <Button variant="contained" style={{
-              marginTop: 20,
-            }}>Search</Button>
+            <Button
+              variant="contained"
+              style={{
+                marginTop: 20,
+              }}
+            >
+              Search
+            </Button>
           </Grid>
           <Grid item xs={4}>
             <img

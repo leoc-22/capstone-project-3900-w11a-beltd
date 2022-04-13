@@ -1,7 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
-// import Button from "@mui/material/Button";
 import PropTypes from "prop-types";
 
 const useStyles = makeStyles({
@@ -33,30 +32,27 @@ const useStyles = makeStyles({
       cursor: "pointer",
     },
   },
-  bookData : {
-    minHeight : "70px"
-  }
+  bookData: {
+    minHeight: "70px",
+  },
 });
 
 export default function TopBookItem(props) {
-  console.log(props);
   const classes = useStyles();
   const history = useHistory();
 
-  function routeUser(){
-    if (sessionStorage.getItem("email") == null){
+  function routeUser() {
+    if (sessionStorage.getItem("email") == null) {
       history.push("/login");
     } else {
       history.push("/book-profile" + "?" + props["book"]["_id"]);
-
     }
   }
 
   return (
     <div className={classes.main}>
       <img
-        onClick={() =>routeUser()
-        }
+        onClick={() => routeUser()}
         className={classes.img}
         src={
           props.book.image === undefined ? "PlaceHolder.png" : props.book.image
