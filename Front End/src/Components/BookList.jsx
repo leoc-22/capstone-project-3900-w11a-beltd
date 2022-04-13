@@ -1,7 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
-// import Button from "@mui/material/Button";
 import PropTypes from "prop-types";
 
 const useStyles = makeStyles({
@@ -63,14 +62,11 @@ export default function TopBookItem(props) {
         <span className="bookTitle">
           <b>{props.book.title}</b>
         </span>
-        <br></br>
         <span className="bookTitle">{props.book.authors}</span>
       </div>
-      <br></br>
     </div>
   );
 }
 TopBookItem.propTypes = {
   book: PropTypes.object,
-  user: PropTypes.object,
 };

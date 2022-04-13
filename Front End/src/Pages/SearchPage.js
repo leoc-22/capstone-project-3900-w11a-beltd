@@ -13,8 +13,7 @@ import search from "../Images/search.svg";
 import Grid from "@mui/material/Grid";
 import Autocomplete from "@mui/material/Autocomplete";
 import axios from "axios";
-
-// import TopBookItem from "../Components/TopBookItem";
+import BookSearchResults from "../Components/BookSearchResults";
 
 const useStyles = makeStyles({
   main: {
@@ -47,15 +46,14 @@ export default function SearchPage() {
   const [loadingBooks, setLoadingBooks] = useState(true);
   const [error, setError] = useState(null);
   const [query, setQuery] = useState("");
-
-  const topBooks = [];
+  const [searchRes, setSearchRes] = useState(null);
 
   useEffect(() => {
     getBookData();
   }, []);
 
-  async function getBookData() {
-    await axios
+  const getBookData = () => {
+    axios
       .get("http://localhost:8002/books/autocomplete")
       .then((res) => {
         setBooks(res.data);
@@ -67,13 +65,36 @@ export default function SearchPage() {
       .finally(() => {
         setLoadingBooks(false);
       });
-  }
+  };
 
   const handleSearch = () => {
-    // search by title
-    // search by author
-    // search by genre
+    // search by title or authors or genres
+    axios.get(`http://localhost:8002/books/search/${query}`).then((res) => {
+      setSearchRes(res.data);
+    });
+    // .catch((error) => {
+    //   console.error(`Error: ${error}`);
+    //   setError(error);
+    // });
   };
+
+  const handleOptions = () => {
+    // faster performance and unique values using set
+    let optionList = new Set();
+
+    // adding titles first, then authors, then genres
+    for (let i = 0; i < books.length; i++) {
+      optionList.add(books[i].title);
+    }
+    for (let i = 0; i < books.length; i++) {
+      optionList.add(books[i].authors);
+    }
+    for (let i = 0; i < books.length; i++) {
+      optionList.add(books[i].categories[0].name);
+    }
+    return [...optionList];
+  };
+
   if (loadingBooks) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
@@ -96,21 +117,15 @@ export default function SearchPage() {
             </h1>
             <Autocomplete
               disablePortal
-              id="auto-complete"
-              options={books.map(
-                (book) =>
-                  book.title +
-                  " (" +
-                  book.categories[0].name +
-                  ") " +
-                  "by " +
-                  book.authors
-              )}
+              autoHighlight
+              clearOnEscape
+              freeSolo
+              clearOnBlur={false}
+              options={handleOptions()}
               sx={{ width: 500 }}
               renderInput={(params) => (
                 <TextField
                   {...params}
-                  id="standard-basic"
                   label="Find your next favourite book"
                   variant="standard"
                   style={{
@@ -122,6 +137,9 @@ export default function SearchPage() {
                   }}
                 />
               )}
+              onChange={(e, value) => {
+                setQuery(value);
+              }}
             />
             <p style={{ fontSize: "16pt" }}>Filter by:</p>
             <FormGroup row>
@@ -136,7 +154,9 @@ export default function SearchPage() {
               style={{
                 marginTop: 20,
               }}
-              onClick={handleSearch()}
+              onClick={() => {
+                handleSearch();
+              }}
             >
               Search
             </Button>
@@ -151,6 +171,9 @@ export default function SearchPage() {
         </Grid>
         <br />
         <h2>Results</h2>
+        {searchRes ? (
+          <BookSearchResults books={searchRes}></BookSearchResults>
+        ) : null}
         {/* Format results with TopBookItem component */}
       </div>
     </div>

@@ -46,7 +46,7 @@ app.get("/books/search/:q", async (req, res) => {
       ],
     })
     .then((books) => {
-      console.log(`Found ${books.length} books`);
+      console.log(`Found ${books.length} books that match the query`);
       res.send(books);
     });
 });
