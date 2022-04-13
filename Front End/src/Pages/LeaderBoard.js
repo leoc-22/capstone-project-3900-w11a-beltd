@@ -3,32 +3,10 @@
 import React, { useState, useEffect } from "react";
 import AuthenicatedTopBar from "../Components/AuthenticatedTopBar";
 import RankingItem from "../Components/RankingItem";
-import TopBookGrid from "../Components/TopBookGrid";
-import { useHistory } from "react-router-dom";
-import { makeStyles } from "@material-ui/core";
 import axios from "axios";
 import Button from "@mui/material/Button";
 
-const useStyles = makeStyles({
-  RankingDIv: {
-    minHeight : "150px",
-    marginTop : "50px",
-    marginLeft : '20%',
-    borderRadius : "10px",
-    width: "60%",
-    background : "#EDEDED"    
-  },
-  innerDiv: {
-    marginLeft : "20%",
-    paddingTop : "10px"
-  }
-});
-
-
-
-export default function LeaderBoard() {
-  
-  const classes = useStyles();
+export default function LeaderBoard() {  
   const [rankings, setRankings] = useState([]);
 
   useEffect(() => {
@@ -41,9 +19,7 @@ export default function LeaderBoard() {
       method : "get",
       url : "http://localhost:8001/myGoals",
     })
-
     let hashTable = [];
-
     for (let i =0; i < res.data.length; i++){
       var HasCompleted = res.data[i].completed;
       if (HasCompleted == true){
@@ -53,6 +29,18 @@ export default function LeaderBoard() {
           let userId = res.data[i].user;
           hashTable = [...hashTable, {user : userId, count : 1}];
         }
+      }
+    }
+
+    let res2 = await axios({
+      method : "get",
+      url : "http://localhost:8001/users",
+    })
+    console.log(res2.data);
+    for (let i =0; i <res2.data.length ; i++){
+      if (checkUserExists(res2.data[i]._id, hashTable) == false){
+        let userId = res2.data[i]._id;
+        hashTable = [...hashTable, {user : userId, count : 0}];
       }
     }
     hashTable = sortByKey(hashTable, "count")

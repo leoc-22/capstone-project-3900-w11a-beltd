@@ -15,8 +15,6 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { makeStyles } from "@material-ui/core";
 import {styled } from '@mui/material/styles';
-import { maxHeight } from "@mui/system";
-import { CoPresent, Recommend } from "@mui/icons-material";
 
 
 
@@ -33,13 +31,13 @@ const useStyles = makeStyles({
     color : "#444444"
   },
   BtnTextActive : {
-    color : "#2196f3",
+    color : "#1976d2",
     fontWeight : "bold"
   }
 
 });
 
-const ButtonTest = styled(Button)(({ theme }) => ({
+const ButtonTest = styled(Button)(() => ({
   borderRadius : "0px",
   marginTop : "10px",
   minHeight: "60px",
@@ -49,11 +47,11 @@ const ButtonTest = styled(Button)(({ theme }) => ({
   "&:hover": {
     backgroundColor : "transparent",
     cursor: "pointer",
-    borderBottom: "3px solid #2196f3",
+    borderBottom: "3px solid #1976d2",
   }  
 }));
 
-const AppBar1 = styled(AppBar)(({ theme }) => ({
+const AppBar1 = styled(AppBar)(() => ({
   backgroundColor: "#F3F3F3",
   color : "black",
   minHeight: "65px",
@@ -63,7 +61,7 @@ const AppBar1 = styled(AppBar)(({ theme }) => ({
 
 }));
 
-const Container1 = styled(Container)(({ theme }) => ({
+const Container1 = styled(Container)(() => ({
   marginTop : "-10px"
 }));
 
