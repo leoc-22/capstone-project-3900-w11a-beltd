@@ -5,7 +5,7 @@ import LandingPage from "./Pages/LandingPage";
 import LogInPage from "./Pages/login";
 import SignUpPage from "./Pages/signup";
 import HomePage from "./Pages/HomePage";
-import SearchPage from "./Pages/SearchPage";
+import SearchPage from "./Pages/searchPage";
 import ResetPasswordPage from "./Pages/resetPassword";
 import UpdatePasswordPage from "./Pages/UpdatePassword";
 import UserSettingsPage from "./Pages/userSettings";
@@ -60,7 +60,11 @@ function App() {
         <Route exact path="/search" component={SearchPage}></Route>
       </Switch>
       <Switch>
-        <Route exact path="/recommendations" component={RecommendationsPage}></Route>
+        <Route
+          exact
+          path="/recommendations"
+          component={RecommendationsPage}
+        ></Route>
       </Switch>
       <Switch>
         <Route
@@ -73,7 +77,11 @@ function App() {
         <Route exact path="/collections" component={CollectionPage}></Route>
       </Switch>
       <Switch>
-        <Route exact path="/collection-detail" component={CollectionDetailPage}></Route>
+        <Route
+          exact
+          path="/collection-detail"
+          component={CollectionDetailPage}
+        ></Route>
       </Switch>
       <Switch>
         <Route exact path="/LeaderBoard" component={LeaderBoard}></Route>
@@ -81,8 +89,6 @@ function App() {
       <Switch>
         <Route exact path="/PublicProfiles" component={PublicProfiles}></Route>
       </Switch>
-
-
     </Router>
   );
 }

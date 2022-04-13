@@ -31,11 +31,11 @@ const useStyles = makeStyles({
   },
   bookImage: {
     width: "100%",
-    borderRadius : "5px"
+    borderRadius: "5px",
   },
   reviewBar: {
     padding: "10px",
-    marginBottom: "20px"
+    marginBottom: "20px",
   },
   reviewDiv: {
     marginTop: "20px",
@@ -57,12 +57,11 @@ const useStyles = makeStyles({
   bookTitle: {
     marginTop: "0%",
   },
-  reviewUser : {
+  reviewUser: {
     "&:hover": {
       cursor: "pointer",
     },
-  }
-
+  },
 });
 
 const bookProfilePage = () => {
@@ -116,7 +115,7 @@ const bookProfilePage = () => {
         getReviews(res[i]["title"]);
         setCategory(res[i].categories[0].name);
         setCategoryId(res[i].categories[0].id);
-        if (changed == 0){
+        if (changed == 0) {
           getSimilarBooks(res[i].categories[0].id);
         }
         return;
@@ -130,12 +129,12 @@ const bookProfilePage = () => {
 
   async function submitReview() {
     let today = new Date();
-    let dd = String(today.getDate()).padStart(2, '0');
-    let mm = String(today.getMonth() + 1).padStart(2, '0');
+    let dd = String(today.getDate()).padStart(2, "0");
+    let mm = String(today.getMonth() + 1).padStart(2, "0");
     let yyyy = today.getFullYear();
-    let dateString = dd+"/"+mm +"/"+yyyy;
+    let dateString = dd + "/" + mm + "/" + yyyy;
     let newRating = rating;
-    if (newRating ==null){
+    if (newRating == null) {
       newRating = 0;
     }
     await axios({
@@ -143,13 +142,12 @@ const bookProfilePage = () => {
       url: "http://localhost:8001/review",
       data: {
         user: sessionStorage.getItem("id"),
-        name : sessionStorage.getItem("name"),
-        date : dateString,
-        rating : newRating,
+        name: sessionStorage.getItem("name"),
+        date: dateString,
+        rating: newRating,
         title: title,
-        review: document.getElementById("myReview").value
-      }
-
+        review: document.getElementById("myReview").value,
+      },
     });
     document.getElementById("myReview").value = "";
     let tmp = changed;
@@ -172,7 +170,6 @@ const bookProfilePage = () => {
     }
     setBookReviews(curBookReviews);
   }
-
 
   async function markRead() {
     let userEmail = sessionStorage.getItem("email");
@@ -203,7 +200,6 @@ const bookProfilePage = () => {
     let tmp = changed;
     tmp += 1;
     setChanged(tmp);
-
   }
 
   async function advanceGoal(goalId) {
@@ -211,8 +207,8 @@ const bookProfilePage = () => {
       method: "patch",
       url: "http://localhost:8001/goal",
       data: {
-        _id: goalId
-      }
+        _id: goalId,
+      },
     });
     //let tmp = goalsCreated;
     //tmp +=1;
@@ -220,15 +216,14 @@ const bookProfilePage = () => {
     return;
   }
 
-  async function getSimilarBooks(categoryId){
+  async function getSimilarBooks(categoryId) {
     let res = await axios({
-      method : "get",
-      url : "http://localhost:8002/similar/" + categoryId,
-   
-    })
+      method: "get",
+      url: "http://localhost:8002/similar/" + categoryId,
+    });
     let tmp = [];
-    for(let i = 0; i < res.data.length ; i++){
-      if (i == 6){
+    for (let i = 0; i < res.data.length; i++) {
+      if (i == 6) {
         break;
       }
       tmp.push(res.data[i]);
@@ -237,14 +232,14 @@ const bookProfilePage = () => {
     return;
   }
 
-  function routeUser(targetBook){
+  function routeUser(targetBook) {
     const bookId = targetBook.item._id;
-    history.push("/book-profile" + "?"+bookId);
+    history.push("/book-profile" + "?" + bookId);
     location.reload();
   }
 
-  function goToProfile(userId){
-    history.push("PublicProfiles?id="+userId);
+  function goToProfile(userId) {
+    history.push("PublicProfiles?id=" + userId);
   }
 
   if (changed == 0) {
@@ -280,7 +275,7 @@ const bookProfilePage = () => {
               Mark as read
             </Button>
             <br />
-            <Chip label= {category} sx={{ marginRight: "16px" }} />
+            <Chip label={category} sx={{ marginRight: "16px" }} />
             <br />
             <Stack direction="row" alignItems="center" spacing={2}>
               <p>Publisher</p>
@@ -310,7 +305,9 @@ const bookProfilePage = () => {
                 </Typography> */}
               </CardContent>
               <CardActions>
-                <Button size="small" onClick={() => amzPage()}>View on Amazon</Button>
+                <Button size="small" onClick={() => amzPage()}>
+                  View on Amazon
+                </Button>
               </CardActions>
             </Card>
           </Grid>
@@ -354,11 +351,11 @@ const bookProfilePage = () => {
         <br />
         <h2 className={classes.h2}>{"Other " + category + " books"}</h2>
         <Grid container spacing={2}>
-          {books.map((item) =>(
+          {books.map((item) => (
             <Grid item xs={4} sm={3} md={2} className={classes.gridClass}>
               <img
-                key = {item._id}
-                onClick={() =>routeUser({item})}
+                key={item._id}
+                onClick={() => routeUser({ item })}
                 className={classes.img}
                 src={item.image}
               />
@@ -370,7 +367,7 @@ const bookProfilePage = () => {
                 <span className="bookTitle">{item.authors}</span>
               </div>
               <br></br>
-          </Grid>
+            </Grid>
           ))}
         </Grid>
 
@@ -397,10 +394,9 @@ const bookProfilePage = () => {
           }}
         />
         <br />
-        <Button
-          variant="contained"
-          onClick={() => submitReview()}
-        >submit review</Button>
+        <Button variant="contained" onClick={() => submitReview()}>
+          submit review
+        </Button>
         <br />
         <br />
         <h2>Community reviews</h2>
@@ -409,15 +405,17 @@ const bookProfilePage = () => {
             <Card sx={{ width: "60%" }}>
               <CardContent>
                 {/* Add user, date, rating */}
-                  <Rating name="read-only" value={rev.rating} readOnly />
+                <Rating name="read-only" value={rev.rating} readOnly />
                 <Typography variant="body2">{rev.review}</Typography>
-                <br/>
+                <br />
 
-                <Typography 
+                <Typography
                   className={classes.reviewUser}
-                  variant="body2" 
-                  onClick = {() => goToProfile(rev.user)}><b>{rev.name}</b> {rev.date}</Typography>
-
+                  variant="body2"
+                  onClick={() => goToProfile(rev.user)}
+                >
+                  <b>{rev.name}</b> {rev.date}
+                </Typography>
               </CardContent>
             </Card>
           </div>

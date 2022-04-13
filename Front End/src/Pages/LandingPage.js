@@ -9,7 +9,6 @@ import axios from "axios";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
 
-
 const useStyles = makeStyles({
   main: {
     minHeight: "1100px",
@@ -28,18 +27,18 @@ const useStyles = makeStyles({
   title: {
     fontSize: "44pt",
     marginBottom: "10px",
-    marginTop: "80px"
+    marginTop: "80px",
   },
   subtitle: {
-    marginTop : "50px",
-  }
+    marginTop: "50px",
+  },
 });
 
 export default function LandingPage() {
   const classes = useStyles();
   const history = useHistory();
 
-  const [books, setBooks] = useState(null);
+  const [books, setBooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [collectionArr, setCollectionArr] = useState([]);
@@ -48,23 +47,23 @@ export default function LandingPage() {
     getData();
     getCollectionData();
     document.title = "Welcome to Booklab";
+    console.log(books);
   }, []);
 
   async function getCollectionData() {
     let res = await axios({
       method: "get",
-      url: "http://localhost:8001/myCollections"
+      url: "http://localhost:8001/myCollections",
     });
     let tmp = [];
-    for (let i =0; i < res.data.length; i++){
-      if (res.data[i].public == true){
+    for (let i = 0; i < res.data.length; i++) {
+      if (res.data[i].public == true) {
         tmp.push(res.data[i]);
       }
     }
 
     setCollectionArr(tmp);
   }
-
 
   async function getData() {
     await axios
@@ -94,9 +93,9 @@ export default function LandingPage() {
           <Grid item xs={6} className={classes.header}>
             <h1 className={classes.title}>Welcome to BookLab</h1>
             <h3>Collect and share your favourite books</h3>
-            <Button variant="contained"
-              onClick={() => history.push("/login")}
-            >Start Reading</Button>
+            <Button variant="contained" onClick={() => history.push("/login")}>
+              Start Reading
+            </Button>
           </Grid>
           <Grid item xs={6}>
             <img
