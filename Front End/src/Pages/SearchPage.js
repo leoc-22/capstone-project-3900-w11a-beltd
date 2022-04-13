@@ -56,7 +56,7 @@ export default function SearchPage() {
 
   async function getBookData() {
     await axios
-      .get("http://localhost:8002/books/search")
+      .get("http://localhost:8002/books/autocomplete")
       .then((res) => {
         setBooks(res.data);
       })

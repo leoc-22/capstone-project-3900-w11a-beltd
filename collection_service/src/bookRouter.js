@@ -18,10 +18,11 @@ app.get("/books", async (req, res) => {
     });
 });
 
-app.get("/books/search", async (req, res) => {
+app.get("/books/autocomplete", async (req, res) => {
   await bookModel
     .find({})
     .select("title authors bookid")
+    .limit(10)
     .then((books) => {
       console.log(`Retrieved ${books.length} books`);
       res.send(books);
