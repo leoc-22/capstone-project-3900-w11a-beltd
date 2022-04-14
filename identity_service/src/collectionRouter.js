@@ -9,11 +9,11 @@ const app = express();
 app.get("/collections", async (req, res) => {
   const collection = await collectionModel.find({ public: true });
     
-    try {
-      res.send(collection);
-    } catch (error) {
-      res.status(500).send(error);
-    }
+  try {
+    res.send(collection);
+  } catch (error) {
+    res.status(500).send(error);
+  }
 });
  
 
