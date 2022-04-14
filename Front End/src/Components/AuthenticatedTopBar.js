@@ -231,15 +231,18 @@ export default function AuthenicatedTopBar() {
       url : "http://localhost:8002/books/autocomplete",
     })
     const urlString = String(window.location.pathname);
-
+    
     for (let i =0; i < res.data.length; i++){
       if (res.data[i].title == val){
         history.push("/search?id=" + res.data[i]._id);
-        if (urlString.includes("search")){
-          location.reload();
-        }
+  
       }
     }
+    history.push("/search?searchQuery=" + val);
+    if (urlString.includes("search")){
+      location.reload();
+    }
+  
   }
 
   function getLocation(){

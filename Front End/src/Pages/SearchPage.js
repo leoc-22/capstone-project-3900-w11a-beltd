@@ -57,21 +57,24 @@ export default function SearchPage() {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
     const bookId = urlParams.get('id');
+    const otherQuery = window.location.search.slice(13);
 
-    console.log(bookId);
-    if (bookId == null){
-      return;
+    if (bookId != null){
+      console.log(1);
+      let res = await axios({
+        method : "get",
+        url : "http://localhost:8002/books/autocomplete"
+      })
+      for (let i = 0 ; i < res.data.length ; i++){
+        if (bookId == res.data[i]._id){
+          getResults(res.data[i].title);
+          return;
+        }
+      } 
+    } else if (otherQuery != null){
+      getResults(otherQuery);
+      
     }
-    let res = await axios({
-      method : "get",
-      url : "http://localhost:8002/books/autocomplete"
-    })
-    for (let i = 0 ; i < res.data.length ; i++){
-      if (bookId == res.data[i]._id){
-        getResults(res.data[i].title);
-        return;
-      }
-    } 
   }
 
   const getResults = (data) => {
