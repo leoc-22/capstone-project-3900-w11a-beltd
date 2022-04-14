@@ -93,8 +93,8 @@ app.patch("/collectionPub", async (req, res) => {
 });
 
 // Get all books in a collection
-app.get("/collectionBooks", async (req, res) => { //CHANGE FIELD DEPENDING ON BOOK MODEL
-  const books = await collectionModel.find({ b_id: req.body.b_id }, function (err, docs) {
+app.get("/collectionBooks", async (req, res) => { 
+  const books = await collectionModel.find({ _id: req.body._id }, { books: 1 }, function (err, docs) {
     if (err) {
       console.log(err);
     } else {
@@ -131,27 +131,19 @@ app.post("/addBook", async (req, res) => {
   console.log(updatedCollection);
   console.log("Added book to collection");
 
-  // // 3. Add user collection to book
-  // var query = { _id: userBook._id };
-  // console.log("HERE");
-  
-  // const updatedBook = userBookModel.findOneAndUpdate(
-  //   query,
-  //   { $push: { "collections": req.body._id } },
-  //   { new: true }
-  // );
-  // console.log(updatedBook);
-
 });
 
-// TODO Remove a book from a collection (take in b_id + c_id)
+// Remove a book from a collection 
 app.delete("/removeBook", async (req, res) => {
-  let _id = req.body._id;
-  var query = { bookid: req.body.bookid };
-  // Find and remove
+  // Remove from user books model
+  const updatedUserBooks = await userBookModel.remove({ _id: req.body.b_id });
+  console.log(updatedUserBooks);
+
+  // Remove from collections
+  let _id = req.body.c_id; // collection id
   const collection = await collectionModel.findByIdAndUpdate(
     {_id},
-    { $pull: { "books": req.body.bookid } },
+    { $pull: { "books": req.body.b_id } },
     { new: true }
   );
   console.log(collection);
@@ -179,6 +171,15 @@ app.patch("/readBook", async (req, res) => {
   console.log(updatedReadCollection);
 });
 
-// TODO Remove a collection??
+// Remove a collection
+app.delete("/collection", async (req, res) => {
+  var query = { _id: req.body.c_id };
+  
+  collectionModel.findOneAndRemove(query, (err) => {
+    if (err) return res.send(500, { error: err});
+    console.log("Collection deleted");
+    res.send("Successfully deleted");
+  });
+});
 
 module.exports = app;
