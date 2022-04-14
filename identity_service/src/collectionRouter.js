@@ -19,13 +19,15 @@ app.get("/collections", async (req, res) => {
 
 // 2. Get all USER OWNED collections by user id TODO TEST
 app.get("/myCollections", async (req, res) => {
-  const collections = await collectionModel.find({ user: req.body.user }, function (err, docs) {
+  await collectionModel.find({ user: req.body.user }, function (err, docs) {
     if (err) {
       console.log(err);
     } else {
       console.log(docs);
     }
-  }).clone().catch(function(err){ console.log(err)});
+  }).clone().catch(function(err) { 
+    console.log(err);
+  });
 });
 
 // 3. Create a new collection
@@ -100,7 +102,9 @@ app.get("/collectionBooks", async (req, res) => {
     } else {
       console.log(docs);
     }
-  }).clone().catch(function(err){ console.log(err)});
+  }).clone().catch(function(err){ 
+    console.log(err);
+  });
 });
 
 // Add a book to a collection 
