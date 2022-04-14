@@ -5,7 +5,7 @@ import LandingPage from "./Pages/LandingPage";
 import LogInPage from "./Pages/login";
 import SignUpPage from "./Pages/signup";
 import HomePage from "./Pages/HomePage";
-import SearchPage from "./Pages/searchPage";
+import SearchPage from "./Pages/SearchPage";
 import ResetPasswordPage from "./Pages/resetPassword";
 import UpdatePasswordPage from "./Pages/UpdatePassword";
 import UserSettingsPage from "./Pages/userSettings";

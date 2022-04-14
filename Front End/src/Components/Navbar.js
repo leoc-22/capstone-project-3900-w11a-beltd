@@ -13,7 +13,7 @@ import {styled } from '@mui/material/styles';
 
 const useStyles = makeStyles({
   logoutBtn: {
-    marginLeft : "55%"
+    marginLeft : "65%"
   },
   BookLabTitle: {
     color : "#444444",
@@ -38,6 +38,7 @@ const AppBar1 = styled(AppBar)(() => ({
   color : "black",
   minHeight: "65px",
   maxHeight : "65px",
+  minWidth : "100%",
   boxShadow : "none",
   borderBottom: "0.5px solid #2196f3",
 
@@ -82,7 +83,9 @@ const Navbar = () => {
   }
 
   return (
-    <AppBar1 position="static">
+    <AppBar1 position="static"
+      sx={{ minWidth : "750px" }}
+    >
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography

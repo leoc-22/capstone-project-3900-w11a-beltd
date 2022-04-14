@@ -15,8 +15,10 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { makeStyles } from "@material-ui/core";
 import {styled } from '@mui/material/styles';
-
-
+import SearchIcon from "@mui/icons-material/Search";
+import TextField from "@mui/material/TextField";
+import Autocomplete from "@mui/material/Autocomplete";
+import axios from "axios";
 
 
 const useStyles = makeStyles({
@@ -33,7 +35,32 @@ const useStyles = makeStyles({
   BtnTextActive : {
     color : "#1976d2",
     fontWeight : "bold"
+  },
+  iconBtn: {
+    marginLeft: "10%",
+    marginTop: "10px",
+    border: "none",
+    background: "transparent",
+    "&:hover": {
+      cursor: "pointer",
+    },
+  },
+  searchIcon : {
+    marginLeft: "-140px",
+
+  },
+  textItem: {
+    marginTop: "-20px",
+    marginRight: "20px",
+    minWidth: "100px",
+    maxWidth: "175px",
+    marginLeft : "0px"
+  },
+  divider : {
+    minWidth : '50px'
   }
+
+
 
 });
 
@@ -78,11 +105,17 @@ export default function AuthenicatedTopBar() {
   const [CollectionsBtn, setCollectionsBtn] = useState(null);
   const [RecommendationsBtn, setRecommendationsBtn] = useState(null);
   const [LeaderBoardBtn, setLeaderBoardBtn] = useState(null);
+  const [seachOpen, setSeachOpen] = useState(false);
+  const [books, setBooks] = useState([]);
+  const [query, setQuery] = useState("");
 
+  
   const history = useHistory();
 
   useEffect(() => {
     getLocation();
+    getBookData();
+
   }, []);
 
   const handleOpenNavMenu = (event) => {
@@ -99,6 +132,51 @@ export default function AuthenicatedTopBar() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+
+  
+  function handleSeachOpen() {
+    if (seachOpen == false) {
+      document.getElementById("searchText").hidden = false;
+      setSeachOpen(true);
+    } else {
+      document.getElementById("searchText").hidden = true;
+      setSeachOpen(false);
+    }
+  }
+
+  const getBookData = () => {
+    axios
+      .get("http://localhost:8002/books/autocomplete")
+      .then((res) => {
+        setBooks(res.data);
+      })
+      .catch((error) => {
+        console.error(`Error: ${error}`);
+        setError(error);
+      })
+ 
+  };
+
+
+  const handleOptions = () => {
+    // faster performance and unique values using set
+    let optionList = new Set();
+
+    // adding titles first, then authors, then genres
+    for (let i = 0; i < books.length; i++) {
+      optionList.add(books[i].title);
+    }
+    for (let i = 0; i < books.length; i++) {
+      optionList.add(books[i].authors);
+    }
+    for (let i = 0; i < books.length; i++) {
+      optionList.add(books[i].categories[0].name);
+    }
+    return [...optionList];
+  };
+
+
 
   function routePage(page) {
     if (page === "Explore") {
@@ -146,6 +224,27 @@ export default function AuthenicatedTopBar() {
       return;
     }
   }
+
+  async function search(val){
+    let res = await axios({
+      method : "GET",
+      url : "http://localhost:8002/books/autocomplete",
+    })
+    const urlString = String(window.location.pathname);
+    
+    for (let i =0; i < res.data.length; i++){
+      if (res.data[i].title == val){
+        history.push("/search?id=" + res.data[i]._id);
+  
+      }
+    }
+    history.push("/search?searchQuery=" + val);
+    if (urlString.includes("search")){
+      location.reload();
+    }
+  
+  }
+
   function getLocation(){
   const urlString = String(window.location.pathname);
     if(urlString.includes("search")){
@@ -182,6 +281,8 @@ export default function AuthenicatedTopBar() {
     <AppBar1
       position="static"
       color="primary"
+      sx={{ minWidth : "550px" }}
+
     >
       <Container1 maxWidth="xl">
         <Toolbar disableGutters>
@@ -279,8 +380,49 @@ export default function AuthenicatedTopBar() {
             >
               <div className={LeaderBoardBtn}>Leaderboard</div>
             </ButtonTest>
-
+            
           </Box>
+          
+          <IconButton
+              onClick={handleSeachOpen}
+              class={classes.iconBtn}
+              disableRipple
+            >
+              <SearchIcon></SearchIcon>
+            </IconButton>
+            <div className={classes.textItem} id="searchText" hidden>
+            <Autocomplete
+              disablePortal
+              autoHighlight
+              clearOnEscape
+              freeSolo
+              clearOnBlur={false}
+              options={handleOptions()}
+              sx={{ width: 230 }}
+              renderInput={(params) => (
+                <TextField
+                InputProps={{ style: { fontSize: 5 } }}
+                  {...params}
+                  variant="standard"
+                  style={{
+                    width: "100%",
+                    marginTop: 20,
+                    fontSize: 6
+                  }}
+                  onChange={(e) => {
+                    setQuery(e.target.value);
+                  }}
+                />
+              )}
+              onChange={(e, value) => {
+                setQuery(value);
+                search(value)
+
+              }}
+            />
+            </div>
+            <div class={classes.divider}/>
+
 
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
