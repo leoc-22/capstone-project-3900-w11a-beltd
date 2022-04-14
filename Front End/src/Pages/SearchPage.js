@@ -27,7 +27,7 @@ const useStyles = makeStyles({
     marginTop: "100px",
   },
   searchType: {
-    color: "#FB8C00",
+    color: "#2979ff",
     padding: 0,
     margin: 0,
   },
@@ -50,13 +50,43 @@ export default function SearchPage() {
 
   useEffect(() => {
     getBookData();
+    searchUrl();
   }, []);
 
-  const getBookData = () => {
+  const searchUrl = async() => {
+    const queryString = window.location.search;
+    const urlParams = new URLSearchParams(queryString);
+    const bookId = urlParams.get('id');
+
+    console.log(bookId);
+    if (bookId == null){
+      return;
+    }
+    let res = await axios({
+      method : "get",
+      url : "http://localhost:8002/books/autocomplete"
+    })
+    for (let i = 0 ; i < res.data.length ; i++){
+      if (bookId == res.data[i]._id){
+        getResults(res.data[i].title);
+        return;
+      }
+    } 
+  }
+
+  const getResults = (data) => {
+    axios.get(`http://localhost:8002/books/search/${data}`).then((res) => {
+      setSearchRes(res.data);
+    });
+  }
+
+  const getBookData = async() => {
     axios
       .get("http://localhost:8002/books/autocomplete")
       .then((res) => {
         setBooks(res.data);
+        console.log(res);
+
       })
       .catch((error) => {
         console.error(`Error: ${error}`);
@@ -65,7 +95,9 @@ export default function SearchPage() {
       .finally(() => {
         setLoadingBooks(false);
       });
+
   };
+
 
   const handleSearch = () => {
     // search by title or authors or genres

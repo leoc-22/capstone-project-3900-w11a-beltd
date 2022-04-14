@@ -62,6 +62,7 @@ export default function TopBookItem(props) {
         <span className="bookTitle">
           <b>{props.book.title}</b>
         </span>
+        <br/>
         <span className="bookTitle">{props.book.authors}</span>
       </div>
     </div>
