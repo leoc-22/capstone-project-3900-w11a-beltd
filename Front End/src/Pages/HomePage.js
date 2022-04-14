@@ -1,12 +1,9 @@
-/* eslint-disable */ 
-
 import React, { useEffect, useState } from "react";
 import CollectionsCarousel from "../Components/CollectionsCarousel";
 import TopBookGrid from "../Components/TopBookGrid";
 import AuthenicatedTopBar from "../Components/AuthenticatedTopBar";
 import { makeStyles } from "@material-ui/core";
 import axios from "axios";
-//import { useLocation } from "react-router-dom";
 
 const useStyles = makeStyles({
   main: {
@@ -17,8 +14,8 @@ const useStyles = makeStyles({
     marginTop: "100px",
   },
   subtitle: {
-    marginTop : "50px",
-  }
+    marginTop: "50px",
+  },
 });
 
 const HomePage = () => {
@@ -42,11 +39,11 @@ const HomePage = () => {
   async function getCollectionData() {
     let res = await axios({
       method: "get",
-      url: "http://localhost:8001/myCollections",
+      url: "http://localhost:8001/collections",
     });
     let tmp = [];
-    for (let i =0; i < res.data.length; i++){
-      if (res.data[i].public == true){
+    for (let i = 0; i < res.data.length; i++) {
+      if (res.data[i].public == true) {
         tmp.push(res.data[i]);
       }
     }
@@ -72,7 +69,7 @@ const HomePage = () => {
     let userEmail = sessionStorage.getItem("email");
     await axios
       .get("http://localhost:8001/oneuser/" + userEmail)
-      .then((res) => {
+      .then(() => {
         //setUser(res.data);
       })
       .catch((error) => {

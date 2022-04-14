@@ -10,6 +10,7 @@ const reviewSchema = new mongoose.Schema(
     //book: { type: mongoose.Schema.Types.ObjectId, ref: "UserBooks" },
     title: { type: String, required: true },
     review: { type: String, required: true },
+    //rating: { type: Number, min: 1, max: 5},
   },
   { collection: "Reviews" }
 );

@@ -1,5 +1,5 @@
 /* eslint-disable */
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
@@ -14,27 +14,26 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { makeStyles } from "@material-ui/core";
-import {styled } from '@mui/material/styles';
+import { styled } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import axios from "axios";
 
-
 const useStyles = makeStyles({
   BookLabTitle: {
-    color : "#444444",
-    paddingLeft : "50px",
+    color: "#444444",
+    paddingLeft: "50px",
     "&:hover": {
       cursor: "pointer",
     },
   },
-  BtnText : {
-    color : "#444444"
+  BtnText: {
+    color: "#444444",
   },
-  BtnTextActive : {
-    color : "#1976d2",
-    fontWeight : "bold"
+  BtnTextActive: {
+    color: "#1976d2",
+    fontWeight: "bold",
   },
   iconBtn: {
     marginLeft: "10%",
@@ -45,59 +44,52 @@ const useStyles = makeStyles({
       cursor: "pointer",
     },
   },
-  searchIcon : {
+  searchIcon: {
     marginLeft: "-140px",
-
   },
   textItem: {
     marginTop: "-20px",
     marginRight: "20px",
     minWidth: "100px",
     maxWidth: "175px",
-    marginLeft : "0px"
+    marginLeft: "0px",
   },
-  divider : {
-    minWidth : '50px'
-  }
-
-
-
+  divider: {
+    minWidth: "50px",
+  },
 });
 
 const ButtonTest = styled(Button)(() => ({
-  borderRadius : "0px",
-  marginTop : "10px",
+  borderRadius: "0px",
+  marginTop: "10px",
   minHeight: "60px",
   maxHeight: "60px",
-  marginLeft : "20px",
+  marginLeft: "20px",
   textTransform: "none",
   "&:hover": {
-    backgroundColor : "transparent",
+    backgroundColor: "transparent",
     cursor: "pointer",
     borderBottom: "3px solid #1976d2",
-  }  
+  },
 }));
 
 const AppBar1 = styled(AppBar)(() => ({
   backgroundColor: "#F3F3F3",
-  color : "black",
+  color: "black",
   minHeight: "65px",
-  maxHeight : "65px",
-  boxShadow : "none",
+  maxHeight: "65px",
+  boxShadow: "none",
   borderBottom: "0.5px solid #2196f3",
-
 }));
 
 const Container1 = styled(Container)(() => ({
-  marginTop : "-10px"
+  marginTop: "-10px",
 }));
-
 
 const pages = ["Explore", "Collections", "Recommendations", "Leaderboard"];
 const settings = ["Profile", "Change password", "Goals", "Logout"];
 
 export default function AuthenicatedTopBar() {
-  
   const classes = useStyles();
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
@@ -109,13 +101,11 @@ export default function AuthenicatedTopBar() {
   const [books, setBooks] = useState([]);
   const [query, setQuery] = useState("");
 
-  
   const history = useHistory();
 
   useEffect(() => {
     getLocation();
     getBookData();
-
   }, []);
 
   const handleOpenNavMenu = (event) => {
@@ -133,8 +123,6 @@ export default function AuthenicatedTopBar() {
     setAnchorElUser(null);
   };
 
-
-  
   function handleSeachOpen() {
     if (seachOpen == false) {
       document.getElementById("searchText").hidden = false;
@@ -154,10 +142,8 @@ export default function AuthenicatedTopBar() {
       .catch((error) => {
         console.error(`Error: ${error}`);
         setError(error);
-      })
- 
+      });
   };
-
 
   const handleOptions = () => {
     // faster performance and unique values using set
@@ -176,8 +162,6 @@ export default function AuthenicatedTopBar() {
     return [...optionList];
   };
 
-
-
   function routePage(page) {
     if (page === "Explore") {
       history.push({
@@ -194,7 +178,7 @@ export default function AuthenicatedTopBar() {
     } else if (page === "Leaderboard") {
       history.push({
         pathname: "/LeaderBoard",
-      })
+      });
     } else {
       return;
     }
@@ -225,65 +209,60 @@ export default function AuthenicatedTopBar() {
     }
   }
 
-  async function search(val){
+  async function search(val) {
     let res = await axios({
-      method : "GET",
-      url : "http://localhost:8002/books/autocomplete",
-    })
+      method: "GET",
+      url: "http://localhost:8002/books/autocomplete",
+    });
     const urlString = String(window.location.pathname);
-    
-    for (let i =0; i < res.data.length; i++){
-      if (res.data[i].title == val){
+
+    for (let i = 0; i < res.data.length; i++) {
+      if (res.data[i].title == val) {
         history.push("/search?id=" + res.data[i]._id);
-  
+        if (urlString.includes("search")) {
+          location.reload();
+        }
       }
     }
-    history.push("/search?searchQuery=" + val);
-    if (urlString.includes("search")){
-      location.reload();
-    }
-  
   }
 
-  function getLocation(){
-  const urlString = String(window.location.pathname);
-    if(urlString.includes("search")){
+  function getLocation() {
+    const urlString = String(window.location.pathname);
+    if (urlString.includes("search")) {
       //document.getElementById("Explore").textContent = "ef";
-      setCollectionsBtn(classes.BtnText)
-      setRecommendationsBtn(classes.BtnText)
+      setCollectionsBtn(classes.BtnText);
+      setRecommendationsBtn(classes.BtnText);
       setLeaderBoardBtn(classes.BtnText);
       setExploreBtn(classes.BtnTextActive);
-    } else if (urlString.includes("collections") || urlString.includes("collection-detail")) {
-      setCollectionsBtn(classes.BtnTextActive)
-      setRecommendationsBtn(classes.BtnText)
+    } else if (
+      urlString.includes("collections") ||
+      urlString.includes("collection-detail")
+    ) {
+      setCollectionsBtn(classes.BtnTextActive);
+      setRecommendationsBtn(classes.BtnText);
       setLeaderBoardBtn(classes.BtnText);
       setExploreBtn(classes.BtnText);
     } else if (urlString.includes("recommendations")) {
-      setCollectionsBtn(classes.BtnText)
-      setRecommendationsBtn(classes.BtnTextActive)
+      setCollectionsBtn(classes.BtnText);
+      setRecommendationsBtn(classes.BtnTextActive);
       setLeaderBoardBtn(classes.BtnText);
       setExploreBtn(classes.BtnText);
     } else if (urlString.includes("LeaderBoard")) {
-      setCollectionsBtn(classes.BtnText)
-      setRecommendationsBtn(classes.BtnText)
+      setCollectionsBtn(classes.BtnText);
+      setRecommendationsBtn(classes.BtnText);
       setLeaderBoardBtn(classes.BtnTextActive);
       setExploreBtn(classes.BtnText);
     } else {
       setExploreBtn(classes.BtnText);
-      setCollectionsBtn(classes.BtnText)
-      setRecommendationsBtn(classes.BtnText)
+      setCollectionsBtn(classes.BtnText);
+      setRecommendationsBtn(classes.BtnText);
       setLeaderBoardBtn(classes.BtnText);
     }
   }
   // var userName = localStorage.getItem("name");
 
   return (
-    <AppBar1
-      position="static"
-      color="primary"
-      sx={{ minWidth : "550px" }}
-
-    >
+    <AppBar1 position="static" color="primary" sx={{ minWidth: "550px" }}>
       <Container1 maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
@@ -380,17 +359,16 @@ export default function AuthenicatedTopBar() {
             >
               <div className={LeaderBoardBtn}>Leaderboard</div>
             </ButtonTest>
-            
           </Box>
-          
+
           <IconButton
-              onClick={handleSeachOpen}
-              class={classes.iconBtn}
-              disableRipple
-            >
-              <SearchIcon></SearchIcon>
-            </IconButton>
-            <div className={classes.textItem} id="searchText" hidden>
+            onClick={handleSeachOpen}
+            class={classes.iconBtn}
+            disableRipple
+          >
+            <SearchIcon></SearchIcon>
+          </IconButton>
+          <div className={classes.textItem} id="searchText" hidden>
             <Autocomplete
               disablePortal
               autoHighlight
@@ -401,13 +379,13 @@ export default function AuthenicatedTopBar() {
               sx={{ width: 230 }}
               renderInput={(params) => (
                 <TextField
-                InputProps={{ style: { fontSize: 5 } }}
+                  InputProps={{ style: { fontSize: 5 } }}
                   {...params}
                   variant="standard"
                   style={{
                     width: "100%",
                     marginTop: 20,
-                    fontSize: 6
+                    fontSize: 6,
                   }}
                   onChange={(e) => {
                     setQuery(e.target.value);
@@ -416,13 +394,11 @@ export default function AuthenicatedTopBar() {
               )}
               onChange={(e, value) => {
                 setQuery(value);
-                search(value)
-
+                search(value);
               }}
             />
-            </div>
-            <div class={classes.divider}/>
-
+          </div>
+          <div class={classes.divider} />
 
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">

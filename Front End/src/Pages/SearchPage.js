@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import React, { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
 import AuthenticatedTopBar from "../Components/AuthenticatedTopBar";
@@ -53,43 +51,41 @@ export default function SearchPage() {
     searchUrl();
   }, []);
 
-  const searchUrl = async() => {
+  const searchUrl = async () => {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
-    const bookId = urlParams.get('id');
+    const bookId = urlParams.get("id");
     const otherQuery = window.location.search.slice(13);
 
-    if (bookId != null){
+    if (bookId != null) {
       console.log(1);
       let res = await axios({
-        method : "get",
-        url : "http://localhost:8002/books/autocomplete"
-      })
-      for (let i = 0 ; i < res.data.length ; i++){
-        if (bookId == res.data[i]._id){
+        method: "get",
+        url: "http://localhost:8002/books/autocomplete",
+      });
+      for (let i = 0; i < res.data.length; i++) {
+        if (bookId == res.data[i]._id) {
           getResults(res.data[i].title);
           return;
         }
-      } 
-    } else if (otherQuery != null){
+      }
+    } else if (otherQuery != null) {
       getResults(otherQuery);
-      
     }
-  }
+  };
 
   const getResults = (data) => {
     axios.get(`http://localhost:8002/books/search/${data}`).then((res) => {
       setSearchRes(res.data);
     });
-  }
+  };
 
-  const getBookData = async() => {
+  const getBookData = async () => {
     axios
       .get("http://localhost:8002/books/autocomplete")
       .then((res) => {
         setBooks(res.data);
         console.log(res);
-
       })
       .catch((error) => {
         console.error(`Error: ${error}`);
@@ -98,9 +94,7 @@ export default function SearchPage() {
       .finally(() => {
         setLoadingBooks(false);
       });
-
   };
-
 
   const handleSearch = () => {
     // search by title or authors or genres
