@@ -5,20 +5,20 @@ const userBookModel = require("./models/userBookModel");
 
 const app = express();
 
-// 1. Get all PUBLIC collections for user homepage TODO TEST
+// 1. Get all PUBLIC collections for user homepage 
 app.get("/collections", async (req, res) => {
-  await collectionModel.find({ public: true }, function (err, docs) {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log(docs);
+  const collection = await collectionModel.find({ public: true });
+    
+    try {
+      res.send(collection);
+    } catch (error) {
+      res.status(500).send(error);
     }
-  });
 });
  
 
-// 2. Get all USER OWNED collections by user id TODO TEST
-app.get("/myCollections", async (req, res) => {
+// 2. Get all USER OWNED collections by user id 
+app.get("/myCollections", async (req) => {
   await collectionModel.find({ user: req.body.user }, function (err, docs) {
     if (err) {
       console.log(err);
@@ -95,7 +95,7 @@ app.patch("/collectionPub", async (req, res) => {
 });
 
 // Get all books in a collection
-app.get("/collectionBooks", async (req, res) => { 
+app.get("/collectionBooks", async (req) => { 
   await collectionModel.find({ _id: req.body._id }, { books: 1 }, function (err, docs) {
     if (err) {
       console.log(err);
@@ -141,7 +141,11 @@ app.post("/addBook", async (req, res) => {
 app.delete("/removeBook", async (req, res) => {
   // Remove from user books model
   const updatedUserBooks = await userBookModel.remove({ _id: req.body.b_id });
-  console.log(updatedUserBooks);
+  try {
+    res.send(updatedUserBooks);
+  } catch (error) {
+    res.status(500).send(error);
+  }
 
   // Remove from collections
   let _id = req.body.c_id; // collection id
@@ -155,7 +159,7 @@ app.delete("/removeBook", async (req, res) => {
 
 
 // TODO Move book to "Read" collection
-app.patch("/readBook", async (req, res) => {
+app.patch("/readBook", async (req) => {
   const readCollection = await collectionModel.find({ user: req.body.user }, function (err, docs) {
     if (err) {
       console.log(err);

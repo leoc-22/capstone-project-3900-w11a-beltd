@@ -7,7 +7,7 @@ const collectionModel = require("./models/collectionModel");
 const app = express();
 
 // Get all USER OWNED goals by user id
-app.get("/myGoals", async (req, res) => {
+app.get("/myGoals", async (req) => {
   await collectionModel.find({ user: req.body.user }, function (err, docs) {
     if (err) {
       console.log(err);
