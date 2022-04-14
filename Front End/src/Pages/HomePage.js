@@ -1,4 +1,4 @@
-/* eslint-disable */ 
+/* eslint-disable */
 
 import React, { useEffect, useState } from "react";
 import CollectionsCarousel from "../Components/CollectionsCarousel";
@@ -17,8 +17,8 @@ const useStyles = makeStyles({
     marginTop: "100px",
   },
   subtitle: {
-    marginTop : "50px",
-  }
+    marginTop: "50px",
+  },
 });
 
 const HomePage = () => {
@@ -42,11 +42,11 @@ const HomePage = () => {
   async function getCollectionData() {
     let res = await axios({
       method: "get",
-      url: "http://localhost:8001/myCollections",
+      url: "http://localhost:8001/collections",
     });
     let tmp = [];
-    for (let i =0; i < res.data.length; i++){
-      if (res.data[i].public == true){
+    for (let i = 0; i < res.data.length; i++) {
+      if (res.data[i].public == true) {
         tmp.push(res.data[i]);
       }
     }
