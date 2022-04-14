@@ -2,6 +2,7 @@ const express = require("express");
 //const mongoose = require("mongoose");
 const goalModel = require("./models/goalModel");
 const userModel = require("./models/userModel");
+const collectionModel = require("./models/collectionModel");
 
 const app = express();
 
@@ -13,7 +14,9 @@ app.get("/myGoals", async (req, res) => {
     } else {
       console.log(docs);
     }
-  }).clone().catch(function(err){ console.log(err)});
+  }).clone().catch(function(err){ 
+    console.log(err);
+  });
 });
 
 

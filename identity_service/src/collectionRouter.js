@@ -96,7 +96,7 @@ app.patch("/collectionPub", async (req, res) => {
 
 // Get all books in a collection
 app.get("/collectionBooks", async (req, res) => { 
-  const books = await collectionModel.find({ _id: req.body._id }, { books: 1 }, function (err, docs) {
+  await collectionModel.find({ _id: req.body._id }, { books: 1 }, function (err, docs) {
     if (err) {
       console.log(err);
     } else {
@@ -162,7 +162,9 @@ app.patch("/readBook", async (req, res) => {
     } else {
       console.log(docs);
     }
-  }).clone().catch(function(err){ console.log(err)})
+  }).clone().catch(function(err){ 
+    console.log(err);
+  })
     .find({ name: "Read" });
 
   const _id = readCollection._id;
