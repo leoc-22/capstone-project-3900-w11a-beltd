@@ -18,7 +18,10 @@ const useStyles = makeStyles({
     },
   },
   image: {
-    marginLeft: "10%",
+    position : "absolute",
+    marginLeft: "200px",
+    marginTop : "-50px"
+
   },
 });
 

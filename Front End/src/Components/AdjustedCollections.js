@@ -21,31 +21,10 @@ const useStyles = makeStyles({
   }
 });
 
-const CollectionsCarousel = React.memo(props => {
-  //console.log(props.collections);
+const AdjustedCollections = (props => {
 
-  const [collectionArr, setCollectionArr] = useState([]);
-  const [hasData, setHasData] = useState(false);
   const classes = useStyles();
   const history = useHistory();
-
-  useEffect(() => {
-    filterData();
-  }, [hasData]);
-
-  function filterData(){
-    let tmp = [];
-    for (let i = 0; i <props.collections.length ;i++){
-      if (props.collections[i].public == false){
-        props.collections[i].public = "Private"
-      }else if (props.collections[i].public == true ){
-        props.collections[i].public = "Public"
-      }
-      tmp.push(props.collections[i]); 
-    }
-    setCollectionArr(tmp);
-    setHasData(true);
-  }
 
   function collectionDetail(){
     history.push({
@@ -70,7 +49,7 @@ const CollectionsCarousel = React.memo(props => {
         gap={20}
         loop
       >
-        {collectionArr.map((Item) =>(
+        {props.collections.map((Item) =>(
           <Carousel.Item>
             <div className={classes.cover} style={{backgroundColor: randomRgbColor()}} onClick = {()=>collectionDetail()}></div>
             <p><b>{Item.name}</b></p>
@@ -82,4 +61,4 @@ const CollectionsCarousel = React.memo(props => {
     </div>
   );
 })
-export default CollectionsCarousel;
+export default AdjustedCollections;

@@ -1,7 +1,8 @@
+/* eslint-disable */
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import AuthenicatedTopBar from "../Components/AuthenticatedTopBar";
-import CollectionsCarousel from "../Components/CollectionsCarousel";
+import AdjustedCollections from "../Components/AdjustedCollections";
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
 import Avatar from "@mui/material/Avatar";
@@ -66,12 +67,13 @@ const userProfilePage = () => {
     for (let i = 0; i < myCollectionsIds.length; i++) {
       let curId = myCollectionsIds[i];
       for (let j = 0; j < allCollections.length; j++) {
-        if (curId == allCollections[j]._id) {
+        if (curId == allCollections[j]._id && allCollections[j].public == false) {
+          allCollections[j].public = "Private";
           allMycollection.push(allCollections[j]);
-        }
-        if (allCollections[j].public == true) {
-          // Set tag to show private or public depending on collection (check CollectionsCarousel.js)
-        }
+        } else if (curId == allCollections[j]._id){
+          allCollections[j].public = "Public";
+          allMycollection.push(allCollections[j]);
+        } 
       }
     }
     setMyCollections(allMycollection);
@@ -86,7 +88,7 @@ const userProfilePage = () => {
     await axios
       .get("http://localhost:8001/oneuser/" + userEmail)
       .then((res) => {
-        console.log(`user info: ${JSON.stringify(res.data)}`);
+        //console.log(`user info: ${JSON.stringify(res.data)}`);
         if (res.data.image !== null) {
           setImg(res.data.image);
           document.getElementById("avatar").hidden = true;
@@ -234,7 +236,7 @@ const userProfilePage = () => {
           </Grid>
         </Grid>
         <h2 style={{ marginTop: "80px" }}>My collections</h2>
-        <CollectionsCarousel collections={myCollections}></CollectionsCarousel>
+        <AdjustedCollections collections={myCollections}></AdjustedCollections>
       </div>
     </div>
   );

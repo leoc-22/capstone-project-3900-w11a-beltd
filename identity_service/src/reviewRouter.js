@@ -32,7 +32,9 @@ app.post("/review", async (req, res) => {
   // Create review
   var review = new reviewModel({
     user: req.body.user,
-    //book: req.body.book,
+    name: req.body.name,
+    date: req.body.date,
+    rating: req.body.rating,
     title: req.body.title,
     review: req.body.review,
   });
