@@ -7,7 +7,7 @@ const app = express();
 
 // 1. Get all PUBLIC collections for user homepage TODO TEST
 app.get("/collections", async (req, res) => {
-  const collections = await collectionModel.find({ public: true }, function (err, docs) {
+  await collectionModel.find({ public: true }, function (err, docs) {
     if (err) {
       console.log(err);
     } else {

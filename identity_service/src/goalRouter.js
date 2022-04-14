@@ -7,11 +7,11 @@ const app = express();
 
 // Get all USER OWNED goals by user id
 app.get("/myGoals", async (req, res) => {
-  const goals = await collectionModel.find({ user: req.body.user }, function (err, docs) {
+  await collectionModel.find({ user: req.body.user }, function (err, docs) {
     if (err) {
       console.log(err);
     } else {
-      console.log(docs)
+      console.log(docs);
     }
   }).clone().catch(function(err){ console.log(err)});
 });

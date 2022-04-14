@@ -5,29 +5,8 @@ const userModel = require("./models/userModel");
 
 const app = express();
 
-// 1. Get all USER OWNED reviews by user id 
-app.get("/myReviews", async (req, res) => {
-  const reviews = await reviewModel.find({ user: req.body.user }, function (err, docs) {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log(docs);
-    }
-  }).clone().catch(function(err){ console.log(err)});
-});
+// Create a new review
 
-// 2. Get all book reviews by book id TODO TEST
-app.get("/reviews", async (req, res) => {
-  const reviews = await reviewModel.find({ book: req.body._id }, function (err, docs) {
-    if (err) {
-      console.log(err);
-    } else {
-      console.log(docs);
-    }
-  }).clone().catch(function(err){ console.log(err)});
-});
-
-// 3. Create a new review
 app.post("/review", async (req, res) => {
   // Create review
   var review = new reviewModel({
