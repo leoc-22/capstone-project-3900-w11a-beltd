@@ -68,13 +68,14 @@ export default function SearchPage() {
   const [query, setQuery] = useState("");
   const [searchRes, setSearchRes] = useState("");
   const [searchResImg, setSearchResImg] = useState("");
+  const [barRes, setBarRes] = useState(0);
 
   const [bestResult, setBestResult] = useState("");
 
   useEffect(() => {
     getBookData();
     searchUrl();
-  }, [bestResult]);
+  }, [barRes]);
 
   const searchUrl = async() => {
     const newQuery = window.location.search.slice(13);
@@ -90,7 +91,6 @@ export default function SearchPage() {
       setBestResult(res.data[0]);
       setSearchResImg(res.data[0].image);
       document.getElementById("Results").hidden = false;
-
     });
   };
 
@@ -111,13 +111,21 @@ export default function SearchPage() {
   };
 
   const handleSearch = () => {
+    const newQuery = window.location.search.slice(13);
+    if (newQuery != null){
+      history.push({
+        pathname: "/search",
+        //state: { user: props.user },
+      });
+    }
+
     // search by title or authors or genres
     axios.get(`http://localhost:8002/books/search/${query}`).then((res) => {
       setSearchRes(res.data);
       setBestResult(res.data[0]);
       setSearchResImg(res.data[0].image);
       document.getElementById("Results").hidden = false;
-      console.log("test");
+      setBarRes(barRes+1);
     });
     // .catch((error) => {
     //   console.error(`Error: ${error}`);
