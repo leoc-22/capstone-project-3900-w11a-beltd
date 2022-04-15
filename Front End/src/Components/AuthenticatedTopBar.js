@@ -242,7 +242,6 @@ export default function AuthenicatedTopBar() {
     if (urlString.includes("search")){
       location.reload();
     }
-  
   }
 
   function getLocation(){
