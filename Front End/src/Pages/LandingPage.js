@@ -53,7 +53,7 @@ export default function LandingPage() {
   async function getCollectionData() {
     let res = await axios({
       method: "get",
-      url: "http://localhost:8001/myCollections",
+      url: "http://localhost:8001/collections",
     });
     let tmp = [];
     for (let i = 0; i < res.data.length; i++) {
