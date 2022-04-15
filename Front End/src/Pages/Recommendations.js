@@ -74,6 +74,7 @@ export default function RecommendationsPage() {
   const [firstLoad, setFirstLoad] = useState(0);
 
   useEffect(() => {
+    document.title = "Recommended for you | Booklab";
   }, [books]);
 
 

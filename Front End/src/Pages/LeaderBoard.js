@@ -11,6 +11,7 @@ export default function LeaderBoard() {
 
   useEffect(() => {
     getData();
+    document.title = "Leader board | Booklab";
   }, []);
   
   async function getData(){

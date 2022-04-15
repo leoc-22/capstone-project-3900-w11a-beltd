@@ -16,11 +16,11 @@ import {Alert} from "@mui/material";
 
 const useStyles = makeStyles({
   main: {
-    minHeight: "100vh",
+    minHeight: "80vh",
     minWidth: "500px",
     width: "80%",
     marginLeft : "10%",
-    marginTop: "50px",
+    marginTop: "100px",
     margin: "0 auto"  
   },
   subtitle: {
