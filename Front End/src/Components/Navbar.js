@@ -17,7 +17,8 @@ const StyledAppBar = styled(AppBar)(() => ({
   backgroundColor: "#F3F3F3",
   width: "100%",
   boxShadow: "none",
-  borderBottom: "1px solid #2196f3",
+  borderBottom: "1px solid #1976d2",
+  height: "62px",
 }));
 
 const ButtonLink = styled(Button)(() => ({
