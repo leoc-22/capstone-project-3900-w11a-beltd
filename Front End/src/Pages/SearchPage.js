@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
-import AuthenticatedTopBar from "../Components/AuthenticatedTopBar";
+import AuthenticatedNavbar from "../Components/AuthenticatedNavbar";
 import TextField from "@mui/material/TextField";
 import Typewriter from "typewriter-effect";
 import { makeStyles } from "@material-ui/core";
-import FormGroup from "@mui/material/FormGroup";
+import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
+import Radio from "@mui/material/Radio";
 import search from "../Images/search.svg";
 import Grid from "@mui/material/Grid";
+import FormControl from "@mui/material/FormControl";
+import FormLabel from "@mui/material/FormLabel";
 import Autocomplete from "@mui/material/Autocomplete";
 import axios from "axios";
 import BookSearchResults from "../Components/BookSearchResults";
@@ -25,7 +27,7 @@ const useStyles = makeStyles({
     marginTop: "100px",
   },
   searchType: {
-    color: "#2979ff",
+    color: "#1976d2",
     padding: 0,
     margin: 0,
   },
@@ -129,7 +131,7 @@ export default function SearchPage() {
 
   return (
     <div>
-      <AuthenticatedTopBar></AuthenticatedTopBar>
+      <AuthenticatedNavbar />
       <div className={classes.main}>
         <Grid container spacing={10}>
           <Grid item xs={8} className={classes.header}>
@@ -159,7 +161,7 @@ export default function SearchPage() {
                   variant="standard"
                   style={{
                     width: "100%",
-                    marginTop: 20,
+                    margin: "20px 0",
                   }}
                   onChange={(e) => {
                     setQuery(e.target.value);
@@ -170,14 +172,20 @@ export default function SearchPage() {
                 setQuery(value);
               }}
             />
-            <p style={{ fontSize: "16pt" }}>Filter by:</p>
-            <FormGroup row>
-              <FormControlLabel control={<Checkbox />} label="5 stars" />
-              <FormControlLabel control={<Checkbox />} label="4+ stars" />
-              <FormControlLabel control={<Checkbox />} label="3+ stars" />
-              <FormControlLabel control={<Checkbox />} label="2+ stars" />
-              <FormControlLabel control={<Checkbox />} label="1+ stars" />
-            </FormGroup>
+            <FormControl>
+              <FormLabel>Filter by</FormLabel>
+              <RadioGroup
+                row
+                name="row-radio-buttons-group"
+              >
+                <FormControlLabel value="5 stars" control={<Radio />} label="5 stars" />
+                <FormControlLabel value="4+ stars" control={<Radio />} label="4+ stars" />
+                <FormControlLabel value="3+ stars" control={<Radio />} label="3+ stars" />
+                <FormControlLabel value="2+ stars" control={<Radio />} label="2+ stars" />
+                <FormControlLabel value="1+ stars" control={<Radio />} label="1+ stars" />
+              </RadioGroup>
+            </FormControl>
+            <br/>
             <Button
               variant="contained"
               style={{
