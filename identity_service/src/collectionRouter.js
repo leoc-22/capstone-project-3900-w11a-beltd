@@ -17,8 +17,9 @@ app.get("/collections", async (req, res) => {
 });
 
 // 2. Get all USER OWNED collections by user id
-app.get("/myCollections", async (req) => {
-  await collectionModel
+app.get("/myCollections", async (req, res) => {
+
+  const collection = await collectionModel
     .find({ user: req.body.user }, function (err, docs) {
       if (err) {
         console.log(err);
@@ -30,13 +31,13 @@ app.get("/myCollections", async (req) => {
     .catch(function (err) {
       console.log(err);
     });
+  res.send(collection);
 });
 
 // 3. Create a new collection
 app.post("/collection", async (req, res) => {
   // Create collection
   const collection = new collectionModel({
-    user: req.body.user,
     name: req.body.name,
     public: req.body.public,
   });
@@ -51,12 +52,11 @@ app.post("/collection", async (req, res) => {
 
   // Link up with users model
   const _id = req.body.user;
-  const updatedUser = await userModel.findByIdAndUpdate(
-    { _id },
-    { $push: { collections: collection._id } },
+  await userModel.findByIdAndUpdate(
+    {_id},
+    { $push: { "collections": collection._id } },
     { new: true }
   );
-  console.log(updatedUser);
 });
 
 // TODO Can probably combine two endpoints below??

@@ -19,7 +19,6 @@ import SearchIcon from "@mui/icons-material/Search";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import axios from "axios";
-import { setSelectionRange } from "@testing-library/user-event/dist/utils";
 
 const useStyles = makeStyles({
   BookLabTitle: {

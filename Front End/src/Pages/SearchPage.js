@@ -74,7 +74,7 @@ export default function SearchPage() {
   useEffect(() => {
     getBookData();
     searchUrl();
-  }, []);
+  }, [bestResult]);
 
   const searchUrl = async() => {
     const newQuery = window.location.search.slice(13);
@@ -85,10 +85,11 @@ export default function SearchPage() {
 
   const getResults = (data) => {
     axios.get(`http://localhost:8002/books/search/${data}`).then((res) => {
+      
       setSearchRes(res.data);
       setBestResult(res.data[0]);
       setSearchResImg(res.data[0].image);
-      document.getElementById("bestResult").hidden = false;
+      document.getElementById("Results").hidden = false;
 
     });
   };
@@ -115,7 +116,8 @@ export default function SearchPage() {
       setSearchRes(res.data);
       setBestResult(res.data[0]);
       setSearchResImg(res.data[0].image);
-      document.getElementById("bestResult").hidden = false;
+      document.getElementById("Results").hidden = false;
+      console.log("test");
     });
     // .catch((error) => {
     //   console.error(`Error: ${error}`);
@@ -141,7 +143,6 @@ export default function SearchPage() {
   };
 
   const gotoBook = () => {
-    console.log(bestResult);
     const bookId = bestResult._id;
     history.push("/book-profile?" + bookId);
   };
@@ -221,7 +222,7 @@ export default function SearchPage() {
           </Grid>
         </Grid>
         <br />
-        <div hidden id = "bestResult">
+        <div hidden id = "Results">
           <h2>Best Result</h2>
           <img src = {searchResImg} 
             className={classes.bestResImg}

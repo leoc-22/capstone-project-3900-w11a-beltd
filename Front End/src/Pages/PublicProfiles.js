@@ -6,7 +6,7 @@ import AdjustedCollections from "../Components/AdjustedCollections";
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
 import Avatar from "@mui/material/Avatar";
-import Grid from "@mui/material/Grid";
+//import Grid from "@mui/material/Grid";
 //import { useLocation } from "react-router-dom";
 
 const useStyles = makeStyles({
