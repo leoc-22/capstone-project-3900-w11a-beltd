@@ -14,6 +14,7 @@ import Grid from "@mui/material/Grid";
 import Autocomplete from "@mui/material/Autocomplete";
 import axios from "axios";
 import BookSearchResults from "../Components/BookSearchResults";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles({
   main: {
@@ -38,15 +39,39 @@ const useStyles = makeStyles({
   headerImg: {
     width: "100%",
   },
+  bestTitle : {
+    position : "absolute",
+    marginTop : "-350px",
+    marginLeft : "400px"
+  },
+  bestAuthor : {
+    position : "absolute",
+    marginTop : "-18%",
+    marginLeft : "400px",
+    fontSize: "16pt" 
+  },
+  bestResImg : {
+    height : "400px",
+    width : "300px",
+    borderRadius : "10px",
+    "&:hover": {
+      cursor: "pointer",
+    },
+  }
 });
 
 export default function SearchPage() {
   const classes = useStyles();
+  const history = useHistory();
+
   const [books, setBooks] = useState([]);
   const [loadingBooks, setLoadingBooks] = useState(true);
   const [error, setError] = useState(null);
   const [query, setQuery] = useState("");
-  const [searchRes, setSearchRes] = useState(null);
+  const [searchRes, setSearchRes] = useState("");
+  const [searchResImg, setSearchResImg] = useState("");
+
+  const [bestResult, setBestResult] = useState("");
 
   useEffect(() => {
     getBookData();
@@ -54,32 +79,20 @@ export default function SearchPage() {
   }, []);
 
   const searchUrl = async() => {
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    const bookId = urlParams.get('id');
-    const otherQuery = window.location.search.slice(13);
+    const newQuery = window.location.search.slice(13);
 
-    if (bookId != null){
-      console.log(1);
-      let res = await axios({
-        method : "get",
-        url : "http://localhost:8002/books/autocomplete"
-      })
-      for (let i = 0 ; i < res.data.length ; i++){
-        if (bookId == res.data[i]._id){
-          getResults(res.data[i].title);
-          return;
-        }
-      } 
-    } else if (otherQuery != null){
-      getResults(otherQuery);
-      
+    if (newQuery != null){
+      getResults(newQuery);
     }
   }
 
   const getResults = (data) => {
     axios.get(`http://localhost:8002/books/search/${data}`).then((res) => {
       setSearchRes(res.data);
+      setBestResult(res.data[0]);
+      setSearchResImg(res.data[0].image)
+      document.getElementById("bestResult").hidden = false;
+
     });
   }
 
@@ -106,7 +119,10 @@ export default function SearchPage() {
     // search by title or authors or genres
     axios.get(`http://localhost:8002/books/search/${query}`).then((res) => {
       setSearchRes(res.data);
-    });
+      setBestResult(res.data[0]);
+      setSearchResImg(res.data[0].image)
+      document.getElementById("bestResult").hidden = false;
+    })
     // .catch((error) => {
     //   console.error(`Error: ${error}`);
     //   setError(error);
@@ -129,6 +145,12 @@ export default function SearchPage() {
     }
     return [...optionList];
   };
+
+  const gotoBook = () => {
+    console.log(bestResult);
+    const bookId = bestResult._id;
+    history.push("/book-profile?" + bookId);
+  }
 
   if (loadingBooks) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
@@ -205,7 +227,19 @@ export default function SearchPage() {
           </Grid>
         </Grid>
         <br />
-        <h2>Results</h2>
+        <div hidden id = "bestResult">
+          <h2>Best Result</h2>
+          <img src = {searchResImg} 
+          className={classes.bestResImg}
+          onClick = {()=>gotoBook()}
+          ></img>
+          <h2 className={classes.bestTitle} >{bestResult != undefined ? bestResult.title : ""}
+          </h2>
+          <br/>
+          <div className={classes.bestAuthor} >{bestResult != undefined ? bestResult.authors : ""}</div>
+          <br/>
+          <h2>All Results</h2>
+        </div>
         {searchRes ? (
           <BookSearchResults books={searchRes}></BookSearchResults>
         ) : null}

@@ -19,6 +19,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
 import axios from "axios";
+import { setSelectionRange } from "@testing-library/user-event/dist/utils";
 
 
 const useStyles = makeStyles({
@@ -50,14 +51,18 @@ const useStyles = makeStyles({
 
   },
   textItem: {
-    marginTop: "-20px",
+    marginTop: "-15px",
     marginRight: "20px",
     minWidth: "100px",
     maxWidth: "175px",
-    marginLeft : "0px"
+    marginLeft : "5px"
   },
   divider : {
     minWidth : '50px'
+  },
+  goBtn : {
+    marginLeft : "90%",
+    position : "absolute"
   }
 
 
@@ -78,6 +83,21 @@ const ButtonTest = styled(Button)(() => ({
   }  
 }));
 
+const SearchBtn = styled(Button)(() => ({
+  borderRadius : "0px",
+  marginTop : "0px",
+  minHeight: "60px",
+  maxHeight: "60px",
+  marginLeft : "20px",
+  textTransform: "none",
+  "&:hover": {
+    backgroundColor : "transparent",
+    cursor: "pointer",
+    borderBottom: "3px solid #1976d2",
+  }  
+}));
+
+
 const AppBar1 = styled(AppBar)(() => ({
   backgroundColor: "#F3F3F3",
   color : "black",
@@ -91,6 +111,7 @@ const AppBar1 = styled(AppBar)(() => ({
 const Container1 = styled(Container)(() => ({
   marginTop : "-10px"
 }));
+
 
 
 const pages = ["Explore", "Collections", "Recommendations", "Leaderboard"];
@@ -225,24 +246,16 @@ export default function AuthenicatedTopBar() {
     }
   }
 
-  async function search(val){
-    let res = await axios({
-      method : "GET",
-      url : "http://localhost:8002/books/autocomplete",
-    })
+  function search(val){
+    //console.log(val);
+
     const urlString = String(window.location.pathname);
-    
-    for (let i =0; i < res.data.length; i++){
-      if (res.data[i].title == val){
-        history.push("/search?id=" + res.data[i]._id);
-  
-      }
-    }
     history.push("/search?searchQuery=" + val);
     if (urlString.includes("search")){
       location.reload();
     }
   }
+
 
   function getLocation(){
   const urlString = String(window.location.pathname);
@@ -392,15 +405,15 @@ export default function AuthenicatedTopBar() {
             <div className={classes.textItem} id="searchText" hidden>
             <Autocomplete
               disablePortal
-              autoHighlight
-              clearOnEscape
+              autoSelect = {false}
               freeSolo
               clearOnBlur={false}
               options={handleOptions()}
               sx={{ width: 230 }}
               renderInput={(params) => (
-                <TextField
-                InputProps={{ style: { fontSize: 5 } }}
+                <TextField 
+                InputProps={{ style: { fontSize: 5 }}
+                }
                   {...params}
                   variant="standard"
                   style={{
@@ -414,11 +427,12 @@ export default function AuthenicatedTopBar() {
                 />
               )}
               onChange={(e, value) => {
-                setQuery(value);
+                //setQuery1(value);
                 search(value)
-
               }}
+              
             />
+
             </div>
             <div class={classes.divider}/>
 
