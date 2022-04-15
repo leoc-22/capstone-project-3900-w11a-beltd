@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 import React, { useEffect, useState } from "react";
-import AuthenicatedTopBar from "../Components/AuthenticatedTopBar";
+import AuthenticatedNavbar from "../Components/AuthenticatedNavbar";
 import { makeStyles } from "@material-ui/core";
 import { Grid, Alert } from "@mui/material";
 import Card from "@mui/material/Card";
@@ -188,7 +188,7 @@ const goalSettingPage = () => {
 
   return (
     <div>
-      <AuthenicatedTopBar></AuthenicatedTopBar>
+      <AuthenticatedNavbar />
       <div className={classes.main}>
         <h1>Set your reading goal for this month!</h1>
         <div hidden id="goalSuccess" className={classes.success}><Alert severity="success">Goal created</Alert></div>

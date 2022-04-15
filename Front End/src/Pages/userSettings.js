@@ -5,7 +5,7 @@ import { makeStyles } from "@material-ui/core";
 import update from "../Images/update.svg";
 import { Grid, TextField, Button, Alert } from "@mui/material";
 import axios from "axios";
-import AuthenicatedTopBar from "../Components/AuthenticatedTopBar";
+import AuthenticatedNavbar from "../Components/AuthenticatedNavbar";
 import { useLocation } from "react-router-dom";
 
 const useStyles = makeStyles({
@@ -74,7 +74,7 @@ export default function UserSettingsPage() {
 
   return (
     <div>
-      <AuthenicatedTopBar></AuthenicatedTopBar>
+      <AuthenticatedNavbar />
       <div className={classes.body}>
         <Grid container spacing={3}>
           <Grid item xs={5}>

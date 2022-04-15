@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 import React, { useState, useEffect } from "react";
-import AuthenicatedTopBar from "../Components/AuthenticatedTopBar";
+import AuthenticatedNavbar from "../Components/AuthenticatedNavbar";
 import RankingItem from "../Components/RankingItem";
 import axios from "axios";
 import Button from "@mui/material/Button";
@@ -75,7 +75,7 @@ export default function LeaderBoard() {
 
   return (
     <div>
-      <AuthenicatedTopBar></AuthenicatedTopBar>
+      <AuthenticatedNavbar />
       {rankings.map((item, index) => (
         <RankingItem data = {item} rank = {index+1}></RankingItem>
       ))}

@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React, { useEffect, useState } from "react";
-import AuthenticatedTopBar from "../Components/AuthenticatedTopBar";
+import AuthenticatedNavbar from "../Components/AuthenticatedNavbar";
 import { makeStyles } from "@material-ui/core";
 import recs from "../Images/recommendations.svg";
 import Grid from "@mui/material/Grid";
@@ -107,7 +107,7 @@ export default function RecommendationsPage() {
 
   return (
     <div>
-      <AuthenticatedTopBar></AuthenticatedTopBar>
+      <AuthenticatedNavbar />
       <div className={classes.main}>
         <Grid container spacing={10}>
           <Grid item xs={8} className={classes.header}>

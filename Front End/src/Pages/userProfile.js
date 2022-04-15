@@ -1,7 +1,7 @@
 /* eslint-disable */
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import AuthenicatedTopBar from "../Components/AuthenticatedTopBar";
+import AuthenticatedNavbar from "../Components/AuthenticatedNavbar";
 import AdjustedCollections from "../Components/AdjustedCollections";
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
@@ -122,7 +122,7 @@ const userProfilePage = () => {
 
   return (
     <div>
-      <AuthenicatedTopBar></AuthenicatedTopBar>
+      <AuthenticatedNavbar />
       <div className={classes.main}>
         <div id="avatar">
           <Avatar sx={{ width: 80, height: 80 }}></Avatar>
