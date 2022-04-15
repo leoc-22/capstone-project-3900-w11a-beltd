@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import React, { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
 import AuthenticatedTopBar from "../Components/AuthenticatedTopBar";
@@ -80,29 +78,27 @@ export default function SearchPage() {
 
   const searchUrl = async() => {
     const newQuery = window.location.search.slice(13);
-
     if (newQuery != null){
       getResults(newQuery);
     }
-  }
+  };
 
   const getResults = (data) => {
     axios.get(`http://localhost:8002/books/search/${data}`).then((res) => {
       setSearchRes(res.data);
       setBestResult(res.data[0]);
-      setSearchResImg(res.data[0].image)
+      setSearchResImg(res.data[0].image);
       document.getElementById("bestResult").hidden = false;
 
     });
-  }
+  };
 
-  const getBookData = async() => {
+  const getBookData = async () => {
     axios
       .get("http://localhost:8002/books/autocomplete")
       .then((res) => {
         setBooks(res.data);
         console.log(res);
-
       })
       .catch((error) => {
         console.error(`Error: ${error}`);
@@ -111,18 +107,16 @@ export default function SearchPage() {
       .finally(() => {
         setLoadingBooks(false);
       });
-
   };
-
 
   const handleSearch = () => {
     // search by title or authors or genres
     axios.get(`http://localhost:8002/books/search/${query}`).then((res) => {
       setSearchRes(res.data);
       setBestResult(res.data[0]);
-      setSearchResImg(res.data[0].image)
+      setSearchResImg(res.data[0].image);
       document.getElementById("bestResult").hidden = false;
-    })
+    });
     // .catch((error) => {
     //   console.error(`Error: ${error}`);
     //   setError(error);
@@ -150,7 +144,7 @@ export default function SearchPage() {
     console.log(bestResult);
     const bookId = bestResult._id;
     history.push("/book-profile?" + bookId);
-  }
+  };
 
   if (loadingBooks) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
@@ -230,8 +224,8 @@ export default function SearchPage() {
         <div hidden id = "bestResult">
           <h2>Best Result</h2>
           <img src = {searchResImg} 
-          className={classes.bestResImg}
-          onClick = {()=>gotoBook()}
+            className={classes.bestResImg}
+            onClick = {()=>gotoBook()}
           ></img>
           <h2 className={classes.bestTitle} >{bestResult != undefined ? bestResult.title : ""}
           </h2>
