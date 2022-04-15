@@ -20,6 +20,7 @@ export default function LeaderBoard() {
       method : "get",
       url : "http://localhost:8001/myGoals",
     })
+    console.log(res);
     let hashTable = [];
     for (let i =0; i < res.data.length; i++){
       var HasCompleted = res.data[i].completed;

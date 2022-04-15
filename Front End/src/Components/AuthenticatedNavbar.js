@@ -163,26 +163,20 @@ export default function AuthenicatedTopBar() {
     }
   }
 
-  async function search(val) {
-    let res = await axios({
-      method: "GET",
-      url: "http://localhost:8002/books/autocomplete",
-    });
-    const urlString = String(window.location.pathname);
+  function search(val){
+    //console.log(val);
 
-    for (let i = 0; i < res.data.length; i++) {
-      if (res.data[i].title == val) {
-        history.push("/search?id=" + res.data[i]._id);
-        if (urlString.includes("search")) {
-          location.reload();
-        }
-      }
+    const urlString = String(window.location.pathname);
+    history.push("/search?searchQuery=" + val);
+    if (urlString.includes("search")){
+      location.reload();
     }
   }
 
-  function getLocation() {
-    const urlString = String(window.location.pathname);
-    if (urlString.includes("search")) {
+
+  function getLocation(){
+  const urlString = String(window.location.pathname);
+    if(urlString.includes("search")){
       //document.getElementById("Explore").textContent = "ef";
       setExploreBtn(classes.BtnTextActive);
     } else if (
@@ -304,8 +298,7 @@ export default function AuthenicatedTopBar() {
             <SearchIcon sx={{ color: '#000', marginRight: 1 }} />
             <Autocomplete
               disablePortal
-              autoHighlight
-              clearOnEscape
+              autoSelect = {false}
               freeSolo
               clearOnBlur={false}
               options={handleOptions()}
@@ -321,9 +314,10 @@ export default function AuthenicatedTopBar() {
                 />
               )}
               onChange={(e, value) => {
-                setQuery(value);
-                search(value);
+                //setQuery1(value);
+                search(value)
               }}
+              
             />
           </Box>
           <Box sx={{ flexGrow: 0 }}>
