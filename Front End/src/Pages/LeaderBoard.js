@@ -1,12 +1,23 @@
 /* eslint-disable */
 
 import React, { useState, useEffect } from "react";
+import { makeStyles } from "@material-ui/core";
 import AuthenticatedNavbar from "../Components/AuthenticatedNavbar";
 import RankingItem from "../Components/RankingItem";
 import axios from "axios";
 import Button from "@mui/material/Button";
 
+const useStyles = makeStyles({
+  main: {
+    minHeight: "100vh",
+    minWidth: "500px",
+    width: "80%",
+    margin: "100px auto",
+  },
+});
+
 export default function LeaderBoard() {  
+  const classes = useStyles();
   const [rankings, setRankings] = useState([]);
 
   useEffect(() => {
@@ -63,8 +74,7 @@ export default function LeaderBoard() {
       if (userId === hashMap[i].user){
         hashMap[i].count +=1;
         return hashMap;
-      }
-  
+      }  
     }
   }
 
@@ -78,10 +88,12 @@ export default function LeaderBoard() {
   return (
     <div>
       <AuthenticatedNavbar />
-      {rankings.map((item, index) => (
-        <RankingItem data = {item} rank = {index+1}></RankingItem>
-      ))}
-      <br/>
+      <div className={classes.main}>
+        <h1>Booklab leaderboard</h1>
+        {rankings.map((item, index) => (
+          <RankingItem data = {item} rank = {index+1}></RankingItem>
+        ))}
+      </div>
     </div>
   )
 }
