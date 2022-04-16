@@ -1,7 +1,7 @@
 /* eslint-disable */
 
 import React, { useEffect, useState } from "react";
-import AuthenicatedTopBar from "../Components/AuthenticatedTopBar";
+import Navbar from "../Components/Navbar";
 import { makeStyles } from "@material-ui/core";
 import Grid from "@mui/material/Grid";
 import Stack from "@mui/material/Stack";
@@ -110,7 +110,7 @@ const CollectionsBtn = styled(Button)(() => ({
   },
 }));
 
-const bookProfilePage = () => {
+const UnAuthedBookProfile = () => {
   // const location = useLocation();
 
   const [title, setTitle] = useState(null);
@@ -317,12 +317,12 @@ const bookProfilePage = () => {
 
   function routeUser(targetBook) {
     const bookId = targetBook.item._id;
-    history.push("/book-profile" + "?" + bookId);
+    history.push("/Public-book-profile" + "?" + bookId);
     location.reload();
   }
 
-  function goToProfile(userId) {
-    history.push("PublicProfiles?id=" + userId);
+  function goToProfile() {
+    history.push("/login");
   }
 
   function handleModal(){
@@ -333,42 +333,6 @@ const bookProfilePage = () => {
     }
   }
 
-  async function addToCollection(id){
-
-    let res = await axios({
-      method : "get",
-      url : "http://localhost:8001/myCollections",
-      data : {
-        _id : id
-      }
-    })
-
-    let targetCollection;
-    for (let i = 0; i < res.data.length ; i++){
-      let colId = res.data[i]["_id"];
-      if (colId == id){
-        targetCollection = res.data[i];
-      } 
-    }
-    setTargetCollection(targetCollection.name);
-    setHideSuccessAlert(false);
-    for (let j =0; j <= targetCollection.books.length ; j++){
-      if (queryString == targetCollection.books[j]){
-        //console.log("in collection")
-        return;
-      }
-    }
-
-    await axios({
-      method : "post",
-      url : "http://localhost:8001/addBook",
-      data : {
-        bookid : queryString,
-        _id : id
-      }
-    })
-    console.log("added to collection");
-  }
 
   if (changed == 0) {
     window.scrollTo(0, 0);
@@ -376,7 +340,7 @@ const bookProfilePage = () => {
 
   return (
     <div>
-      <AuthenicatedTopBar></AuthenicatedTopBar>
+      <Navbar></Navbar>
       <div className={classes.main}>
         <Grid container spacing={3}>
           <Grid item xs={12} md={3}>
@@ -390,6 +354,7 @@ const bookProfilePage = () => {
             <h1>{title}</h1>
             <h2>by {author}</h2>
             <Button
+              disabled
               onClick={() => handleModal()}
               variant="outlined"
               sx={{ marginRight: "16px", marginBottom: "20px" }}
@@ -397,6 +362,7 @@ const bookProfilePage = () => {
               Add to collection
             </Button>
             <Button
+              disabled
               variant="contained"
               sx={{ marginRight: "16px", marginBottom: "20px" }}
               onClick={() => markRead()}
@@ -412,10 +378,7 @@ const bookProfilePage = () => {
             </Stack>
             <Stack direction="row" alignItems="center" spacing={2}>
               <p>{bookRating}</p>
-              <p>Number of readers</p>
-              <p>Number of collections</p>
             </Stack>
-            <p>Book description</p>
           </Grid>
         </Grid>
         <h2 className={classes.h2}>Compare pricing</h2>
@@ -500,70 +463,11 @@ const bookProfilePage = () => {
           ))}
         </Grid>
 
-        <h2>Write a review</h2>
-        <Rating
-          name="simple-controlled"
-          value={rating}
-          onChange={(event, newValue) => {
-            setRating(newValue);
-            setChanged(1);
-          }}
-        />
-        <br />
-        <TextField
-          className={classes.reviewBar}
-          id="myReview"
-          label="Review"
-          variant="standard"
-          style={{
-            width: "60%",
-            marginTop: 20,
-            marginBottom: 20,
-            marginLeft: "0%",
-          }}
-        />
-        <br />
-        <Modal
-            open={openModal}
-            onClose={handleClose}
-            aria-labelledby='modal-modal-title'
-            aria-describedby='modal-modal-description'
-          >
+        <h2>Login to write a review</h2>
 
-          <Box class={classes.modalBox}>
-          <Button class={classes.closeIcon}
-              onClick = { () => handleClose()}
-              disableRipple
-              >
-              <CloseIcon></CloseIcon>
-            </Button>
-            <h1 className={classes.newGameTitle}>Add To Your Collection</h1>
-            <div hidden = {hideSuccessAlert}>
-              <Alert 
-                className={classes.alert} 
-                severity="success">{"Added to " + targetCollection}
-              </Alert>
-            </div>
-            <div className={classes.collectionsDiv}>
-              {collections.map((item) => (
-                <div>
-                <CollectionsBtn
-                onClick = {()=>addToCollection(item.id)}
-                >
-                  <h3>{item.name}</h3>
-                </CollectionsBtn>
-                </div>
-              ))}
 
-            </div>
-            <br></br>
-          </Box>
-        </Modal>
 
-        <Button variant="contained" onClick={() => submitReview()}>
-          submit review
-        </Button>
-        <br />
+     
         <br />
         <h2>Community reviews</h2>
         {bookReviews.map((rev, index) => (
@@ -578,7 +482,7 @@ const bookProfilePage = () => {
                 <Typography
                   className={classes.reviewUser}
                   variant="body2"
-                  onClick={() => goToProfile(rev.user)}
+                  onClick={() => goToProfile()}
                 >
                   <b>{rev.name}</b> {rev.date}
                 </Typography>
@@ -591,4 +495,4 @@ const bookProfilePage = () => {
   );
 };
 
-export default bookProfilePage;
+export default UnAuthedBookProfile;

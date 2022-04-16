@@ -4,6 +4,7 @@ import TopBookGrid from "../Components/TopBookGrid";
 import AuthenicatedTopBar from "../Components/AuthenticatedTopBar";
 import { makeStyles } from "@material-ui/core";
 import axios from "axios";
+import Loading from "../Components/Loading";
 
 const useStyles = makeStyles({
   main: {
@@ -82,7 +83,7 @@ const HomePage = () => {
   }
   // wait for axios to get book data, then render book shelves
   // TODO Beautify this
-  if (loadingBooks || loadingUser) return <p>Loading...</p>;
+  if (loadingBooks || loadingUser) return <Loading/>;
   if (error) return <p>Error: {error.message}</p>;
   return (
     <div>

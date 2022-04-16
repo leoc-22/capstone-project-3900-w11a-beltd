@@ -5,7 +5,7 @@ import Carousel from "react-grid-carousel";
 import { makeStyles } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import Chip from "@mui/material/Chip";
-import collectionDetailPage from "../Pages/collectionDetailPage";
+import collectionDetailPage from "../Pages/CollectionDetailPage";
 
 const useStyles = makeStyles({
   cover: {
@@ -44,14 +44,23 @@ const CollectionsCarousel = React.memo(props => {
       tmp.push(props.collections[i]); 
     }
     setCollectionArr(tmp);
+    console.log(tmp);
     setHasData(true);
   }
 
-  function collectionDetail(){
-    history.push({
-      pathname: "/collection-detail",
-      //state: { user: props.user },
-    });
+  function collectionDetail(id){
+    if (sessionStorage.getItem("id") == null){
+      history.push({
+        pathname: "/un-Authed-collection-detail?id=" +id,
+      });      
+
+    } else {
+      history.push({
+        pathname: "/collection-detail?id=" +id,
+      });      
+    }
+    location.reload();
+
   }
 
   const randomRgbColor = () => {
@@ -72,7 +81,7 @@ const CollectionsCarousel = React.memo(props => {
       >
         {collectionArr.map((Item) =>(
           <Carousel.Item>
-            <div className={classes.cover} style={{backgroundColor: randomRgbColor()}} onClick = {()=>collectionDetail()}></div>
+            <div className={classes.cover} style={{backgroundColor: randomRgbColor()}} onClick = {()=>collectionDetail(Item._id)}></div>
             <p><b>{Item.name}</b></p>
             {/* Swap public tag or private tag depending on collection */}
             <Chip label={Item.public} size="small" />

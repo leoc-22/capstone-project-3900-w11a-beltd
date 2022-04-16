@@ -13,6 +13,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import axios from "axios";
 import BookSearchResults from "../Components/BookSearchResults";
 import { useHistory } from "react-router-dom";
+import Loading from "../Components/Loading";
 
 const useStyles = makeStyles({
   main: {
@@ -86,11 +87,10 @@ export default function SearchPage() {
 
   const getResults = (data) => {
     axios.get(`http://localhost:8002/books/search/${data}`).then((res) => {
-      
+      document.getElementById("Results").hidden = false;      
       setSearchRes(res.data);
       setBestResult(res.data[0]);
       setSearchResImg(res.data[0].image);
-      document.getElementById("Results").hidden = false;
     });
   };
 
@@ -121,10 +121,10 @@ export default function SearchPage() {
 
     // search by title or authors or genres
     axios.get(`http://localhost:8002/books/search/${query}`).then((res) => {
+      document.getElementById("Results").hidden = false;
       setSearchRes(res.data);
       setBestResult(res.data[0]);
       setSearchResImg(res.data[0].image);
-      document.getElementById("Results").hidden = false;
       setBarRes(barRes+1);
     });
     // .catch((error) => {
@@ -155,7 +155,7 @@ export default function SearchPage() {
     history.push("/book-profile?" + bookId);
   };
 
-  if (loadingBooks) return <p>Loading...</p>;
+  if (loadingBooks) return <Loading/>;
   if (error) return <p>Error: {error.message}</p>;
 
   return (
