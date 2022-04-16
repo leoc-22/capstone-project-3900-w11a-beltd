@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import AuthenicatedTopBar from "../Components/AuthenticatedTopBar";
+import AuthenticatedNavbar from "../Components/AuthenticatedNavbar";
 import { makeStyles } from "@material-ui/core";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
@@ -35,7 +35,7 @@ const collectionDetailPage = () => {
 
   return (
     <div>
-      <AuthenicatedTopBar></AuthenicatedTopBar>
+      <AuthenticatedNavbar />
       <div className={classes.main}>
         <h1>Update collection details</h1>
         Public?<Checkbox
@@ -45,7 +45,7 @@ const collectionDetailPage = () => {
             margin: "10px 0",
           }}
         />
-        <br/>
+        <br />
         <TextField
           label="Name your collection"
           variant="standard"
@@ -58,8 +58,8 @@ const collectionDetailPage = () => {
         />
         <br />
         <Button variant="text">Add book to reading goal</Button>
-        <br/>
-        <Button variant="contained"  sx={{ marginTop: "10px", marginBottom: "30px" }} >Save collection details</Button>
+        <br />
+        <Button variant="contained" sx={{ marginTop: "10px", marginBottom: "30px" }} >Save collection details</Button>
         {/* Everything above this comment is only seen when editing */}
         <h2>Books in this collection</h2>
         <Card sx={{ width: "80%", marginBottom: "20px" }}>

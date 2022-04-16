@@ -1,9 +1,8 @@
-import "./App.css";
 import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import LandingPage from "./Pages/LandingPage";
-import LogInPage from "./Pages/login";
-import SignUpPage from "./Pages/signup";
+import LogInPage from "./Pages/LogInPage";
+import SignUpPage from "./Pages/SignUpPage";
 import HomePage from "./Pages/HomePage";
 import SearchPage from "./Pages/SearchPage";
 import ResetPasswordPage from "./Pages/resetPassword";

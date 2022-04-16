@@ -2,7 +2,7 @@
 
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import AuthenicatedTopBar from "../Components/AuthenticatedTopBar";
+import AuthenticatedNavbar from "../Components/AuthenticatedNavbar";
 import { makeStyles, List, ListItemIcon, ListItemText,   Grid, ListItem, IconButton} from '@material-ui/core';
 import { useHistory } from "react-router-dom";
 import AdjustedCollections from "../Components/AdjustedCollections";
@@ -14,18 +14,14 @@ import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import {Alert} from "@mui/material";
 
-
-
 const useStyles = makeStyles({
   main: {
-    minHeight: "100vh",
+    minHeight: "80vh",
     minWidth: "500px",
     width: "80%",
     marginLeft : "10%",
-    marginTop: "50px",
-    margin: "0 auto",
-
-    
+    marginTop: "100px",
+    margin: "0 auto"  
   },
   subtitle: {
     marginTop: "50px",
@@ -48,8 +44,6 @@ const useStyles = makeStyles({
   },
 
 });
-
-
 
 export default function CollectionPage() {
   const classes = useStyles();
@@ -150,7 +144,7 @@ export default function CollectionPage() {
   
   return (
     <div>
-      <AuthenicatedTopBar></AuthenicatedTopBar>
+      <AuthenticatedNavbar />
       <div className={classes.main}>
 
         <h1>Create collections and share your favourite books</h1>

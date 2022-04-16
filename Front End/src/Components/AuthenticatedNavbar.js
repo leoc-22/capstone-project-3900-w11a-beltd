@@ -21,94 +21,33 @@ import Autocomplete from "@mui/material/Autocomplete";
 import axios from "axios";
 
 const useStyles = makeStyles({
-  BookLabTitle: {
-    color: "#444444",
-    paddingLeft: "50px",
-    "&:hover": {
-      cursor: "pointer",
-    },
-  },
-  BtnText: {
-    color: "#444444",
-  },
   BtnTextActive: {
     color: "#1976d2",
     fontWeight: "bold",
   },
-  iconBtn: {
-    marginLeft: "10%",
-    marginTop: "10px",
-    border: "none",
-    background: "transparent",
-    "&:hover": {
-      cursor: "pointer",
-    },
-  },
-  searchIcon: {
-    marginLeft: "-140px",
-  },
-  textItem: {
-    marginTop: "-15px",
-    marginRight: "20px",
-    minWidth: "100px",
-    maxWidth: "175px",
-    marginLeft : "5px"
-  },
-  divider : {
-    minWidth : '50px'
-  },
-  goBtn : {
-    marginLeft : "90%",
-    position : "absolute"
-  }
-
-
-
 });
 
-const ButtonTest = styled(Button)(() => ({
+const ButtonLink = styled(Button)(() => ({
+  color: "#000",
   borderRadius: "0px",
-  marginTop: "10px",
-  minHeight: "60px",
-  maxHeight: "60px",
   marginLeft: "20px",
   textTransform: "none",
+  height: "60px",
   "&:hover": {
+    color: "#1976d2",
     backgroundColor: "transparent",
     cursor: "pointer",
-    borderBottom: "3px solid #1976d2",
+    borderBottom: "2px solid #1976d2",
   },
 }));
 
-const SearchBtn = styled(Button)(() => ({
-  borderRadius : "0px",
-  marginTop : "0px",
-  minHeight: "60px",
-  maxHeight: "60px",
-  marginLeft : "20px",
-  textTransform: "none",
-  "&:hover": {
-    backgroundColor : "transparent",
-    cursor: "pointer",
-    borderBottom: "3px solid #1976d2",
-  }  
-}));
-
-
-const AppBar1 = styled(AppBar)(() => ({
+const StyledAppBar = styled(AppBar)(() => ({
   backgroundColor: "#F3F3F3",
-  color: "black",
-  minHeight: "65px",
-  maxHeight: "65px",
+  width: "100%",
+  height: "62px",
   boxShadow: "none",
   borderBottom: "0.5px solid #2196f3",
 }));
-
-const Container1 = styled(Container)(() => ({
-  marginTop: "-10px",
-}));
-
-
 
 const pages = ["Explore", "Collections", "Recommendations", "Leaderboard"];
 const settings = ["Profile", "Change password", "Goals", "Logout"];
@@ -121,7 +60,6 @@ export default function AuthenicatedTopBar() {
   const [CollectionsBtn, setCollectionsBtn] = useState(null);
   const [RecommendationsBtn, setRecommendationsBtn] = useState(null);
   const [LeaderBoardBtn, setLeaderBoardBtn] = useState(null);
-  const [seachOpen, setSeachOpen] = useState(false);
   const [books, setBooks] = useState([]);
   const [query, setQuery] = useState("");
 
@@ -131,6 +69,8 @@ export default function AuthenicatedTopBar() {
     getLocation();
     getBookData();
   }, []);
+
+
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -146,16 +86,6 @@ export default function AuthenicatedTopBar() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-
-  function handleSeachOpen() {
-    if (seachOpen == false) {
-      document.getElementById("searchText").hidden = false;
-      setSeachOpen(true);
-    } else {
-      document.getElementById("searchText").hidden = true;
-      setSeachOpen(false);
-    }
-  }
 
   const getBookData = () => {
     axios
@@ -248,55 +178,42 @@ export default function AuthenicatedTopBar() {
   const urlString = String(window.location.pathname);
     if(urlString.includes("search")){
       //document.getElementById("Explore").textContent = "ef";
-      setCollectionsBtn(classes.BtnText);
-      setRecommendationsBtn(classes.BtnText);
-      setLeaderBoardBtn(classes.BtnText);
       setExploreBtn(classes.BtnTextActive);
     } else if (
       urlString.includes("collections") ||
       urlString.includes("collection-detail")
     ) {
       setCollectionsBtn(classes.BtnTextActive);
-      setRecommendationsBtn(classes.BtnText);
-      setLeaderBoardBtn(classes.BtnText);
-      setExploreBtn(classes.BtnText);
+
     } else if (urlString.includes("recommendations")) {
-      setCollectionsBtn(classes.BtnText);
       setRecommendationsBtn(classes.BtnTextActive);
-      setLeaderBoardBtn(classes.BtnText);
-      setExploreBtn(classes.BtnText);
     } else if (urlString.includes("LeaderBoard")) {
-      setCollectionsBtn(classes.BtnText);
-      setRecommendationsBtn(classes.BtnText);
       setLeaderBoardBtn(classes.BtnTextActive);
-      setExploreBtn(classes.BtnText);
-    } else {
-      setExploreBtn(classes.BtnText);
-      setCollectionsBtn(classes.BtnText);
-      setRecommendationsBtn(classes.BtnText);
-      setLeaderBoardBtn(classes.BtnText);
     }
   }
   // var userName = localStorage.getItem("name");
 
   return (
-    <AppBar1 position="static" color="primary" sx={{ minWidth: "550px" }}>
-      <Container1 maxWidth="xl">
+    <StyledAppBar position="static">
+      <Container maxWidth="xl">
         <Toolbar disableGutters>
           <Typography
             variant="h6"
             noWrap
             component="div"
-            sx={{ mr: 2, display: { xs: "none", md: "flex" } }}
+            sx={{
+              mr: 2, display: { xs: "none", md: "flex" }, "&:hover": {
+                cursor: "pointer"
+              }, flexGrow: 0, color: "#1976d2"
+            }}
             onClick={() =>
               history.push({
                 pathname: "/home",
                 //state: { email: sessionStorage.getItem("email") },
               })
             }
-            className={classes.BookLabTitle}
           >
-            BOOKLAB
+            BookLab
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
@@ -306,7 +223,7 @@ export default function AuthenicatedTopBar() {
               aria-controls="menu-appbar"
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
-              color="inherit"
+              sx={{ color: "#1976d2" }}
             >
               <MenuIcon />
             </IconButton>
@@ -339,54 +256,46 @@ export default function AuthenicatedTopBar() {
             variant="h6"
             noWrap
             component="div"
-            sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}
+            sx={{ flexGrow: 1, display: { xs: "flex", md: "none" }, color: "#1976d2" }}
             onClick={() =>
               history.push({
                 pathname: "/home",
                 state: { email: sessionStorage.getItem("email") },
               })
             }
-            className={classes.BookLabTitle}
           >
-            BOOKLAB
+            BookLab
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            <ButtonTest
+            <ButtonLink
               onClick={() => routePage("Explore")}
-              sx={{ my: 2, color: "white", display: "block" }}
+              sx={{ display: "block" }}
             >
               <div className={ExploreBtn}>Explore</div>
-            </ButtonTest>
-            <ButtonTest
+            </ButtonLink>
+            <ButtonLink
               onClick={() => routePage("Collections")}
-              sx={{ my: 2, color: "white", display: "block" }}
+              sx={{ display: "block" }}
             >
               <div className={CollectionsBtn}>Collections</div>
-            </ButtonTest>
+            </ButtonLink>
 
-            <ButtonTest
+            <ButtonLink
               onClick={() => routePage("Recommendations")}
-              sx={{ my: 2, color: "white", display: "block" }}
+              sx={{ display: "block" }}
             >
               <div className={RecommendationsBtn}>Recommendations</div>
-            </ButtonTest>
+            </ButtonLink>
 
-            <ButtonTest
+            <ButtonLink
               onClick={() => routePage("Leaderboard")}
-              sx={{ my: 2, color: "white", display: "block" }}
+              sx={{ display: "block" }}
             >
               <div className={LeaderBoardBtn}>Leaderboard</div>
-            </ButtonTest>
+            </ButtonLink>
           </Box>
-
-          <IconButton
-            onClick={handleSeachOpen}
-            class={classes.iconBtn}
-            disableRipple
-          >
-            <SearchIcon></SearchIcon>
-          </IconButton>
-          <div className={classes.textItem} id="searchText" hidden>
+          <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
+            <SearchIcon sx={{ color: '#000', marginRight: 1 }} />
             <Autocomplete
               disablePortal
               autoSelect = {false}
@@ -395,16 +304,10 @@ export default function AuthenicatedTopBar() {
               options={handleOptions()}
               sx={{ width: 230 }}
               renderInput={(params) => (
-                <TextField 
-                InputProps={{ style: { fontSize: 5 }}
-                }
+                <TextField
                   {...params}
+                  placeholder="Search"
                   variant="standard"
-                  style={{
-                    width: "100%",
-                    marginTop: 20,
-                    fontSize: 6,
-                  }}
                   onChange={(e) => {
                     setQuery(e.target.value);
                   }}
@@ -416,13 +319,10 @@ export default function AuthenicatedTopBar() {
               }}
               
             />
-
-            </div>
-            <div class={classes.divider}/>
-
+          </Box>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+              <IconButton onClick={handleOpenUserMenu} sx={{ marginLeft: "20px" }}>
                 <Avatar
                   //alt={props.user.name}
                   src={sessionStorage.getItem("image")}
@@ -456,7 +356,7 @@ export default function AuthenicatedTopBar() {
             </Menu>
           </Box>
         </Toolbar>
-      </Container1>
-    </AppBar1>
+      </Container>
+    </StyledAppBar>
   );
 }

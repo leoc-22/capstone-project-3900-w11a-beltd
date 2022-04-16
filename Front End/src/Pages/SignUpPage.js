@@ -11,18 +11,16 @@ import axios from "axios";
 
 const useStyles = makeStyles({
   body: {
-    margin: "15vh 22vw",
+    height: "80vh",
+    width: "50%",
+    margin: "0 auto",
+    marginTop: "100px",
   },
   link: {
-    color: "#00C9D8",
+    color: "#1976d2",
     "&:hover": {
       cursor: "pointer",
     },
-  },
-  image: {
-    position : "absolute",
-    marginLeft: "200px",
-    marginTop : "0px"
   },
 });
 
@@ -129,10 +127,10 @@ export default function SignUpPage() {
 
   return (
     <div>
-      <Navbar></Navbar>
+      <Navbar />
       <div className={classes.body}>
-        <Grid container spacing={3}>
-          <Grid item xs={4}>
+        <Grid container spacing={10}>
+          <Grid item xs={6}>
             <h1>Sign Up</h1>
             <div id="signUpFailed" hidden>
               <Alert severity="error" id="userError">
@@ -147,7 +145,7 @@ export default function SignUpPage() {
                   label="Email"
                   variant="standard"
                   style={{
-                    width: 300,
+                    width: "100%",
                     marginTop: 10,
                   }}
                   onChange={(e) => validateEmail(e)}
@@ -159,7 +157,7 @@ export default function SignUpPage() {
                   label="Username"
                   variant="standard"
                   style={{
-                    width: 300,
+                    width: "100%",
                     marginTop: 15,
                   }}
                 ></TextField>
@@ -170,7 +168,7 @@ export default function SignUpPage() {
                   variant="standard"
                   type="password"
                   style={{
-                    width: 300,
+                    width: "100%",
                     marginTop: 15,
                   }}
                   onChange={(p) => validatePassword(p)}
@@ -183,7 +181,7 @@ export default function SignUpPage() {
                   variant="standard"
                   type="password"
                   style={{
-                    width: 300,
+                    width: "100%",
                     marginTop: 15,
                   }}
                   onChange={(p) => passwordMatch(p)}
@@ -202,8 +200,7 @@ export default function SignUpPage() {
                   Sign Up
                 </Button>
               </form>
-              <p>
-                Already have an account?{" "}
+              <p>Already have an account?{" "}
                 <a
                   onClick={() => history.push("/login")}
                   className={classes.link}

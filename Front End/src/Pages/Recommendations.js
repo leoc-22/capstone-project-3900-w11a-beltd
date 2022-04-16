@@ -1,9 +1,15 @@
 /* eslint-disable */
 import React, { useEffect, useState } from "react";
-import AuthenticatedTopBar from "../Components/AuthenticatedTopBar";
+import AuthenticatedNavbar from "../Components/AuthenticatedNavbar";
 import { makeStyles } from "@material-ui/core";
 import recs from "../Images/recommendations.svg";
 import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
+// import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
@@ -14,51 +20,11 @@ import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles({
   main: {
-    minHeight: "100vh",
-    minWidth: "500px",
+    minHeight: "80vh",
     width: "80%",
     margin: "0 auto",
     marginTop: "100px",
   },
-  header: {
-    marginTop: "100px",
-  },
-  searchType: {
-    color: "#FB8C00",
-    padding: 0,
-    margin: 0,
-  },
-  searchFor: {
-    padding: 0,
-    margin: 0,
-  },
-  headerImg: {
-    width: "20%",
-    marginTop : "-50px",
-    position : "absolute"
-  },
-
-  getBooksDiv : {
-    marginTop : "50px"
-  },
-  bookResult : {
-    alignItems : "center",
-    textAlign : "center",
-    borderRadius : "10px",
-    minWidth : "200px",
-    minHeight : "200px",
-    marginTop : "50px"
-  },
-  bookImg : {
-    minWidth : "30%",
-    borderRadius : "5px",
-    "&:hover": {
-      cursor: "pointer",
-    },
-  },
-  footer : {
-    minHeight : "100px"
-  }
 });
 
 export default function RecommendationsPage() {
@@ -69,11 +35,12 @@ export default function RecommendationsPage() {
   const [author, setAuthor] = useState("");
   const [rating, setRating] = useState("");
   const [bookImg, setBookImg] = useState("");
-  const [categroy, setCategory] = useState("");
+  const [category, setCategory] = useState("");
   const [filter, setFilter] = React.useState("Random");
-  const [firstLoad, setFirstLoad] = useState(0);
+  // const [firstLoad, setFirstLoad] = useState(0);
 
   useEffect(() => {
+    document.title = "Recommended for you | Booklab";
   }, [books]);
 
 
@@ -81,38 +48,38 @@ export default function RecommendationsPage() {
     setFilter(event.target.value);
   };
 
-  async function getBook(){
-    if (filter === "Random"){
+  async function getBook() {
+    if (filter === "Random") {
       let res = await axios({
-        url : "http://localhost:8002/books"
-      })
+        url: "http://localhost:8002/books"
+      });
       let randNum = Math.floor((Math.random() * res.data.length));
       const targetBook = res.data[randNum];
-      setBooks(targetBook);    
+      setBooks(targetBook);
       setBookTitle(targetBook.title);
       setCategory(targetBook.categories[0].name);
       setAuthor(targetBook.authors);
       setRating("Rating: " + targetBook.rating);
       setBookImg(targetBook.image);
-
+      document.getElementById("bookResult").hidden = false;
     }
     return;
   }
 
-  function routeUser(){
+  function routeUser() {
     history.push("/book-profile" + "?" + books._id);
   }
 
-  
+
 
   return (
     <div>
-      <AuthenticatedTopBar></AuthenticatedTopBar>
+      <AuthenticatedNavbar />
       <div className={classes.main}>
         <Grid container spacing={10}>
           <Grid item xs={8} className={classes.header}>
             <h1>Recommended books for you</h1>
-            <p>A curated list of books for a reader just like you</p>
+            <p>Find the perfect book for a reader just like you</p>
             <FormControl fullWidth>
               <InputLabel id="demo-simple-select-label">Filter by</InputLabel>
               <Select
@@ -133,8 +100,14 @@ export default function RecommendationsPage() {
                 <MenuItem value="1stars">1 star rating</MenuItem>
               </Select>
             </FormControl>
+            <Button
+              variant="contained"
+              sx={{ marginTop: "20px" }}
+              onClick={() => getBook()}>
+              Get Book
+            </Button>
           </Grid>
-          
+
           <Grid item xs={4}>
             <img
               className={classes.headerImg}
@@ -142,32 +115,38 @@ export default function RecommendationsPage() {
               alt={"two people sitting together"}
             />
           </Grid>
-          
-        </Grid>
-        <div className={classes.getBooksDiv}>
-          <Button 
-          variant="outlined" 
-          size="large" 
-          onClick={() => getBook()}>
-              Get Book
-          </Button>
-        </div>
-        <br/>
-        <div className={classes.bookResult}>
-            <h2>{bookTitle}</h2>
-            <p>{author}, {categroy}</p>
-            <p>{rating}</p>
 
-            <img 
-            onClick = {()=>routeUser()}
-            className={classes.bookImg} 
-            src = {bookImg}></img>
-        <div>
-        </div>
+        </Grid>
+        <br />
+        <div id="bookResult" hidden>
+          <Card sx={{ display: "flex" }}>
+            <Box sx={{ display: "flex", flexDirection: "row" }}>
+              <CardMedia
+                component="img"
+                sx={{ width: "30%" }}
+                image={bookImg}
+                alt={bookTitle}
+              />
+              <Box sx={{ padding: "20px" }}>
+                <CardContent>
+                  <Typography gutterBottom variant="h5" component="div" onClick={routeUser}>
+                    {bookTitle} by {author}
+                  </Typography>
+                  <Typography variant="subtitle1" color="text.secondary">
+                    {category}
+                  </Typography>
+                  <Typography variant="body1" color="text.secondary">
+                    {rating}
+                  </Typography>
+                </CardContent>
+                {/* <CardActions>
+                  <Button size="small">Add to collection</Button>
+                </CardActions> */}
+              </Box>
+            </Box>
+          </Card>
         </div>
       </div>
-      <div className={classes.footer}/>
-
     </div>
   );
 }

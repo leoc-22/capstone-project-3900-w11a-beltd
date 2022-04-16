@@ -1,18 +1,17 @@
 import React, { useState, useEffect } from "react";
-import Navbar from "../Components/Navbar";
-import headerLanding from "../Images/headerLanding.svg";
-import CollectionsCarousel from "../Components/CollectionsCarousel";
-import TopBookGrid from "../Components/TopBookGrid";
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
-import axios from "axios";
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
+import headerLanding from "../Images/headerLanding.svg";
+import Navbar from "../Components/Navbar";
+import CollectionsCarousel from "../Components/CollectionsCarousel";
+import TopBookGrid from "../Components/TopBookGrid";
+import axios from "axios";
 
 const useStyles = makeStyles({
   main: {
-    minHeight: "1100px",
-    minWidth: "500px",
+    minHeight: "100vh",
     width: "80%",
     margin: "0 auto",
     marginTop: "100px",
@@ -53,7 +52,7 @@ export default function LandingPage() {
   async function getCollectionData() {
     let res = await axios({
       method: "get",
-      url: "http://localhost:8001/myCollections",
+      url: "http://localhost:8001/collections",
     });
     let tmp = [];
     for (let i = 0; i < res.data.length; i++) {
@@ -61,7 +60,6 @@ export default function LandingPage() {
         tmp.push(res.data[i]);
       }
     }
-
     setCollectionArr(tmp);
   }
 
@@ -80,8 +78,6 @@ export default function LandingPage() {
       });
   }
 
-  // wait for axios to get book data, then render book shelves
-  // TODO Beautify this
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error.message}</p>;
 
@@ -101,7 +97,7 @@ export default function LandingPage() {
             <img
               className={classes.headerImg}
               src={headerLanding}
-              alt={"booklab: collect and share your favourite books"}
+              alt={"group of people"}
             />
           </Grid>
         </Grid>
