@@ -77,6 +77,7 @@ export default function SearchPage() {
   useEffect(() => {
     getBookData();
     searchUrl();
+    document.title = "Explore | Booklab";
   }, [barRes]);
 
   const searchUrl = async() => {

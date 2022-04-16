@@ -22,7 +22,7 @@ export default function LeaderBoard() {
 
   useEffect(() => {
     getData();
-    document.title = "Leader board | Booklab";
+    document.title = "Leaderboard | Booklab";
   }, []);
   
   async function getData(){
