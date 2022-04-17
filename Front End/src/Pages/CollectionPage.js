@@ -130,7 +130,8 @@ export default function CollectionPage() {
       data: {
         user: sessionStorage.getItem("id"),
         name: newName,
-        public: collectionPublic
+        public: collectionPublic,
+        creatorName : sessionStorage.getItem("name")
       }
     });
     let tmp = collectionArr;
@@ -143,8 +144,8 @@ export default function CollectionPage() {
     document.getElementById("collectionSuccess").hidden = false;
     document.getElementById("collectionError").hidden = true;
     document.getElementById("newCollection").value = "";
-    handleClose();
-    history.push("/collection-detail");
+    history.push("/collection-detail?id=" +res.data._id);
+    location.reload();
 
   }
   

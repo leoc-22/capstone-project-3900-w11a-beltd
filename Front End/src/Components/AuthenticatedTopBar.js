@@ -48,7 +48,7 @@ const useStyles = makeStyles({
     marginLeft: "-140px",
   },
   textItem: {
-    marginTop: "-15px",
+    marginTop: "-25px",
     marginRight: "20px",
     minWidth: "100px",
     maxWidth: "175px",
@@ -80,19 +80,6 @@ const ButtonTest = styled(Button)(() => ({
   },
 }));
 
-const SearchBtn = styled(Button)(() => ({
-  borderRadius : "0px",
-  marginTop : "0px",
-  minHeight: "60px",
-  maxHeight: "60px",
-  marginLeft : "20px",
-  textTransform: "none",
-  "&:hover": {
-    backgroundColor : "transparent",
-    cursor: "pointer",
-    borderBottom: "3px solid #1976d2",
-  }  
-}));
 
 
 const AppBar1 = styled(AppBar)(() => ({
@@ -396,6 +383,7 @@ export default function AuthenicatedTopBar() {
               sx={{ width: 230 }}
               renderInput={(params) => (
                 <TextField 
+                label = "Search Books"
                 InputProps={{ style: { fontSize: 5 }}
                 }
                   {...params}

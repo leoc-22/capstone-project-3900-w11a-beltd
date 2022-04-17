@@ -102,7 +102,6 @@ const collectionDetailPage = () => {
 
   const [books, setBooks] = useState([]);
   const [bookTitles, setBookTitles] = useState([]);
-
   const [collectionName, setCollectionName] = useState("");
   const [isPublic, setIsPublic] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -110,7 +109,6 @@ const collectionDetailPage = () => {
   const [showEditOptions, setShowEditOptions] = useState(false);
   const [owner, setOwner] = useState("");
   const [ownerId, setOwnerId] = useState("");
-
   const [showPublicModal, setShowPublicModal] = useState(false);
   const [showDelModal, setShowDelModal] = useState(false);
   const [ShowBookModal, setShowBookModal] = useState(false);
@@ -183,6 +181,7 @@ const collectionDetailPage = () => {
   }
 
   async function getCreator(){
+
     let res = await axios({
       url : "http://localhost:8001/users"
     })

@@ -99,7 +99,7 @@ app.patch("/collectionPub", async (req, res) => {
 // Get all books in a collection
 app.get("/collectionBooks", async (req, res) => {
   let collection = await collectionModel
-    .findOne({ _id: req.body._id }, { books: 1 }, function (err, docs) {
+    .find({ _id: req.body._id }, { books: 1 }, function (err, docs) {
       if (err) {
         console.log(err);
       } else {
