@@ -1,13 +1,12 @@
 /* eslint-disable */
 
 import React, { useEffect, useState } from "react";
-import AuthenicatedTopBar from "../Components/AuthenticatedTopBar";
+import AuthenticatedNavbar from "../Components/AuthenticatedNavbar";
 import { makeStyles } from "@material-ui/core";
 import Grid from "@mui/material/Grid";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
-import login from "../Images/login.svg";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -376,7 +375,7 @@ const bookProfilePage = () => {
 
   return (
     <div>
-      <AuthenicatedTopBar></AuthenicatedTopBar>
+      <AuthenticatedNavbar />
       <div className={classes.main}>
         <Grid container spacing={3}>
           <Grid item xs={12} md={3}>
@@ -407,15 +406,8 @@ const bookProfilePage = () => {
             <Chip label={category} sx={{ marginRight: "16px" }} />
             <br />
             <Stack direction="row" alignItems="center" spacing={2}>
-              <p>Publisher</p>
-              <p>Publication date</p>
-            </Stack>
-            <Stack direction="row" alignItems="center" spacing={2}>
               <p>{bookRating}</p>
-              <p>Number of readers</p>
-              <p>Number of collections</p>
             </Stack>
-            <p>Book description</p>
           </Grid>
         </Grid>
         <h2 className={classes.h2}>Compare pricing</h2>
@@ -578,9 +570,14 @@ const bookProfilePage = () => {
                 <Typography
                   className={classes.reviewUser}
                   variant="body2"
-                  onClick={() => goToProfile(rev.user)}
                 >
-                  <b>{rev.name}</b> {rev.date}
+                <Chip label={rev.name}
+                 sx={{ marginRight: "16px" }}
+                 variant="outlined"
+                 onClick={() => goToProfile(rev.user)}
+                 />
+
+                  {rev.date}
                 </Typography>
               </CardContent>
             </Card>

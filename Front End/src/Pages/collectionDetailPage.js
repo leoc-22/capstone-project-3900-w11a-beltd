@@ -1,7 +1,7 @@
 /* eslint-disable */ 
 
 import React, { useEffect, useState } from "react";
-import AuthenicatedTopBar from "../Components/AuthenticatedTopBar";
+import AuthenticatedNavbar from "../Components/AuthenticatedNavbar";
 import Loading from "../Components/Loading";
 
 import BookItem from "../Components/BookItem";
@@ -96,7 +96,7 @@ const useStyles = makeStyles({
 
 });
 
-const collectionDetailPage = () => {
+const CollectionDetailPage = () => {
   const classes = useStyles();
   const history = useHistory();
 
@@ -185,7 +185,6 @@ const collectionDetailPage = () => {
     let res = await axios({
       url : "http://localhost:8001/users"
     })
-    console.log(res.data);
     let userCol
 
     for (let i =0; i < res.data.length; i++ ){
@@ -266,7 +265,7 @@ const collectionDetailPage = () => {
 
   return (
     <div>
-      <AuthenicatedTopBar></AuthenicatedTopBar>
+      <AuthenticatedNavbar />
       <div className={classes.main}>
         <div hidden = {!showEditOptions}>
         Public<Checkbox
@@ -346,7 +345,7 @@ const collectionDetailPage = () => {
         </Button>
         <Alert 
           className={classes.alert} 
-          severity="warning">This process cannot be un-done
+          severity="warning">This procedure cannot be un-done
         </Alert>
         </div>
       </Box>
@@ -400,4 +399,4 @@ const collectionDetailPage = () => {
   );
 };
 
-export default collectionDetailPage;
+export default CollectionDetailPage;

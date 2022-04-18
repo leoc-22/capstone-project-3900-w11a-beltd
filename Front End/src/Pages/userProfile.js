@@ -1,7 +1,7 @@
 /* eslint-disable */
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import AuthenicatedTopBar from "../Components/AuthenticatedTopBar";
+import AuthenticatedNavbar from "../Components/AuthenticatedNavbar";
 import AdjustedCollections from "../Components/AdjustedCollections";
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
@@ -45,7 +45,7 @@ const userProfilePage = () => {
   useEffect(() => {
     getUserData();
     getCollectionData();
-    document.title = "User Profile | Booklab";
+    document.title = name + " Profile | Booklab";
   }, [img]);
 
   async function getCollectionData() {
@@ -122,7 +122,7 @@ const userProfilePage = () => {
 
   return (
     <div>
-      <AuthenicatedTopBar></AuthenicatedTopBar>
+      <AuthenticatedNavbar />
       <div className={classes.main}>
         <div id="avatar">
           <Avatar sx={{ width: 80, height: 80 }}></Avatar>
@@ -194,7 +194,6 @@ const userProfilePage = () => {
                   color="text.secondary"
                 >
                   On track
-                  {/* Could also include x books behind */}
                 </Typography>
                 <Typography variant="body2">
                   You have read x books
@@ -222,8 +221,7 @@ const userProfilePage = () => {
                   }}
                   color="text.secondary"
                 >
-                  Top x% of readers
-                  {/* show top percentage e.g. 10% of readers */}
+                  Current position: 
                 </Typography>
                 <Typography variant="body2">
                   Read more books to move up the rankings.

@@ -18,7 +18,11 @@ const useStyles = makeStyles({
   },
   name : {
     color :"black"
+  },
+  creator : {
+    marginTop: "-15px",
   }
+
 });
 
 const CollectionsCarousel = React.memo(props => {
@@ -83,6 +87,7 @@ const CollectionsCarousel = React.memo(props => {
           <Carousel.Item>
             <div className={classes.cover} style={{backgroundColor: randomRgbColor()}} onClick = {()=>collectionDetail(Item._id)}></div>
             <p><b>{Item.name}</b></p>
+            <div className={classes.creator}>{"By "+ Item.creator}</div>
             {/* Swap public tag or private tag depending on collection */}
             <Chip label={Item.public} size="small" />
           </Carousel.Item>

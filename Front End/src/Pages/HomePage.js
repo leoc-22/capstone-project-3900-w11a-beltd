@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from "react";
 import CollectionsCarousel from "../Components/CollectionsCarousel";
 import TopBookGrid from "../Components/TopBookGrid";
-import AuthenicatedTopBar from "../Components/AuthenticatedTopBar";
+import AuthenticatedNavbar from "../Components/AuthenticatedNavbar";
 import { makeStyles } from "@material-ui/core";
 import axios from "axios";
 import Loading from "../Components/Loading";
 
 const useStyles = makeStyles({
   main: {
-    minHeight: "1100px",
-    minWidth: "500px",
+    minHeight: "80vh",
     width: "80%",
     margin: "0 auto",
     marginTop: "100px",
@@ -34,7 +33,7 @@ const HomePage = () => {
     getBookData();
     getUserData();
     getCollectionData();
-    document.title = "Home Page | Booklab";
+    document.title = "Home | Booklab";
   }, []);
 
   async function getCollectionData() {
@@ -85,9 +84,10 @@ const HomePage = () => {
   // TODO Beautify this
   if (loadingBooks || loadingUser) return <Loading/>;
   if (error) return <p>Error: {error.message}</p>;
+
   return (
     <div>
-      <AuthenicatedTopBar></AuthenicatedTopBar>
+      <AuthenticatedNavbar />
 
       <div className={classes.main}>
         <h1>Explore your new favourite books</h1>

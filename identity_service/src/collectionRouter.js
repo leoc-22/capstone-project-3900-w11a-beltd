@@ -40,6 +40,7 @@ app.post("/collection", async (req, res) => {
   const collection = new collectionModel({
     name: req.body.name,
     public: req.body.public,
+    creator : req.body.creator
   });
 
   try {
