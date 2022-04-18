@@ -2,9 +2,8 @@ const mongoose = require("mongoose");
 
 const bookSchema = new mongoose.Schema(
   {
-    bookid: { type: Number, required: true },
+    bookid: { type: mongoose.Schema.Types.ObjectId, required: true },
     read: { type: Boolean, required: true },
-    //collections: [{ type: mongoose.Schema.Types.ObjectId, ref: "Collections" }],
   },
   { collection: "UserBooks" }
 );

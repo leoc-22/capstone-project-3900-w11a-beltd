@@ -98,35 +98,32 @@ app.patch("/collectionPub", async (req, res) => {
 
 // Get all books in a collection
 app.get("/collectionBooks", async (req, res) => {
-  let collection = await collectionModel
-    .find({ _id: req.body._id }, { books: 1 }, function (err, docs) {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log(docs);
-      }
-    })
-    .clone()
-    .catch(function (err) {
-      console.log(err);
-    });
-  res.send(collection);
+  let bookList = [];
+  let collections = await collectionModel.find({ _id: req.body.c_id });
+  // console.log(collections[0].books[0]);
+  let books = collections[0].books;
+
+  let book = await userBookModel.find({ _id: "6253ca64107a1a9d71b6f1ab" });
+  console.log(book);
+  for (let i = 0; i < books.length; i++) {
+    // console.log(books[i].toString());
+    let book = await userBookModel.find({ _id: books[i].toString() });
+    if (book) {
+      bookList.push(book);
+    }
+  }
+  // res.send(collections);
+  // console.log(bookList);
+  res.send(bookList);
 });
 
 // Add a book to a collection
 app.post("/addBook", async (req, res) => {
   // 1. Create new userbook
-  const userBook = new userBookModel({
+  await new userBookModel({
     bookid: req.body.bookid,
     read: false,
-  });
-  try {
-    await userBook.save();
-    res.send(userBook);
-    console.log("Userbook created");
-  } catch (error) {
-    res.status(500).send(error);
-  }
+  }).save();
 
   // Save collection id from request body
   let _id = req.body._id;
@@ -197,6 +194,8 @@ app.delete("/collection", async (req, res) => {
     console.log("Collection deleted");
     res.send("Successfully deleted");
   });
+
+  // remove collection objectID from user model
 });
 
 module.exports = app;
