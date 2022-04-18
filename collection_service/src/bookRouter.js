@@ -79,6 +79,24 @@ app.get("/similar/:categoryID", async (req, res) => {
     });
 });
 
+app.get("/similar", async (req, res) => {
+  console.log(req.query.author);
+  let query = req.query.author;
+
+  await bookModel
+    .find({
+      authors: { $regex: query, $options: "i" },
+    })
+    .then((books) => {
+      console.log(`Retrieved ${books.length} books with the target author`);
+      res.send(books);
+    })
+    .catch((error) => {
+      console.log("author not found");
+      res.status(500).send(error);
+    });
+});
+
 // WARNING: Calling this API will use Rainforest API for multiple times,
 // which costs api usage in the account
 // Get books from 4 categories from Rainforest API and store them in the database
