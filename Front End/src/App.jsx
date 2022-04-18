@@ -11,9 +11,12 @@ import UserSettingsPage from "./Pages/userSettings";
 import UserProfilePage from "./Pages/userProfile";
 import GoalSettingPage from "./Pages/goalSetting";
 import BookProfilePage from "./Pages/bookProfile";
+import UnAuthedBookProfile from "./Pages/UnAuthedBookProfile";
+import UnAthuedCollectionDetailPage from "./Pages/UnAthuedCollectionDetailPage";
+
 import ForgetPasswordPage from "./Pages/forgetPassword";
 import CollectionPage from "./Pages/CollectionPage";
-import CollectionDetailPage from "./Pages/collectionDetailPage";
+import CollectionDetailPage from "./Pages/CollectionDetailPage";
 import RecommendationsPage from "./Pages/Recommendations";
 import LeaderBoard from "./Pages/LeaderBoard";
 import PublicProfiles from "./Pages/PublicProfiles";
@@ -50,6 +53,9 @@ function App() {
         <Route exact path="/book-profile" component={BookProfilePage}></Route>
       </Switch>
       <Switch>
+        <Route exact path="/Public-book-profile" component={UnAuthedBookProfile}></Route>
+      </Switch>
+      <Switch>
         <Route exact path="/reading-goal" component={GoalSettingPage}></Route>
       </Switch>
       <Switch>
@@ -82,6 +88,14 @@ function App() {
           component={CollectionDetailPage}
         ></Route>
       </Switch>
+      <Switch>
+        <Route
+          exact
+          path="/un-Authed-collection-detail"
+          component={UnAthuedCollectionDetailPage}
+        ></Route>
+      </Switch>
+
       <Switch>
         <Route exact path="/LeaderBoard" component={LeaderBoard}></Route>
       </Switch>

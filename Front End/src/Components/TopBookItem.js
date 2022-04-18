@@ -44,7 +44,7 @@ export default function TopBookItem(props) {
 
   function routeUser() {
     if (sessionStorage.getItem("email") == null) {
-      history.push("/login");
+      history.push("/Public-book-profile" + "?" + props["book"]["_id"]);
     } else {
       history.push("/book-profile" + "?" + props["book"]["_id"]);
     }

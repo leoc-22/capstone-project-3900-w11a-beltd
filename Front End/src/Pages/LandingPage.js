@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
@@ -8,6 +10,7 @@ import Navbar from "../Components/Navbar";
 import CollectionsCarousel from "../Components/CollectionsCarousel";
 import TopBookGrid from "../Components/TopBookGrid";
 import axios from "axios";
+import Loading from "../Components/Loading";
 
 const useStyles = makeStyles({
   main: {
@@ -41,27 +44,13 @@ export default function LandingPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [collectionArr, setCollectionArr] = useState([]);
+  const [countData, setCountData] = useState();
 
   useEffect(() => {
     getData();
-    getCollectionData();
     document.title = "Welcome to Booklab";
     console.log(books);
   }, []);
-
-  async function getCollectionData() {
-    let res = await axios({
-      method: "get",
-      url: "http://localhost:8001/collections",
-    });
-    let tmp = [];
-    for (let i = 0; i < res.data.length; i++) {
-      if (res.data[i].public == true) {
-        tmp.push(res.data[i]);
-      }
-    }
-    setCollectionArr(tmp);
-  }
 
   async function getData() {
     await axios
@@ -73,12 +62,24 @@ export default function LandingPage() {
         console.error(`Error: ${error}`);
         setError(error);
       })
-      .finally(() => {
-        setLoading(false);
-      });
+
+    let res = await axios({
+      method: "get",
+      url: "http://localhost:8001/collections",
+    });
+    let tmp = [];
+    for (let i = 0; i < res.data.length; i++) {
+      if (res.data[i].public == true) {
+        tmp.push(res.data[i]);
+      }
+    }
+    setCollectionArr(tmp);
+    setLoading(false);
   }
 
-  if (loading) return <p>Loading...</p>;
+  // wait for axios to get book data, then render book shelves
+  // TODO Beautify this
+  if (loading) return <p><Loading/></p>;
   if (error) return <p>Error: {error.message}</p>;
 
   return (

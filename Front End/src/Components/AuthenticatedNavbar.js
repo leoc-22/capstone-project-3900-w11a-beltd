@@ -25,6 +25,36 @@ const useStyles = makeStyles({
     color: "#1976d2",
     fontWeight: "bold",
   },
+  iconBtn: {
+    marginLeft: "10%",
+    marginTop: "10px",
+    border: "none",
+    background: "transparent",
+    "&:hover": {
+      cursor: "pointer",
+    },
+  },
+  searchIcon: {
+    marginLeft: "-140px",
+  },
+  textItem: {
+    marginTop: "-25px",
+    marginRight: "20px",
+    minWidth: "100px",
+    maxWidth: "175px",
+    marginLeft : "5px"
+  },
+  divider : {
+    minWidth : '50px'
+  },
+  goBtn : {
+    marginLeft : "90%",
+    position : "absolute"
+  },
+  divider : {
+    minWidth : '50px'
+  },
+
 });
 
 const ButtonLink = styled(Button)(() => ({
@@ -34,10 +64,9 @@ const ButtonLink = styled(Button)(() => ({
   textTransform: "none",
   height: "60px",
   "&:hover": {
-    color: "#1976d2",
     backgroundColor: "transparent",
     cursor: "pointer",
-    borderBottom: "2px solid #1976d2",
+    borderBottom: "2.5px solid #1976d2",
   },
 }));
 
@@ -62,6 +91,7 @@ export default function AuthenicatedTopBar() {
   const [LeaderBoardBtn, setLeaderBoardBtn] = useState(null);
   const [books, setBooks] = useState([]);
   const [query, setQuery] = useState("");
+  const [seachOpen, setSeachOpen] = useState(false);
 
   const history = useHistory();
 
@@ -115,6 +145,16 @@ export default function AuthenicatedTopBar() {
     }
     return [...optionList];
   };
+
+  function handleSeachOpen() {
+    if (seachOpen == false) {
+      document.getElementById("searchText").hidden = false;
+      setSeachOpen(true);
+    } else {
+      document.getElementById("searchText").hidden = true;
+      setSeachOpen(false);
+    }
+  }
 
   function routePage(page) {
     if (page === "Explore") {
@@ -268,12 +308,14 @@ export default function AuthenicatedTopBar() {
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             <ButtonLink
+              disableRipple
               onClick={() => routePage("Explore")}
               sx={{ display: "block" }}
             >
               <div className={ExploreBtn}>Explore</div>
             </ButtonLink>
             <ButtonLink
+              disableRipple
               onClick={() => routePage("Collections")}
               sx={{ display: "block" }}
             >
@@ -281,6 +323,7 @@ export default function AuthenicatedTopBar() {
             </ButtonLink>
 
             <ButtonLink
+              disableRipple
               onClick={() => routePage("Recommendations")}
               sx={{ display: "block" }}
             >
@@ -288,6 +331,7 @@ export default function AuthenicatedTopBar() {
             </ButtonLink>
 
             <ButtonLink
+              disableRipple
               onClick={() => routePage("Leaderboard")}
               sx={{ display: "block" }}
             >
@@ -295,7 +339,16 @@ export default function AuthenicatedTopBar() {
             </ButtonLink>
           </Box>
           <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
-            <SearchIcon sx={{ color: '#000', marginRight: 1 }} />
+            
+            
+          <IconButton
+            onClick={handleSeachOpen}
+            class={classes.iconBtn}
+            disableRipple
+          >
+            <SearchIcon/>
+            </IconButton>
+            <div className={classes.textItem} id="searchText" hidden>
             <Autocomplete
               disablePortal
               autoSelect = {false}
@@ -304,7 +357,10 @@ export default function AuthenicatedTopBar() {
               options={handleOptions()}
               sx={{ width: 230 }}
               renderInput={(params) => (
-                <TextField
+                <TextField 
+                label = "Search Books, Authors, Genres"
+                InputProps={{ style: { fontSize: 5 }}
+                }
                   {...params}
                   placeholder="Search"
                   variant="standard"
@@ -319,6 +375,10 @@ export default function AuthenicatedTopBar() {
               }}
               
             />
+          </div> 
+          <div class={classes.divider}/>
+
+
           </Box>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
