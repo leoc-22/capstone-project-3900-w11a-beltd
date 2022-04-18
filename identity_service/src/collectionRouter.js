@@ -129,13 +129,13 @@ app.post("/addBook", async (req, res) => {
   let _id = req.body._id;
 
   // 2. Add book to user collection
-  const updatedCollection = await collectionModel.findByIdAndUpdate(
+  await collectionModel.findByIdAndUpdate(
     { _id },
     { $push: { books: req.body.bookid } },
     { new: true }
   );
-  console.log(updatedCollection);
-  console.log("Added book to collection");
+  res.send("Successfully added a book to collection");
+  console.log("Successfully added a book to collection");
 });
 
 // Remove a book from a collection
