@@ -125,6 +125,20 @@ app.get("/getbooksbyauthor", async (req, res) => {
     });
 });
 
+app.get("/books/:rating", async (req, res) => {
+  await bookModel
+    .find({ rating: { $gte: req.params.rating } })
+    .then((books) => {
+      console.log(
+        `Retrieved ${books.length} books with rating >= ${req.params.rating}`
+      );
+      res.send(books);
+    })
+    .catch((error) => {
+      res.status(500).send(error);
+    });
+});
+
 // WARNING: Calling this API will use Rainforest API for multiple times,
 // which costs api usage in the account
 // Get books from 4 categories from Rainforest API and store them in the database
@@ -150,6 +164,7 @@ app.get("/updatebookdb1", async () => {
           image: e.image,
           authors: e.authors[0].name,
           rating: e.rating,
+          price: { value: e.price.value, currency: e.price.currency },
           link: e.link,
           asin: e.asin,
           bookid: counter,
@@ -186,6 +201,7 @@ app.get("/updatebookdb2", async () => {
           image: e.image,
           authors: e.authors[0].name,
           rating: e.rating,
+          price: { value: e.price.value, currency: e.price.currency },
           link: e.link,
           asin: e.asin,
           bookid: counter,
@@ -222,6 +238,7 @@ app.get("/updatebookdb3", async () => {
           image: e.image,
           authors: e.authors[0].name,
           rating: e.rating,
+          price: { value: e.price.value, currency: e.price.currency },
           link: e.link,
           asin: e.asin,
           bookid: counter,
@@ -257,6 +274,7 @@ app.get("/updatebookdb4", async () => {
           title: e.title,
           image: e.image,
           authors: e.authors[0].name,
+          price: { value: e.price.value, currency: e.price.currency },
           rating: e.rating,
           link: e.link,
           asin: e.asin,
