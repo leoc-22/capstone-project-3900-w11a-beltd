@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { useEffect, useState } from "react";
 import AuthenticatedNavbar from "../Components/AuthenticatedNavbar";
 import { makeStyles } from "@material-ui/core";
@@ -25,11 +24,11 @@ const useStyles = makeStyles({
     margin: "0 auto",
     marginTop: "100px",
   },
-  media : {
+  media: {
     "&:hover": {
       cursor: "pointer",
-    }
-  }
+    },
+  },
 });
 
 export default function RecommendationsPage() {
@@ -48,7 +47,6 @@ export default function RecommendationsPage() {
     document.title = "Recommended for you | Booklab";
   }, [books]);
 
-
   const handleChange = (event) => {
     setFilter(event.target.value);
   };
@@ -56,9 +54,9 @@ export default function RecommendationsPage() {
   async function getBook() {
     if (filter === "Random") {
       let res = await axios({
-        url: "http://localhost:8002/books"
+        url: "http://localhost:8002/books",
       });
-      let randNum = Math.floor((Math.random() * res.data.length));
+      let randNum = Math.floor(Math.random() * res.data.length);
       const targetBook = res.data[randNum];
       setBooks(targetBook);
       setBookTitle(targetBook.title);
@@ -68,14 +66,19 @@ export default function RecommendationsPage() {
       setBookImg(targetBook.image);
       document.getElementById("bookResult").hidden = false;
     }
+    // else if (filter === "Authors") {
+    // } else if (filter === "Genres") {
+    // } else if (filter === "4stars") {
+    // } else if (filter === "3stars") {
+    // } else if (filter === "2stars") {
+    // } else if (filter === "1stars") {
+    // }
     return;
   }
 
   function routeUser() {
     history.push("/book-profile" + "?" + books._id);
   }
-
-
 
   return (
     <div>
@@ -95,17 +98,20 @@ export default function RecommendationsPage() {
                 onChange={handleChange}
               >
                 <MenuItem value="Popular">Popular books</MenuItem>
+                <MenuItem value="Random">Random Book</MenuItem>
                 <MenuItem value="Authors">Authors in my collection</MenuItem>
                 <MenuItem value="Genres">Genres in my collection</MenuItem>
-                <MenuItem value="Random">Random Book</MenuItem>
-                <MenuItem value="5stars">4.5+ star rating</MenuItem>
                 <MenuItem value="4stars">4+ star rating</MenuItem>
+                <MenuItem value="3stars">3+ star rating</MenuItem>
+                <MenuItem value="2stars">2+ star rating</MenuItem>
+                <MenuItem value="1stars">1+ star rating</MenuItem>
               </Select>
             </FormControl>
             <Button
               variant="contained"
               sx={{ marginTop: "20px" }}
-              onClick={() => getBook()}>
+              onClick={() => getBook()}
+            >
               Get Book
             </Button>
           </Grid>
@@ -117,7 +123,6 @@ export default function RecommendationsPage() {
               alt={"two people sitting together"}
             />
           </Grid>
-
         </Grid>
         <br />
         <div id="bookResult" hidden>
@@ -133,10 +138,48 @@ export default function RecommendationsPage() {
               />
               <Box sx={{ padding: "20px" }}>
                 <CardContent>
-                  <Typography 
-                  gutterBottom variant="h5"
-                  className={classes.media}
-                  component="div" onClick={routeUser}>
+                  <Typography
+                    gutterBottom
+                    variant="h5"
+                    className={classes.media}
+                    component="div"
+                    onClick={routeUser}
+                  >
+                    {bookTitle} by {author}
+                  </Typography>
+                  <Typography variant="subtitle1" color="text.secondary">
+                    {category}
+                  </Typography>
+                  <Typography variant="body1" color="text.secondary">
+                    {rating}
+                  </Typography>
+                </CardContent>
+                {/* <CardActions>
+                  <Button size="small">Add to collection</Button>
+                </CardActions> */}
+              </Box>
+            </Box>
+          </Card>
+
+          <Card sx={{ display: "flex" }}>
+            <Box sx={{ display: "flex", flexDirection: "row" }}>
+              <CardMedia
+                onClick={() => routeUser()}
+                component="img"
+                sx={{ width: "30%" }}
+                image={bookImg}
+                className={classes.media}
+                alt={bookTitle}
+              />
+              <Box sx={{ padding: "20px" }}>
+                <CardContent>
+                  <Typography
+                    gutterBottom
+                    variant="h5"
+                    className={classes.media}
+                    component="div"
+                    onClick={routeUser}
+                  >
                     {bookTitle} by {author}
                   </Typography>
                   <Typography variant="subtitle1" color="text.secondary">

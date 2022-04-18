@@ -16,9 +16,8 @@ app.get("/collections", async (req, res) => {
   }
 });
 
-// 2. Get all collections 
+// 2. Get all collections
 app.get("/myCollections", async (req, res) => {
-
   const collection = await collectionModel
     .find({ user: req.body.user }, function (err, docs) {
       if (err) {
@@ -40,7 +39,7 @@ app.post("/collection", async (req, res) => {
   const collection = new collectionModel({
     name: req.body.name,
     public: req.body.public,
-    creator : req.body.creator
+    creator: req.body.creator,
   });
 
   try {
@@ -54,8 +53,8 @@ app.post("/collection", async (req, res) => {
   // Link up with users model
   const _id = req.body.user;
   await userModel.findByIdAndUpdate(
-    {_id},
-    { $push: { "collections": collection._id } },
+    { _id },
+    { $push: { collections: collection._id } },
     { new: true }
   );
 });
@@ -163,7 +162,7 @@ app.delete("/removeBook", async (req, res) => {
 });
 
 // TODO Move book to "Read" collection
-app.patch("/readBook", async (req , res) => {
+app.patch("/readBook", async (req, res) => {
   const readCollection = await collectionModel
     .find({ user: req.body.user }, function (err, docs) {
       if (err) {
@@ -187,7 +186,6 @@ app.patch("/readBook", async (req , res) => {
 
   console.log(updatedReadCollection);
   res.send(updatedReadCollection);
-
 });
 
 // Remove a collection
