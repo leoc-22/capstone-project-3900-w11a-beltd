@@ -274,8 +274,9 @@ const bookProfilePage = () => {
       }
     }
     setGoalsArr(allMygoals);
+
     for (let i = 0; i < allMygoals.length; i++) {
-      advanceGoal(allMygoals[i]);
+      advanceGoal(allMygoals[i]._id);
     }
 
 
@@ -284,14 +285,48 @@ const bookProfilePage = () => {
     setChanged(tmp);
   }
 
-  async function advanceGoal(goalId) {
-    await axios({
-      method: "patch",
-      url: "http://localhost:8001/goal",
-      data: {
-        _id: goalId,
-      },
-    });
+  async function advanceGoal(goalId){
+
+    let allGoals = await axios({
+      method : "get",
+      url : "http://localhost:8001/myGoals",
+    }); 
+    let curGoal;
+    for (let i = 0; i< allGoals.data.length ; i++){
+      if (allGoals.data[i]["_id"] == goalId){
+        curGoal = allGoals.data[i];
+        break;
+      }
+    }
+    if(curGoal.current + 1 >= curGoal.target){
+      await axios({
+        method : "patch",
+        url : "http://localhost:8001/goalComplete",
+        data:{
+          _id : goalId
+        }
+      });
+
+      if (curGoal.current + 1  == curGoal.target){
+        await axios({
+          method : "patch",
+          url : "http://localhost:8001/goal",
+          data:{
+            _id : goalId
+          }
+        });  
+      }
+      return;
+
+    } else {
+      await axios({ 
+        method : "patch",
+        url : "http://localhost:8001/goal",
+        data:{
+          _id : goalId
+        }
+      });
+    }
     return;
   }
 
