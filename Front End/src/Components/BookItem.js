@@ -69,7 +69,11 @@ const BookItem = (props) => {
   }
 
   function routeUser() {
-    history.push("/book-profile" + "?" + bookId);
+    if (sessionStorage.getItem("id") != null){
+      history.push("/book-profile" + "?" + bookId);
+    } else {
+      history.push("/Public-book-profile" + "?" + bookId);
+    }
   }
 
   return (
