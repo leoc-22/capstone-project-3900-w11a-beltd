@@ -16,7 +16,7 @@ app.get("/collections", async (req, res) => {
   }
 });
 
-// 2. Get all USER OWNED collections by user id
+// 2. Get all collections 
 app.get("/myCollections", async (req, res) => {
 
   const collection = await collectionModel
@@ -40,6 +40,7 @@ app.post("/collection", async (req, res) => {
   const collection = new collectionModel({
     name: req.body.name,
     public: req.body.public,
+    creator : req.body.creator
   });
 
   try {
@@ -97,8 +98,8 @@ app.patch("/collectionPub", async (req, res) => {
 });
 
 // Get all books in a collection
-app.get("/collectionBooks", async (req) => {
-  await collectionModel
+app.get("/collectionBooks", async (req, res) => {
+  let collection = await collectionModel
     .find({ _id: req.body._id }, { books: 1 }, function (err, docs) {
       if (err) {
         console.log(err);
@@ -110,6 +111,7 @@ app.get("/collectionBooks", async (req) => {
     .catch(function (err) {
       console.log(err);
     });
+  res.send(collection);
 });
 
 // Add a book to a collection
@@ -133,7 +135,7 @@ app.post("/addBook", async (req, res) => {
   // 2. Add book to user collection
   const updatedCollection = await collectionModel.findByIdAndUpdate(
     { _id },
-    { $push: { books: userBook._id } },
+    { $push: { books: req.body.bookid } },
     { new: true }
   );
   console.log(updatedCollection);
@@ -161,7 +163,7 @@ app.delete("/removeBook", async (req, res) => {
 });
 
 // TODO Move book to "Read" collection
-app.patch("/readBook", async (req) => {
+app.patch("/readBook", async (req , res) => {
   const readCollection = await collectionModel
     .find({ user: req.body.user }, function (err, docs) {
       if (err) {
@@ -184,6 +186,8 @@ app.patch("/readBook", async (req) => {
   );
 
   console.log(updatedReadCollection);
+  res.send(updatedReadCollection);
+
 });
 
 // Remove a collection

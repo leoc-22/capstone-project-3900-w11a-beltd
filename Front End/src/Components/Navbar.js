@@ -26,11 +26,11 @@ const ButtonLink = styled(Button)(() => ({
   borderRadius: "0px",
   border: "none",
   height: "60px",
+  textTransform: "none",
   "&:hover": {
-    color: "#1976d2",
     backgroundColor: "transparent",
     cursor: "pointer",
-    borderBottom: "2px solid #1976d2",
+    borderBottom: "3px solid #1976d2",
   },
 }));
 

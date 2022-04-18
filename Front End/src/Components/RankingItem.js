@@ -15,7 +15,14 @@ const useStyles = makeStyles({
     borderRadius: "10px",
     width: "60%",
   },
+  media : {
+    "&:hover": {
+      cursor: "pointer",
+    }
+  }
+
 });
+
 export default function RankingItem(props) {
   const [name, setName] = useState("");
   const [img, setImg] = useState("");
@@ -50,13 +57,19 @@ export default function RankingItem(props) {
       <Card sx={{ display: "flex", padding: "20px" }}>
         <CardMedia
           component="img"
-          sx={{ width: "100px", height: "100px", borderRadius: "50px", marginRight: "30px" }}
+          sx={{ width: "100px", height: "100px", 
+          borderRadius: "50px",
+          marginRight: "30px" }}
           image={img}
+          onClick={goToProfile}
           alt="profile picture"
-        />
+          className={classes.media}/>
+        
         <Box sx={{ display: "flex", flexDirection: "column" }}>
           <CardContent sx={{ flex: "1 0 auto" }}>
-            <Typography component="div" variant="h5" onClick={goToProfile}>
+            <Typography component="div" variant="h5" 
+            className={classes.media}
+            onClick={goToProfile}>
               {props.rank + ". " + name}
             </Typography>
             <Typography variant="subtitle1" color="text.secondary" component="div">

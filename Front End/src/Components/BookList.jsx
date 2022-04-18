@@ -5,7 +5,8 @@ import PropTypes from "prop-types";
 
 const useStyles = makeStyles({
   main: {
-    height: "500px",
+    minHeight: "500px",
+    height: "510px",
   },
   img: {
     borderRadius: "8px",
@@ -63,7 +64,8 @@ export default function TopBookItem(props) {
           <b>{props.book.title}</b>
         </span>
         <br/>
-        <span className="bookTitle">{props.book.authors}</span>
+        <div className="bookTitle">{props.book.authors}</div>
+        <div className="bookTitle">{"Rating: " + props.book.rating}</div>
       </div>
     </div>
   );

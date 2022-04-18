@@ -25,6 +25,11 @@ const useStyles = makeStyles({
     margin: "0 auto",
     marginTop: "100px",
   },
+  media : {
+    "&:hover": {
+      cursor: "pointer",
+    }
+  }
 });
 
 export default function RecommendationsPage() {
@@ -93,11 +98,8 @@ export default function RecommendationsPage() {
                 <MenuItem value="Authors">Authors in my collection</MenuItem>
                 <MenuItem value="Genres">Genres in my collection</MenuItem>
                 <MenuItem value="Random">Random Book</MenuItem>
-                <MenuItem value="5stars">5 star rating</MenuItem>
-                <MenuItem value="4stars">4 star rating</MenuItem>
-                <MenuItem value="3stars">3 star rating</MenuItem>
-                <MenuItem value="2stars">2 star rating</MenuItem>
-                <MenuItem value="1stars">1 star rating</MenuItem>
+                <MenuItem value="5stars">4.5+ star rating</MenuItem>
+                <MenuItem value="4stars">4+ star rating</MenuItem>
               </Select>
             </FormControl>
             <Button
@@ -122,14 +124,19 @@ export default function RecommendationsPage() {
           <Card sx={{ display: "flex" }}>
             <Box sx={{ display: "flex", flexDirection: "row" }}>
               <CardMedia
+                onClick={() => routeUser()}
                 component="img"
                 sx={{ width: "30%" }}
                 image={bookImg}
+                className={classes.media}
                 alt={bookTitle}
               />
               <Box sx={{ padding: "20px" }}>
                 <CardContent>
-                  <Typography gutterBottom variant="h5" component="div" onClick={routeUser}>
+                  <Typography 
+                  gutterBottom variant="h5"
+                  className={classes.media}
+                  component="div" onClick={routeUser}>
                     {bookTitle} by {author}
                   </Typography>
                   <Typography variant="subtitle1" color="text.secondary">
