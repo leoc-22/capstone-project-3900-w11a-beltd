@@ -329,7 +329,8 @@ const bookProfilePage = () => {
     }
     return;
   }
-
+  
+  
   async function getSimilarBooks(categoryId) {
     let res = await axios({
       method: "get",
