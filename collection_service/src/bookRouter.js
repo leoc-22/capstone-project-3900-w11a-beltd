@@ -32,15 +32,27 @@ app.get("/books/autocomplete", async (req, res) => {
 });
 
 app.get("/books/search/:q", async (req, res) => {
-  console.log(req.params.q);
+  let query = req.params.q;
+  query = query.replaceAll("(", "\\(");
+  query = query.replaceAll(")", "\\)");
+  query = query.replaceAll("[", "\\[");
+  query = query.replaceAll("]", "\\]");
+  query = query.replaceAll("{", "\\{");
+  query = query.replaceAll("}", "\\}");
+  query = query.replaceAll("+", "\\+");
+  query = query.replaceAll("*", "\\*");
+  query = query.replaceAll("?", "\\?");
+
+  console.log(query);
+
   await bookModel
     .find({
       $or: [
-        { title: { $regex: req.params.q, $options: "i" } },
-        { authors: { $regex: req.params.q, $options: "i" } },
+        { title: { $regex: query, $options: "i" } },
+        { authors: { $regex: query, $options: "i" } },
         {
           categories: {
-            $elemMatch: { name: { $regex: req.params.q, $options: "i" } },
+            $elemMatch: { name: { $regex: query, $options: "i" } },
           },
         },
       ],
