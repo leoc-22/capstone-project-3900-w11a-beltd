@@ -111,17 +111,7 @@ export default function SignUpPage() {
         public : false
       }
     });
-
-    await axios({
-      method : "post",
-      url : "http://localhost:8001/collection",
-      data : {
-        user : userId,
-        name : "Currently Reading",
-        public : false
-      }
-    });
-
+    
     return;
   }
 
