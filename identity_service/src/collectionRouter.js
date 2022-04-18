@@ -2,8 +2,8 @@ const express = require("express");
 const collectionModel = require("./models/collectionModel");
 const userModel = require("./models/userModel");
 const userBookModel = require("./models/userBookModel");
-
 const app = express();
+const axios = require("axios");
 
 // 1. Get all PUBLIC collections for user homepage
 app.get("/collections", async (req, res) => {
@@ -96,24 +96,20 @@ app.patch("/collectionPub", async (req, res) => {
   );
 });
 
-// Get all books in a collection
 app.get("/collectionBooks", async (req, res) => {
   let bookList = [];
   let collections = await collectionModel.find({ _id: req.body.c_id });
-  // console.log(collections[0].books[0]);
-  let books = collections[0].books;
 
-  let book = await userBookModel.find({ _id: "6253ca64107a1a9d71b6f1ab" });
-  console.log(book);
-  for (let i = 0; i < books.length; i++) {
-    // console.log(books[i].toString());
-    let book = await userBookModel.find({ _id: books[i].toString() });
-    if (book) {
-      bookList.push(book);
-    }
+  for (let i = 0; i < collections[0].books.length; i++) {
+    await axios
+      .get(`http://localhost:8002/book/${collections[0].books[i].toString()}`)
+      .then((res) => {
+        bookList.push(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
-  // res.send(collections);
-  // console.log(bookList);
   res.send(bookList);
 });
 

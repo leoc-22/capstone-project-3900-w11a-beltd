@@ -18,6 +18,19 @@ app.get("/books", async (req, res) => {
     });
 });
 
+app.get("/book/:id", async (req, res) => {
+  await bookModel
+    .findById(req.params.id)
+    .then((book) => {
+      console.log(`Retrieved ${book.title}`);
+      res.send(book);
+    })
+    .catch((error) => {
+      res.status(500).send(error);
+    });
+});
+
+// Provide a list of book titles, authors, and genres for the autocomplete feature in the client
 app.get("/books/autocomplete", async (req, res) => {
   await bookModel
     .find({})
@@ -31,6 +44,7 @@ app.get("/books/autocomplete", async (req, res) => {
     });
 });
 
+// Search for a book by its title, author, or genre
 app.get("/books/search/:q", async (req, res) => {
   let query = req.params.q;
   query = query.replaceAll("(", "\\(");
@@ -63,6 +77,7 @@ app.get("/books/search/:q", async (req, res) => {
     });
 });
 
+// Get similar books by its genre (category)
 app.get("/similar/:categoryID", async (req, res) => {
   console.log(req.params.categoryID);
   await bookModel
