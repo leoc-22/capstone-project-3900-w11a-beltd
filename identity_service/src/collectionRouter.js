@@ -96,6 +96,7 @@ app.patch("/collectionPub", async (req, res) => {
   );
 });
 
+// Get book details in a collection
 app.get("/collectionBooks", async (req, res) => {
   let bookList = [];
   let collections = await collectionModel.find({ _id: req.body.c_id });
@@ -111,6 +112,72 @@ app.get("/collectionBooks", async (req, res) => {
       });
   }
   res.send(bookList);
+});
+
+// Get recommendation based on the authors in a collection
+app.get("/recommendbyauthors", async (req, res) => {
+  let bookList = [];
+  let collections = await collectionModel.find({ _id: req.body.c_id });
+
+  for (let i = 0; i < collections[0].books.length; i++) {
+    await axios
+      .get(`http://localhost:8002/book/${collections[0].books[i].toString()}`)
+      .then((res) => {
+        bookList.push(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  let recommendations = [];
+  for (let i = 0; i < bookList.length; i++) {
+    await axios
+      .get("http://localhost:8002/getbooksbyauthor", {
+        params: { author: bookList[i].authors },
+      })
+      .then((res) => {
+        console.log(res.data);
+        recommendations.push(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  res.send(recommendations);
+});
+
+// Get recommendation based on the genres in a collection
+app.get("/recommendbygenres", async (req, res) => {
+  let bookList = [];
+  let collections = await collectionModel.find({ _id: req.body.c_id });
+
+  for (let i = 0; i < collections[0].books.length; i++) {
+    await axios
+      .get(`http://localhost:8002/book/${collections[0].books[i].toString()}`)
+      .then((res) => {
+        bookList.push(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  let recommendations = [];
+  for (let i = 0; i < bookList.length; i++) {
+    await axios
+      .get(`http://localhost:8002/similar/${bookList[i].categories[0].id}`)
+      .then((res) => {
+        console.log(res.data);
+        recommendations.push(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  res.send(recommendations);
 });
 
 // Add a book to a collection
