@@ -455,7 +455,7 @@ const bookProfilePage = () => {
                   sx={{ fontSize: 14, textTransform: "uppercase" }}
                   color="text.secondary"
                 >
-                  {amzPrice}
+                  Price: ${amzPrice}
                 </Typography>
               </CardContent>
               <CardActions>
