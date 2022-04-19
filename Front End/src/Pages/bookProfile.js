@@ -235,9 +235,11 @@ const bookProfilePage = () => {
       },
     })
       .then((res) => {
-        console.log(res.data.itemSummaries[0].price.value);
-        setEbayPrice(res.data.itemSummaries[0].price.value);
-        setEbayLink(res.data.itemSummaries[0].itemWebUrl);
+        console.log(res.data);
+        if (res.data.itemSummaries.length != 0) {
+          setEbayPrice(res.data.itemSummaries[0].price.value);
+          setEbayLink(res.data.itemSummaries[0].itemWebUrl);
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -559,7 +561,9 @@ const bookProfilePage = () => {
                 <Button
                   size="small"
                   onClick={() => {
-                    window.open(ebayLink, "_blank").focus();
+                    ebayLink != null
+                      ? window.open(ebayLink, "_blank").focus()
+                      : null;
                   }}
                 >
                   View on eBay
