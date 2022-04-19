@@ -19,8 +19,6 @@ import CloseIcon from "@mui/icons-material/Close";
 import Alert from "@mui/material/Alert";
 import { styled } from "@mui/material/styles";
 
-// import { useLocation } from "react-router-dom";
-
 const useStyles = makeStyles({
   main: {
     minHeight: "1100px",
