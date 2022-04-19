@@ -117,17 +117,21 @@ app.get("/collectionBooks", async (req, res) => {
 // Get recommendation based on the authors in a collection
 app.get("/recommendbyauthors", async (req, res) => {
   let bookList = [];
-  let collections = await collectionModel.find({ _id: req.body.c_id });
+  let collections = await collectionModel.find({
+    creator: req.body.creatorName,
+  });
 
-  for (let i = 0; i < collections[0].books.length; i++) {
-    await axios
-      .get(`http://localhost:8002/book/${collections[0].books[i].toString()}`)
-      .then((res) => {
-        bookList.push(res.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  for (let j = 0; j < collections.length; j++) {
+    for (let i = 0; i < collections[j].books.length; i++) {
+      await axios
+        .get(`http://localhost:8002/book/${collections[j].books[i].toString()}`)
+        .then((res) => {
+          bookList.push(res.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   }
 
   let recommendations = [];
@@ -138,7 +142,7 @@ app.get("/recommendbyauthors", async (req, res) => {
       })
       .then((res) => {
         console.log(res.data);
-        recommendations.push(res.data);
+        recommendations = recommendations.concat(res.data);
       })
       .catch((error) => {
         console.log(error);
@@ -151,17 +155,20 @@ app.get("/recommendbyauthors", async (req, res) => {
 // Get recommendation based on the genres in a collection
 app.get("/recommendbygenres", async (req, res) => {
   let bookList = [];
-  let collections = await collectionModel.find({ _id: req.body.c_id });
-
-  for (let i = 0; i < collections[0].books.length; i++) {
-    await axios
-      .get(`http://localhost:8002/book/${collections[0].books[i].toString()}`)
-      .then((res) => {
-        bookList.push(res.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+  let collections = await collectionModel.find({
+    creator: req.body.creatorName,
+  });
+  for (let j = 0; j < collections.length; j++) {
+    for (let i = 0; i < collections[j].books.length; i++) {
+      await axios
+        .get(`http://localhost:8002/book/${collections[j].books[i].toString()}`)
+        .then((res) => {
+          bookList.push(res.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   }
 
   let recommendations = [];
@@ -170,7 +177,7 @@ app.get("/recommendbygenres", async (req, res) => {
       .get(`http://localhost:8002/similar/${bookList[i].categories[0].id}`)
       .then((res) => {
         console.log(res.data);
-        recommendations.push(res.data);
+        recommendations = recommendations.concat(res.data);
       })
       .catch((error) => {
         console.log(error);
