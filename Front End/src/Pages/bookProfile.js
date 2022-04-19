@@ -106,6 +106,7 @@ const bookProfilePage = () => {
   const [author, setAuthor] = useState(null);
   const [bookImg, setImg] = useState(null);
   const [rating, setRating] = useState(null);
+  const [averageRating, setAverageRating] = useState(null);
   const [bookRating, setBookRating] = useState(null);
   const [openModal, setOpenModal] = useState(false);
   const [collections, setCollections] = useState([]);
@@ -254,11 +255,22 @@ const bookProfilePage = () => {
       url: "http://localhost:8001/review",
     });
     let curBookReviews = [];
+    let averageRating = 0;
+
     for (let i = 0; i < res.data.length; i++) {
       if (res.data[i].title == bookTitle) {
         curBookReviews.push(res.data[i]);
+        averageRating += res.data[i].rating;
       }
     }
+    if (curBookReviews.length == 0){
+      averageRating = "No reviews Yet";
+    } else {
+      averageRating = averageRating/curBookReviews.length;
+      averageRating = averageRating.toFixed(1);  
+    }
+    //console.log(averageRating);
+    setAverageRating(averageRating);
     setBookReviews(curBookReviews);
   }
 
@@ -285,6 +297,7 @@ const bookProfilePage = () => {
       }
     }
     setGoalsArr(allMygoals);
+
     for (let i = 0; i < allMygoals.length; i++) {
       advanceGoal(allMygoals[i]._id);
     }
@@ -630,6 +643,7 @@ const bookProfilePage = () => {
         <br />
         <br />
         <h2>Community reviews</h2>
+        <div>{"Average Community Rating: " + averageRating}</div>
         {bookReviews.map((rev, index) => (
           <div key={index} className={classes.reviewDiv}>
             <Card sx={{ width: "60%" }}>
