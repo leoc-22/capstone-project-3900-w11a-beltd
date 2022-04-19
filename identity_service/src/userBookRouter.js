@@ -1,14 +1,12 @@
 const express = require("express");
-const { UserBook } = require("./models/userModel");
-const bookModel = { UserBook };
+const userBookModel = require("./models/userBookModel");
 const app = express();
 
 // Get all books in the database
-app.get("/myBooks", async (req, res) => {
-  const books = await bookModel.find({});
+app.get("/getUserBooks", async (req, res) => {
+  const books = await userBookModel.find({});
 
   try {
-    // console.log(books.length);
     res.send(books);
   } catch (error) {
     res.status(500).send(error);
@@ -16,19 +14,19 @@ app.get("/myBooks", async (req, res) => {
 });
 
 // Mark a book as read, find by book id
-app.patch("/read", async (req, res) => {
-  var query = { b_id: req.body.b_id };
+app.patch("/markasread", async (req, res) => {
+  var query = { bookid: req.body.b_id };
 
-  bookModel.findOneAndUpdate(
+  userBookModel.findOneAndUpdate(
     query,
     {
       read: true,
     },
-    { upsert: true },
+    { upsert: false },
     (err) => {
       if (err) return res.status(500).send(err);
       console.log("Read status updated");
-      res.send("Successfully updated");
+      res.send("Read status updated");
     }
   );
 });
