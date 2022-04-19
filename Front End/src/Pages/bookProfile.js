@@ -124,6 +124,9 @@ const bookProfilePage = () => {
   const [hideSuccessAlert, setHideSuccessAlert] = useState(true);
   const [targetCollection, setTargetCollection] = useState("");
   const [isRead, setIsRead] = useState(false);
+  const [numPeopleHasRead, setNumPeopleHasRead] = useState(0);
+  const [numColleThisIn, setNumColleThisIn] = useState(0);
+
   const classes = useStyles();
   const history = useHistory();
 
@@ -188,9 +191,22 @@ const bookProfilePage = () => {
         if (changed == 0) {
           getSimilarBooks(res[i].categories[0].id);
         }
+        handleStats(res[i]["_id"]);
         return;
       }
     }
+  }
+
+  async function handleStats(bookId) {
+    await axios
+      .get(`http://localhost:8001/numofpeoplehasread/${bookId}`)
+      .then((res) => {
+        setNumPeopleHasRead(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    setNumColleThisIn(0);
   }
 
   function amzPage() {
@@ -440,6 +456,8 @@ const bookProfilePage = () => {
             <br />
             <Stack direction="row" alignItems="center" spacing={2}>
               <p>{bookRating}</p>
+              <p>Number of people read: {numPeopleHasRead}</p>
+              <p>Number of collections this book is in: {numColleThisIn}</p>
             </Stack>
           </Grid>
         </Grid>
