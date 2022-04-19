@@ -97,7 +97,7 @@ app.get("/similar/:categoryID", async (req, res) => {
 
 // Get books by author
 app.get("/getbooksbyauthor", async (req, res) => {
-  console.log(req.query.author);
+  console.log(`author: ${req.query.author}`);
   let query = req.query.author;
 
   query = query.replaceAll("(", "\\(");
@@ -164,7 +164,11 @@ app.get("/updatebookdb1", async () => {
           image: e.image,
           authors: e.authors[0].name,
           rating: e.rating,
-          price: { value: e.price.value, currency: e.price.currency },
+          price: {
+            value: e.price.value,
+            currency: e.price.currency,
+            link: e.price.link,
+          },
           link: e.link,
           asin: e.asin,
           bookid: counter,
@@ -201,7 +205,11 @@ app.get("/updatebookdb2", async () => {
           image: e.image,
           authors: e.authors[0].name,
           rating: e.rating,
-          price: { value: e.price.value, currency: e.price.currency },
+          price: {
+            value: e.price.value,
+            currency: e.price.currency,
+            link: e.price.link,
+          },
           link: e.link,
           asin: e.asin,
           bookid: counter,
@@ -238,7 +246,11 @@ app.get("/updatebookdb3", async () => {
           image: e.image,
           authors: e.authors[0].name,
           rating: e.rating,
-          price: { value: e.price.value, currency: e.price.currency },
+          price: {
+            value: e.price.value,
+            currency: e.price.currency,
+            link: e.price.link,
+          },
           link: e.link,
           asin: e.asin,
           bookid: counter,
@@ -274,7 +286,11 @@ app.get("/updatebookdb4", async () => {
           title: e.title,
           image: e.image,
           authors: e.authors[0].name,
-          price: { value: e.price.value, currency: e.price.currency },
+          price: {
+            value: e.price.value,
+            currency: e.price.currency,
+            link: e.price.link,
+          },
           rating: e.rating,
           link: e.link,
           asin: e.asin,

@@ -12,6 +12,7 @@ const bookSchema = new mongoose.Schema(
     price: {
       value: { type: Number, required: false },
       currency: { type: String, required: false },
+      link: { type: String, required: false },
     },
     categories: [{ type: Object, required: true }],
     bookid: { type: Number, required: true },

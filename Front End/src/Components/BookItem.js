@@ -84,6 +84,8 @@ const BookItem = (props) => {
       alt = "book Image"></img>
       <div className={classes.Titletext}>{title}</div>
       <div className={classes.text}>{author}</div>
+      <div className={classes.text}>{"Book no. " + props.index}</div>
+
     </div>
 
   );

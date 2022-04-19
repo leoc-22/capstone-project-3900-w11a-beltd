@@ -390,7 +390,7 @@ const CollectionDetailPage = () => {
       <Grid container spacing={6}>
         {books.map((book, index) => (
           <Grid item xs={6} sm={4} md={3} lg = {2} className={classes.gridClass} key = {index}>
-            <BookItem data = {book}>ef</BookItem>
+            <BookItem data = {book} index = {index+1}>ef</BookItem>
           </Grid>
         ))}
       </Grid>
