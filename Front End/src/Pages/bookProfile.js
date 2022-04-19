@@ -117,6 +117,7 @@ const bookProfilePage = () => {
   const [bookImg, setImg] = useState(null);
   const [amzLink, setAmzLink] = useState(null);
   const [rating, setRating] = useState(null);
+  const [averageRating, setAverageRating] = useState(null);
   const [bookRating, setBookRating] = useState(null);
   const [openModal, setOpenModal] = useState(false);
   const [collections, setCollections] = useState([]);
@@ -191,7 +192,7 @@ const bookProfilePage = () => {
         setAuthor(res[i]["authors"]);
         setImg(res[i]["image"]);
         setAmzLink(res[i]["link"]);
-        setBookRating("Rating: " + res[i]["rating"]);
+        setBookRating("Rating on Amazon: " + res[i]["rating"]);
         getReviews(res[i]["title"]);
         setCategory(res[i].categories[0].name);
         setCategoryId(res[i].categories[0].id);
@@ -243,11 +244,18 @@ const bookProfilePage = () => {
     });
     //console.log(res.data);
     let curBookReviews = [];
+    let averageRating = 0;
+
     for (let i = 0; i < res.data.length; i++) {
       if (res.data[i].title == bookTitle) {
         curBookReviews.push(res.data[i]);
+        averageRating += res.data[i].rating;
       }
     }
+    averageRating = averageRating/curBookReviews.length;
+    averageRating = averageRating.toFixed(1);
+    //console.log(averageRating);
+    setAverageRating(averageRating)
     setBookReviews(curBookReviews);
   }
 
@@ -594,6 +602,7 @@ const bookProfilePage = () => {
         <br />
         <br />
         <h2>Community reviews</h2>
+        <div>{"Average Community Rating: " + averageRating}</div>
         {bookReviews.map((rev, index) => (
           <div key={index} className={classes.reviewDiv}>
             <Card sx={{ width: "60%" }}>
