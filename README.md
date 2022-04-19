@@ -60,6 +60,8 @@ The entire system can be started by running the microservices backend and ui in 
 
 **_!!! For each new terminal window you have opened, check if the node version is 16 or above_**
 
+**_Please keep a stable internet connection while running the system since the backend services are connecting to a MongoDB cluster_**
+
 1. Start a new terminal
 2. `cd identity_service`
 3. `npm run start:dev`
