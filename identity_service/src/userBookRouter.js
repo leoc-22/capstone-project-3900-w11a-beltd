@@ -1,5 +1,6 @@
 const express = require("express");
 const userBookModel = require("./models/userBookModel");
+const collectionModel = require("./models/collectionModel");
 const app = express();
 
 // Get all books in the database
@@ -15,19 +16,34 @@ app.get("/getUserBooks", async (req, res) => {
 
 // Mark a book as read, find by book id
 app.patch("/markasread", async (req, res) => {
-  let query = { bookid: req.body.b_id };
+  let collections = await collectionModel.find({
+    creator: req.body.username,
+    books: req.body.b_id,
+  });
 
-  userBookModel.updateMany(
-    query,
-    {
-      read: true,
-    },
-    (err) => {
-      if (err) return res.sendStatus(500);
-      console.log("Read status updated");
-      res.send("Read status updated");
-    }
-  );
+  if (!collections.length) {
+    console.log("hey");
+    return;
+  }
+
+  for (let i = 0; i < collections.length; i++) {
+    console.log(`collection id: ${collections[i]._id}`);
+    let query = { bookid: req.body.b_id, userCollection: collections[i]._id };
+    await userBookModel
+      .updateMany(
+        query,
+        {
+          read: true,
+        },
+        { upsert: false }
+      )
+      .clone()
+      .catch((err) => {
+        if (err) return res.sendStatus(500);
+        console.log("Read status updated");
+        res.sendStatus(200);
+      });
+  }
 });
 
 app.get("/numoftimesread/:bookid", async (req, res) => {

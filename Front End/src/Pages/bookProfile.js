@@ -170,7 +170,6 @@ const bookProfilePage = () => {
         }
       }
     }
-    console.log(tmp);
     setCollections(tmp);
   }
 
@@ -254,7 +253,6 @@ const bookProfilePage = () => {
       method: "get",
       url: "http://localhost:8001/review",
     });
-    //console.log(res.data);
     let curBookReviews = [];
     for (let i = 0; i < res.data.length; i++) {
       if (res.data[i].title == bookTitle) {
@@ -300,12 +298,16 @@ const bookProfilePage = () => {
       url: "http://localhost:8001/markasread",
       data: {
         b_id: bookId,
+        username: sessionStorage.getItem("name"),
       },
     })
-      .then(() => {
-        setIsRead(true);
+      .then((res) => {
+        if (res) {
+          setIsRead(true);
+        }
       })
       .catch((error) => {
+        setIsRead(false);
         console.log(error);
       });
   }
@@ -467,8 +469,7 @@ const bookProfilePage = () => {
             <Chip label={bookRating} sx={{ marginRight: "16px" }} />
             <Chip
               label={
-                "Number of times this book has been read by other people: " +
-                numTimesRead
+                "Number of times this book is read by people: " + numTimesRead
               }
               sx={{ marginRight: "16px" }}
             />

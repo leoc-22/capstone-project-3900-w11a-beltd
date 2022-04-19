@@ -59,7 +59,6 @@ app.post("/collection", async (req, res) => {
   );
 });
 
-// TODO Can probably combine two endpoints below??
 // 4. Mark a collection as PRIVATE post creation
 app.patch("/collectionPriv", async (req, res) => {
   var query = { _id: req.body._id }; // collection id
@@ -189,16 +188,17 @@ app.get("/recommendbygenres/:creatorName", async (req, res) => {
 
 // Add a book to a collection
 app.post("/addBook", async (req, res) => {
-  // 1. Create new userbook
-  await new userBookModel({
-    bookid: req.body.bookid,
-    read: false,
-  }).save();
-
   // Save collection id from request body
   let _id = req.body._id;
 
-  // 2. Add book to user collection
+  // Create new userbook
+  await new userBookModel({
+    bookid: req.body.bookid,
+    read: false,
+    userCollection: _id,
+  }).save();
+
+  // Add book to user collection
   await collectionModel.findByIdAndUpdate(
     { _id },
     { $push: { books: req.body.bookid } },
@@ -228,7 +228,6 @@ app.delete("/removeBook", async (req, res) => {
   console.log(collection);
 });
 
-// TODO Move book to "Read" collection
 app.patch("/readBook", async (req, res) => {
   const readCollection = await collectionModel
     .find({ user: req.body.user }, function (err, docs) {
