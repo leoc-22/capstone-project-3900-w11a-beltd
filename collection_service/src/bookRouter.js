@@ -18,6 +18,19 @@ app.get("/books", async (req, res) => {
     });
 });
 
+app.get("/book/:id", async (req, res) => {
+  await bookModel
+    .findById(req.params.id)
+    .then((book) => {
+      console.log(`Retrieved ${book.title}`);
+      res.send(book);
+    })
+    .catch((error) => {
+      res.status(500).send(error);
+    });
+});
+
+// Provide a list of book titles, authors, and genres for the autocomplete feature in the client
 app.get("/books/autocomplete", async (req, res) => {
   await bookModel
     .find({})
@@ -31,6 +44,7 @@ app.get("/books/autocomplete", async (req, res) => {
     });
 });
 
+// Search for a book by its title, author, or genre
 app.get("/books/search/:q", async (req, res) => {
   let query = req.params.q;
   query = query.replaceAll("(", "\\(");
@@ -42,6 +56,7 @@ app.get("/books/search/:q", async (req, res) => {
   query = query.replaceAll("+", "\\+");
   query = query.replaceAll("*", "\\*");
   query = query.replaceAll("?", "\\?");
+  query = query.replaceAll(".", "\\.");
 
   console.log(query);
 
@@ -63,6 +78,7 @@ app.get("/books/search/:q", async (req, res) => {
     });
 });
 
+// Get similar books by its genre (category)
 app.get("/similar/:categoryID", async (req, res) => {
   console.log(req.params.categoryID);
   await bookModel
@@ -75,6 +91,50 @@ app.get("/similar/:categoryID", async (req, res) => {
     })
     .catch((error) => {
       console.log("category not found");
+      res.status(500).send(error);
+    });
+});
+
+// Get books by author
+app.get("/getbooksbyauthor", async (req, res) => {
+  console.log(req.query.author);
+  let query = req.query.author;
+
+  query = query.replaceAll("(", "\\(");
+  query = query.replaceAll(")", "\\)");
+  query = query.replaceAll("[", "\\[");
+  query = query.replaceAll("]", "\\]");
+  query = query.replaceAll("{", "\\{");
+  query = query.replaceAll("}", "\\}");
+  query = query.replaceAll("+", "\\+");
+  query = query.replaceAll("*", "\\*");
+  query = query.replaceAll("?", "\\?");
+  query = query.replaceAll(".", "\\.");
+
+  await bookModel
+    .find({
+      authors: { $regex: query, $options: "i" },
+    })
+    .then((books) => {
+      console.log(`Retrieved ${books.length} books with the target author`);
+      res.send(books);
+    })
+    .catch((error) => {
+      console.log("author not found");
+      res.status(500).send(error);
+    });
+});
+
+app.get("/books/:rating", async (req, res) => {
+  await bookModel
+    .find({ rating: { $gte: req.params.rating } })
+    .then((books) => {
+      console.log(
+        `Retrieved ${books.length} books with rating >= ${req.params.rating}`
+      );
+      res.send(books);
+    })
+    .catch((error) => {
       res.status(500).send(error);
     });
 });
@@ -104,6 +164,7 @@ app.get("/updatebookdb1", async () => {
           image: e.image,
           authors: e.authors[0].name,
           rating: e.rating,
+          price: { value: e.price.value, currency: e.price.currency },
           link: e.link,
           asin: e.asin,
           bookid: counter,
@@ -140,6 +201,7 @@ app.get("/updatebookdb2", async () => {
           image: e.image,
           authors: e.authors[0].name,
           rating: e.rating,
+          price: { value: e.price.value, currency: e.price.currency },
           link: e.link,
           asin: e.asin,
           bookid: counter,
@@ -176,6 +238,7 @@ app.get("/updatebookdb3", async () => {
           image: e.image,
           authors: e.authors[0].name,
           rating: e.rating,
+          price: { value: e.price.value, currency: e.price.currency },
           link: e.link,
           asin: e.asin,
           bookid: counter,
@@ -211,6 +274,7 @@ app.get("/updatebookdb4", async () => {
           title: e.title,
           image: e.image,
           authors: e.authors[0].name,
+          price: { value: e.price.value, currency: e.price.currency },
           rating: e.rating,
           link: e.link,
           asin: e.asin,

@@ -6,17 +6,20 @@ This is a web book recommendation system which consists of a microservices backe
 
 ### Identity Service
 
-Description: Authenticate users and handles user book collections, reading goals and reviews
+Description: Authenticate users and handles user book collections, reading goals and reviews.
+
 Dev Port: 8001
 
 ### Collection Service
 
 Description: Communicates with third party APIs and store book information into databases.
+
 Dev Port: 8002
 
 ### UI
 
-Description: Serves the React user interface
+Description: Serves the React user interface.
+
 Dev Port: 3000
 
 ## Development Installation

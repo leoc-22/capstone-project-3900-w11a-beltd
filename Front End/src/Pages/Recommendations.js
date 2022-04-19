@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { useEffect, useState } from "react";
 import AuthenticatedNavbar from "../Components/AuthenticatedNavbar";
 import { makeStyles } from "@material-ui/core";
@@ -6,7 +5,6 @@ import recs from "../Images/recommendations.svg";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
-// import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
@@ -17,6 +15,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
+import BookSearchResults from "../Components/BookSearchResults";
 
 const useStyles = makeStyles({
   main: {
@@ -25,11 +24,11 @@ const useStyles = makeStyles({
     margin: "0 auto",
     marginTop: "100px",
   },
-  media : {
+  media: {
     "&:hover": {
       cursor: "pointer",
-    }
-  }
+    },
+  },
 });
 
 export default function RecommendationsPage() {
@@ -42,23 +41,25 @@ export default function RecommendationsPage() {
   const [bookImg, setBookImg] = useState("");
   const [category, setCategory] = useState("");
   const [filter, setFilter] = React.useState("Random");
+  const [bookList, setBookList] = useState([]);
   // const [firstLoad, setFirstLoad] = useState(0);
 
   useEffect(() => {
     document.title = "Recommended for you | Booklab";
   }, [books]);
 
-
   const handleChange = (event) => {
     setFilter(event.target.value);
   };
 
   async function getBook() {
+    let n = sessionStorage.getItem("name");
+
     if (filter === "Random") {
       let res = await axios({
-        url: "http://localhost:8002/books"
+        url: "http://localhost:8002/books",
       });
-      let randNum = Math.floor((Math.random() * res.data.length));
+      let randNum = Math.floor(Math.random() * res.data.length);
       const targetBook = res.data[randNum];
       setBooks(targetBook);
       setBookTitle(targetBook.title);
@@ -66,16 +67,67 @@ export default function RecommendationsPage() {
       setAuthor(targetBook.authors);
       setRating("Rating: " + targetBook.rating);
       setBookImg(targetBook.image);
-      document.getElementById("bookResult").hidden = false;
+      document.getElementById("randomBook").hidden = false;
+    } else if (filter === "Authors") {
+      await axios
+        .get(`http://localhost:8001/recommendbyauthors/${n}`)
+        .then((res) => {
+          console.log(res.data);
+          setBookList(res.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      document.getElementById("booksByAuthors").hidden = false;
+      document.getElementById("randomBook").hidden = true;
+    } else if (filter === "Genres") {
+      await axios
+        .get(`http://localhost:8001/recommendbygenres/${n}`)
+        .then((res) => {
+          console.log(res.data);
+          setBookList(res.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      document.getElementById("booksByGenres").hidden = false;
+      document.getElementById("randomBook").hidden = true;
+    } else if (filter === "4stars") {
+      getBooksByRatings(4);
+      document.getElementById("booksByRatings").hidden = false;
+      document.getElementById("randomBook").hidden = true;
+    } else if (filter === "3stars") {
+      getBooksByRatings(3);
+      document.getElementById("booksByRatings").hidden = false;
+      document.getElementById("randomBook").hidden = true;
+    } else if (filter === "2stars") {
+      getBooksByRatings(2);
+      document.getElementById("booksByRatings").hidden = false;
+      document.getElementById("randomBook").hidden = true;
+    } else if (filter === "1stars") {
+      getBooksByRatings(1);
+      document.getElementById("booksByRatings").hidden = false;
+      document.getElementById("randomBook").hidden = true;
     }
+    console.log(bookList);
     return;
+  }
+
+  async function getBooksByRatings(rating) {
+    await axios
+      .get(`http://localhost:8002/books/${rating}`)
+      .then((res) => {
+        console.log(res.data);
+        setBookList(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   function routeUser() {
     history.push("/book-profile" + "?" + books._id);
   }
-
-
 
   return (
     <div>
@@ -95,17 +147,20 @@ export default function RecommendationsPage() {
                 onChange={handleChange}
               >
                 <MenuItem value="Popular">Popular books</MenuItem>
+                <MenuItem value="Random">Random Book</MenuItem>
                 <MenuItem value="Authors">Authors in my collection</MenuItem>
                 <MenuItem value="Genres">Genres in my collection</MenuItem>
-                <MenuItem value="Random">Random Book</MenuItem>
-                <MenuItem value="5stars">4.5+ star rating</MenuItem>
                 <MenuItem value="4stars">4+ star rating</MenuItem>
+                <MenuItem value="3stars">3+ star rating</MenuItem>
+                <MenuItem value="2stars">2+ star rating</MenuItem>
+                <MenuItem value="1stars">1+ star rating</MenuItem>
               </Select>
             </FormControl>
             <Button
               variant="contained"
               sx={{ marginTop: "20px" }}
-              onClick={() => getBook()}>
+              onClick={() => getBook()}
+            >
               Get Book
             </Button>
           </Grid>
@@ -117,10 +172,9 @@ export default function RecommendationsPage() {
               alt={"two people sitting together"}
             />
           </Grid>
-
         </Grid>
         <br />
-        <div id="bookResult" hidden>
+        <div id="randomBook" hidden>
           <Card sx={{ display: "flex" }}>
             <Box sx={{ display: "flex", flexDirection: "row" }}>
               <CardMedia
@@ -133,10 +187,13 @@ export default function RecommendationsPage() {
               />
               <Box sx={{ padding: "20px" }}>
                 <CardContent>
-                  <Typography 
-                  gutterBottom variant="h5"
-                  className={classes.media}
-                  component="div" onClick={routeUser}>
+                  <Typography
+                    gutterBottom
+                    variant="h5"
+                    className={classes.media}
+                    component="div"
+                    onClick={routeUser}
+                  >
                     {bookTitle} by {author}
                   </Typography>
                   <Typography variant="subtitle1" color="text.secondary">
@@ -152,6 +209,16 @@ export default function RecommendationsPage() {
               </Box>
             </Box>
           </Card>
+        </div>
+
+        <div id="booksByAuthors" hidden>
+          {bookList ? <BookSearchResults books={bookList} /> : null}
+        </div>
+        <div id="booksByGenres" hidden>
+          {bookList ? <BookSearchResults books={bookList} /> : null}
+        </div>
+        <div id="booksByRatings" hidden>
+          {bookList ? <BookSearchResults books={bookList} /> : null}
         </div>
       </div>
     </div>

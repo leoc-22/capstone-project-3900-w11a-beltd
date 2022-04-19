@@ -2,8 +2,8 @@ const express = require("express");
 const collectionModel = require("./models/collectionModel");
 const userModel = require("./models/userModel");
 const userBookModel = require("./models/userBookModel");
-
 const app = express();
+const axios = require("axios");
 
 // 1. Get all PUBLIC collections for user homepage
 app.get("/collections", async (req, res) => {
@@ -16,9 +16,8 @@ app.get("/collections", async (req, res) => {
   }
 });
 
-// 2. Get all collections 
+// 2. Get all collections
 app.get("/myCollections", async (req, res) => {
-
   const collection = await collectionModel
     .find({ user: req.body.user }, function (err, docs) {
       if (err) {
@@ -40,7 +39,7 @@ app.post("/collection", async (req, res) => {
   const collection = new collectionModel({
     name: req.body.name,
     public: req.body.public,
-    creator : req.body.creator
+    creator: req.body.creator,
   });
 
   try {
@@ -54,8 +53,8 @@ app.post("/collection", async (req, res) => {
   // Link up with users model
   const _id = req.body.user;
   await userModel.findByIdAndUpdate(
-    {_id},
-    { $push: { "collections": collection._id } },
+    { _id },
+    { $push: { collections: collection._id } },
     { new: true }
   );
 });
@@ -97,49 +96,116 @@ app.patch("/collectionPub", async (req, res) => {
   );
 });
 
-// Get all books in a collection
+// Get book details in a collection
 app.get("/collectionBooks", async (req, res) => {
-  let collection = await collectionModel
-    .find({ _id: req.body._id }, { books: 1 }, function (err, docs) {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log(docs);
-      }
-    })
-    .clone()
-    .catch(function (err) {
-      console.log(err);
-    });
-  res.send(collection);
+  let bookList = [];
+  let collections = await collectionModel.find({ _id: req.body.c_id });
+
+  for (let i = 0; i < collections[0].books.length; i++) {
+    await axios
+      .get(`http://localhost:8002/book/${collections[0].books[i].toString()}`)
+      .then((res) => {
+        bookList.push(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+  res.send(bookList);
+});
+
+// Get recommendation based on the authors in a collection
+app.get("/recommendbyauthors/:creatorName", async (req, res) => {
+  let bookList = [];
+  let collections = await collectionModel.find({
+    creator: req.params.creatorName,
+  });
+
+  for (let j = 0; j < collections.length; j++) {
+    for (let i = 0; i < collections[j].books.length; i++) {
+      await axios
+        .get(`http://localhost:8002/book/${collections[j].books[i].toString()}`)
+        .then((res) => {
+          bookList.push(res.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }
+
+  let recommendations = [];
+  for (let i = 0; i < bookList.length; i++) {
+    await axios
+      .get("http://localhost:8002/getbooksbyauthor", {
+        params: { author: bookList[i].authors },
+      })
+      .then((res) => {
+        console.log(res.data);
+        recommendations = recommendations.concat(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  res.send(recommendations);
+});
+
+// Get recommendation based on the genres in a collection
+app.get("/recommendbygenres/:creatorName", async (req, res) => {
+  let bookList = [];
+  let collections = await collectionModel.find({
+    creator: req.params.creatorName,
+  });
+  for (let j = 0; j < collections.length; j++) {
+    for (let i = 0; i < collections[j].books.length; i++) {
+      await axios
+        .get(`http://localhost:8002/book/${collections[j].books[i].toString()}`)
+        .then((res) => {
+          bookList.push(res.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+  }
+
+  let recommendations = [];
+  for (let i = 0; i < bookList.length; i++) {
+    await axios
+      .get(`http://localhost:8002/similar/${bookList[i].categories[0].id}`)
+      .then((res) => {
+        console.log(res.data);
+        recommendations = recommendations.concat(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  res.send(recommendations);
 });
 
 // Add a book to a collection
 app.post("/addBook", async (req, res) => {
   // 1. Create new userbook
-  const userBook = new userBookModel({
+  await new userBookModel({
     bookid: req.body.bookid,
     read: false,
-  });
-  try {
-    await userBook.save();
-    res.send(userBook);
-    console.log("Userbook created");
-  } catch (error) {
-    res.status(500).send(error);
-  }
+  }).save();
 
   // Save collection id from request body
   let _id = req.body._id;
 
   // 2. Add book to user collection
-  const updatedCollection = await collectionModel.findByIdAndUpdate(
+  await collectionModel.findByIdAndUpdate(
     { _id },
     { $push: { books: req.body.bookid } },
     { new: true }
   );
-  console.log(updatedCollection);
-  console.log("Added book to collection");
+  res.send("Successfully added a book to collection");
+  console.log("Successfully added a book to collection");
 });
 
 // Remove a book from a collection
@@ -163,7 +229,7 @@ app.delete("/removeBook", async (req, res) => {
 });
 
 // TODO Move book to "Read" collection
-app.patch("/readBook", async (req , res) => {
+app.patch("/readBook", async (req, res) => {
   const readCollection = await collectionModel
     .find({ user: req.body.user }, function (err, docs) {
       if (err) {
@@ -187,7 +253,6 @@ app.patch("/readBook", async (req , res) => {
 
   console.log(updatedReadCollection);
   res.send(updatedReadCollection);
-
 });
 
 // Remove a collection
@@ -199,6 +264,8 @@ app.delete("/collection", async (req, res) => {
     console.log("Collection deleted");
     res.send("Successfully deleted");
   });
+
+  // remove collection objectID from user model
 });
 
 module.exports = app;
