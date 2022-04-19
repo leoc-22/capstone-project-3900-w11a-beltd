@@ -68,6 +68,9 @@ export default function RecommendationsPage() {
       setRating("Rating: " + targetBook.rating);
       setBookImg(targetBook.image);
       document.getElementById("randomBook").hidden = false;
+      document.getElementById("booksByAuthors").hidden = true;
+      document.getElementById("booksByGenres").hidden = true;
+      document.getElementById("booksByRatings").hidden = true;
     } else if (filter === "Authors") {
       await axios
         .get(`http://localhost:8001/recommendbyauthors/${n}`)
@@ -80,6 +83,8 @@ export default function RecommendationsPage() {
         });
       document.getElementById("booksByAuthors").hidden = false;
       document.getElementById("randomBook").hidden = true;
+      document.getElementById("booksByGenres").hidden = true;
+      document.getElementById("booksByRatings").hidden = true;
     } else if (filter === "Genres") {
       await axios
         .get(`http://localhost:8001/recommendbygenres/${n}`)
@@ -92,6 +97,8 @@ export default function RecommendationsPage() {
         });
       document.getElementById("booksByGenres").hidden = false;
       document.getElementById("randomBook").hidden = true;
+      document.getElementById("booksByAuthors").hidden = true;
+      document.getElementById("booksByRatings").hidden = true;
     } else if (filter === "4stars") {
       getBooksByRatings(4);
       document.getElementById("booksByRatings").hidden = false;
@@ -100,14 +107,20 @@ export default function RecommendationsPage() {
       getBooksByRatings(3);
       document.getElementById("booksByRatings").hidden = false;
       document.getElementById("randomBook").hidden = true;
+      document.getElementById("booksByAuthors").hidden = true;
+      document.getElementById("booksByGenres").hidden = true;
     } else if (filter === "2stars") {
       getBooksByRatings(2);
       document.getElementById("booksByRatings").hidden = false;
       document.getElementById("randomBook").hidden = true;
+      document.getElementById("booksByAuthors").hidden = true;
+      document.getElementById("booksByGenres").hidden = true;
     } else if (filter === "1stars") {
       getBooksByRatings(1);
       document.getElementById("booksByRatings").hidden = false;
       document.getElementById("randomBook").hidden = true;
+      document.getElementById("booksByAuthors").hidden = true;
+      document.getElementById("booksByGenres").hidden = true;
     }
     console.log(bookList);
     return;
