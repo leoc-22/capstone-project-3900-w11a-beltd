@@ -571,24 +571,6 @@ const bookProfilePage = () => {
               </CardActions>
             </Card>
           </Grid>
-          <Grid item xs={12} md={3}>
-            <Card>
-              <CardContent>
-                <Typography sx={{ fontSize: 16 }} color="text.primary">
-                  Source
-                </Typography>
-                {/* <Typography
-                  sx={{ fontSize: 14, textTransform: "uppercase" }}
-                  color="text.secondary"
-                >
-                  $0.00
-                </Typography> */}
-              </CardContent>
-              <CardActions>
-                <Button size="small">purchase this book</Button>
-              </CardActions>
-            </Card>
-          </Grid>
         </Grid>
         <br />
         <h2 className={classes.h2}>{"Other " + category + " books"}</h2>
