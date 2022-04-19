@@ -105,6 +105,7 @@ export default function CollectionPage() {
   const handleClose = () => setOpen(false);
 
   const [publicCollectionRes, setPublicCollectionRes] = useState([]);
+
   const [openPublicSearch, setOpenPublicSearch] = useState(false);
   const [openUserSearch, setOpenUserSearch] = useState(false);
   
@@ -182,8 +183,10 @@ export default function CollectionPage() {
   function handleUserOptions(){
     let tmp = [];
     for (let i =0; i < myCollections.length; i++){
+      
       tmp.push(myCollections[i].name)
     }
+
     return tmp
   }
 

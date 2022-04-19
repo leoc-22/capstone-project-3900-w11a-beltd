@@ -92,19 +92,23 @@ export default function SearchPage() {
 
   const searchUrl = async () => {
     const newQuery = window.location.search.slice(13);
+    console.log(newQuery);
     if (newQuery != null) {
       getResults(newQuery);
     }
   };
 
   const getResults = (data) => {
+    console.log("get Data");
     axios.get(`http://localhost:8002/books/search/${data}`).then((res) => {
-      document.getElementById("Results").hidden = false;
       setSearchRes(res.data);
       setBestResult(res.data[0]);
       setSearchResImg(res.data[0].image);
       setRating(res.data[0].rating);
-      setBarRes(barRes + 1);
+      if (barRes == 0){
+        setBarRes(barRes+1);
+        document.getElementById("Results").hidden = false;
+      }
     });
   };
 

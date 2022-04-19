@@ -207,10 +207,14 @@ export default function AuthenicatedTopBar() {
     //console.log(val);
 
     const urlString = String(window.location.pathname);
+    
+    console.log(val);
+    
     history.push("/search?searchQuery=" + val);
     if (urlString.includes("search")){
       location.reload();
     }
+    
   }
 
 

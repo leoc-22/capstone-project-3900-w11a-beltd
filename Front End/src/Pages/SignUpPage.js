@@ -84,7 +84,7 @@ export default function SignUpPage() {
         },
       }).then((res) => {
         if (res.status === 200) {
-          makeDefaultCollections(res["data"]["_id"]);
+          makeDefaultCollections(res["data"]["_id"], res["data"]["name"]);
           sessionStorage.setItem("email", res["data"]["email"]);
           sessionStorage.setItem("name", res["data"]["name"]);
           sessionStorage.setItem("id", res["data"]["_id"]);
@@ -101,14 +101,15 @@ export default function SignUpPage() {
     }
   }
 
-  async function makeDefaultCollections(userId){
+  async function makeDefaultCollections(userId, userName){
     await axios({
       method : "post",
       url : "http://localhost:8001/collection",
       data : {
         user : userId,
         name : "Main",
-        public : false
+        public : false,
+        creator : userName
       }
     });
     
