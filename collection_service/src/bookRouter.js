@@ -97,7 +97,7 @@ app.get("/similar/:categoryID", async (req, res) => {
 
 // Get books by author
 app.get("/getbooksbyauthor", async (req, res) => {
-  console.log(req.query.author);
+  console.log(`author: ${req.query.author}`);
   let query = req.query.author;
 
   query = query.replaceAll("(", "\\(");

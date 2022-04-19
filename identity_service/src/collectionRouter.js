@@ -175,7 +175,6 @@ app.get("/recommendbygenres/:creatorName", async (req, res) => {
     await axios
       .get(`http://localhost:8002/similar/${bookList[i].categories[0].id}`)
       .then((res) => {
-        console.log(res.data);
         recommendations = recommendations.concat(res.data);
       })
       .catch((error) => {
