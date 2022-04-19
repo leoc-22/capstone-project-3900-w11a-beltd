@@ -6,17 +6,20 @@ This is a web book recommendation system which consists of a microservices backe
 
 ### Identity Service
 
-Description: Authenticate users and handles user book collections, reading goals and reviews
+Description: Authenticate users and handles user book collections, reading goals and reviews.
+
 Dev Port: 8001
 
 ### Collection Service
 
 Description: Communicates with third party APIs and store book information into databases.
+
 Dev Port: 8002
 
 ### UI
 
-Description: Serves the React user interface
+Description: Serves the React user interface.
+
 Dev Port: 3000
 
 ## Development Installation
@@ -56,6 +59,8 @@ bash ./scripts/init.sh
 The entire system can be started by running the microservices backend and ui in separate terminals.
 
 **_!!! For each new terminal window you have opened, check if the node version is 16 or above_**
+
+**_Please keep a stable internet connection while running the system since the backend services are connecting to a MongoDB cluster_**
 
 1. Start a new terminal
 2. `cd identity_service`

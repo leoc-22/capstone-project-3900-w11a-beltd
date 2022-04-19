@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import React, { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
 import AuthenticatedNavbar from "../Components/AuthenticatedNavbar";
@@ -42,31 +40,30 @@ const useStyles = makeStyles({
   headerImg: {
     width: "100%",
   },
-  bestTitle : {
-    position : "absolute",
-    marginTop : "-350px",
-    marginLeft : "400px"
+  bestTitle: {
+    position: "absolute",
+    marginTop: "-350px",
+    marginLeft: "400px",
   },
-  bestAuthor : {
-    position : "absolute",
-    marginTop : "-18%",
-    marginLeft : "400px",
-    fontSize: "16pt" 
+  bestAuthor: {
+    position: "absolute",
+    marginTop: "-18%",
+    marginLeft: "400px",
+    fontSize: "16pt",
   },
-  bestResImg : {
-    height : "400px",
-    width : "300px",
-    borderRadius : "10px",
+  bestResImg: {
+    height: "400px",
+    width: "300px",
+    borderRadius: "10px",
     "&:hover": {
       cursor: "pointer",
     },
   },
-  bestResrating : {
-    position : "absolute",
-    marginTop : "-10%",
-    marginLeft : "400px"
-
-  }
+  bestResrating: {
+    position: "absolute",
+    marginTop: "-10%",
+    marginLeft: "400px",
+  },
 });
 
 export default function SearchPage() {
@@ -93,21 +90,20 @@ export default function SearchPage() {
     document.title = "Explore | Booklab";
   }, [barRes]);
 
-  const searchUrl = async() => {
+  const searchUrl = async () => {
     const newQuery = window.location.search.slice(13);
-    if (newQuery != null){
+    if (newQuery != null) {
       getResults(newQuery);
     }
   };
 
   const getResults = (data) => {
     axios.get(`http://localhost:8002/books/search/${data}`).then((res) => {
-      document.getElementById("Results").hidden = false;      
+      document.getElementById("Results").hidden = false;
       setSearchRes(res.data);
       setBestResult(res.data[0]);
       setSearchResImg(res.data[0].image);
       setRating(res.data[0].rating);
-
     });
   };
 
@@ -127,17 +123,17 @@ export default function SearchPage() {
       });
   };
 
-  function getBooksAboveRating(data){
-    let bookArr=[];
+  function getBooksAboveRating(data) {
+    let bookArr = [];
     let targetRating;
-    if (ratingsAbove4_5 == true){
+    if (ratingsAbove4_5 == true) {
       targetRating = 4.5;
-    } else if (ratingsAbove4 == true){
+    } else if (ratingsAbove4 == true) {
       targetRating = 4;
     }
 
-    for (let i =0; i<data.length;i++){      
-      if (parseFloat(data[i].rating) >= targetRating){
+    for (let i = 0; i < data.length; i++) {
+      if (parseFloat(data[i].rating) >= targetRating) {
         bookArr.push(data[i]);
       }
     }
@@ -147,7 +143,7 @@ export default function SearchPage() {
 
   const handleSearch = () => {
     const newQuery = window.location.search.slice(13);
-    if (newQuery != null){
+    if (newQuery != null) {
       history.push({
         pathname: "/search",
         //state: { user: props.user },
@@ -157,12 +153,11 @@ export default function SearchPage() {
     axios.get(`http://localhost:8002/books/search/${query}`).then((res) => {
       document.getElementById("Results").hidden = false;
 
-      
-      if (allRatings === true){
+      if (allRatings === true) {
         setSearchRes(res.data);
         setBestResult(res.data[0]);
         setSearchResImg(res.data[0].image);
-        setBarRes(barRes+1);
+        setBarRes(barRes + 1);
         setRating(res.data[0].rating);
         //console.log(res.data[0].rating);
       } else {
@@ -170,8 +165,8 @@ export default function SearchPage() {
         let bestResFiltered = getBooksAboveRating(res.data)[0];
         setBestResult(bestResFiltered);
         setSearchResImg(bestResFiltered.image);
-        setRating(bestResFiltered.rating)
-        setBarRes(barRes+1);
+        setRating(bestResFiltered.rating);
+        setBarRes(barRes + 1);
       }
     });
   };
@@ -198,24 +193,23 @@ export default function SearchPage() {
     history.push("/book-profile?" + bookId);
   };
 
-  const handleRanting = (val) => {
-    if (val == 5){
+  const handleRating = (val) => {
+    if (val == 5) {
       setAllRatings(true);
       setRatingsAbove4_5(false);
       setRatingsAbove4(false);
-    } else if (val == 4.5){
+    } else if (val == 4.5) {
       setAllRatings(false);
       setRatingsAbove4_5(true);
       setRatingsAbove4(false);
-    } else if (val == 4){
+    } else if (val == 4) {
       setAllRatings(false);
       setRatingsAbove4_5(false);
       setRatingsAbove4(true);
-
     }
-  }
+  };
 
-  if (loadingBooks) return <Loading/>;
+  if (loadingBooks) return <Loading />;
   if (error) return <p>Error: {error.message}</p>;
 
   return (
@@ -263,30 +257,31 @@ export default function SearchPage() {
             />
             <FormControl>
               <FormLabel>Filter by</FormLabel>
-              <RadioGroup
-                row
-                name="row-radio-buttons-group"
-              >
-                <FormControlLabel 
-                  checked = {allRatings}
-                  value="5 stars" control={<Radio />} 
-                  label="All ratings" 
-                  onClick = {()=>handleRanting(5)}
-                  />
-                <FormControlLabel 
-                value="4+ stars" control={<Radio />} 
-                checked = {ratingsAbove4_5}
-                onClick = {()=>handleRanting(4.5)}
-                label="4.5+ stars" />
-                <FormControlLabel 
-                value="3+ stars" 
-                onClick = {()=>handleRanting(4)}
-                control={<Radio />} 
-                checked = {ratingsAbove4}
-                label="4+ stars" />
+              <RadioGroup row name="row-radio-buttons-group">
+                <FormControlLabel
+                  checked={allRatings}
+                  value="5 stars"
+                  control={<Radio />}
+                  label="All ratings"
+                  onClick={() => handleRating(5)}
+                />
+                <FormControlLabel
+                  value="4+ stars"
+                  control={<Radio />}
+                  checked={ratingsAbove4_5}
+                  onClick={() => handleRating(4.5)}
+                  label="4.5+ stars"
+                />
+                <FormControlLabel
+                  value="3+ stars"
+                  onClick={() => handleRating(4)}
+                  control={<Radio />}
+                  checked={ratingsAbove4}
+                  label="4+ stars"
+                />
               </RadioGroup>
             </FormControl>
-            <br/>
+            <br />
             <Button
               variant="contained"
               style={{
@@ -308,25 +303,27 @@ export default function SearchPage() {
           </Grid>
         </Grid>
         <br />
-        <div hidden id = "Results">
+        <div hidden id="Results">
           <h2>Best Result</h2>
-          <img src = {searchResImg} 
+          <img
+            src={searchResImg}
             className={classes.bestResImg}
-            onClick = {()=>gotoBook()}
+            onClick={() => gotoBook()}
           ></img>
-          <h2 className={classes.bestTitle} >{bestResult != undefined ? bestResult.title : ""}
+          <h2 className={classes.bestTitle}>
+            {bestResult != undefined ? bestResult.title : ""}
           </h2>
-          <br/>
-          <div className={classes.bestAuthor} >{bestResult != undefined ? bestResult.authors : ""}
-          <br/>
-           {"Rating: " + rating}</div>
-          <br/>
-          
+          <br />
+          <div className={classes.bestAuthor}>
+            {bestResult != undefined ? bestResult.authors : ""}
+            <br />
+            {"Rating: " + rating}
+          </div>
+          <br />
+
           <h2>All Results</h2>
         </div>
-        {searchRes ? (
-          <BookSearchResults books={searchRes}></BookSearchResults>
-        ) : null}
+        {searchRes ? <BookSearchResults books={searchRes} /> : null}
         {/* Format results with TopBookItem component */}
       </div>
     </div>
