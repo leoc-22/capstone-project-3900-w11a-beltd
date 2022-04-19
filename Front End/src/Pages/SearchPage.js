@@ -323,9 +323,7 @@ export default function SearchPage() {
 
           <h2>All Results</h2>
         </div>
-        {searchRes ? (
-          <BookSearchResults books={searchRes}></BookSearchResults>
-        ) : null}
+        {searchRes ? <BookSearchResults books={searchRes} /> : null}
         {/* Format results with TopBookItem component */}
       </div>
     </div>

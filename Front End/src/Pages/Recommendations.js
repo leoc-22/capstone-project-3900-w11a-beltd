@@ -15,6 +15,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
+import BookSearchResults from "../Components/BookSearchResults";
 
 const useStyles = makeStyles({
   main: {
@@ -66,7 +67,7 @@ export default function RecommendationsPage() {
       setAuthor(targetBook.authors);
       setRating("Rating: " + targetBook.rating);
       setBookImg(targetBook.image);
-      document.getElementById("bookResult").hidden = false;
+      document.getElementById("randomBook").hidden = false;
     } else if (filter === "Authors") {
       await axios
         .get(`http://localhost:8001/recommendbyauthors/${n}`)
@@ -77,6 +78,8 @@ export default function RecommendationsPage() {
         .catch((error) => {
           console.log(error);
         });
+      document.getElementById("booksByAuthors").hidden = false;
+      document.getElementById("randomBook").hidden = true;
     } else if (filter === "Genres") {
       await axios
         .get(`http://localhost:8001/recommendbygenres/${n}`)
@@ -87,14 +90,24 @@ export default function RecommendationsPage() {
         .catch((error) => {
           console.log(error);
         });
+      document.getElementById("booksByGenres").hidden = false;
+      document.getElementById("randomBook").hidden = true;
     } else if (filter === "4stars") {
       getBooksByRatings(4);
+      document.getElementById("booksByRatings").hidden = false;
+      document.getElementById("randomBook").hidden = true;
     } else if (filter === "3stars") {
       getBooksByRatings(3);
+      document.getElementById("booksByRatings").hidden = false;
+      document.getElementById("randomBook").hidden = true;
     } else if (filter === "2stars") {
       getBooksByRatings(2);
+      document.getElementById("booksByRatings").hidden = false;
+      document.getElementById("randomBook").hidden = true;
     } else if (filter === "1stars") {
       getBooksByRatings(1);
+      document.getElementById("booksByRatings").hidden = false;
+      document.getElementById("randomBook").hidden = true;
     }
     console.log(bookList);
     return;
@@ -161,7 +174,7 @@ export default function RecommendationsPage() {
           </Grid>
         </Grid>
         <br />
-        <div id="bookResult" hidden>
+        <div id="randomBook" hidden>
           <Card sx={{ display: "flex" }}>
             <Box sx={{ display: "flex", flexDirection: "row" }}>
               <CardMedia
@@ -196,41 +209,16 @@ export default function RecommendationsPage() {
               </Box>
             </Box>
           </Card>
+        </div>
 
-          <Card sx={{ display: "flex" }}>
-            <Box sx={{ display: "flex", flexDirection: "row" }}>
-              <CardMedia
-                onClick={() => routeUser()}
-                component="img"
-                sx={{ width: "30%" }}
-                image={bookImg}
-                className={classes.media}
-                alt={bookTitle}
-              />
-              <Box sx={{ padding: "20px" }}>
-                <CardContent>
-                  <Typography
-                    gutterBottom
-                    variant="h5"
-                    className={classes.media}
-                    component="div"
-                    onClick={routeUser}
-                  >
-                    {bookTitle} by {author}
-                  </Typography>
-                  <Typography variant="subtitle1" color="text.secondary">
-                    {category}
-                  </Typography>
-                  <Typography variant="body1" color="text.secondary">
-                    {rating}
-                  </Typography>
-                </CardContent>
-                {/* <CardActions>
-                  <Button size="small">Add to collection</Button>
-                </CardActions> */}
-              </Box>
-            </Box>
-          </Card>
+        <div id="booksByAuthors" hidden>
+          {bookList ? <BookSearchResults books={bookList} /> : null}
+        </div>
+        <div id="booksByGenres" hidden>
+          {bookList ? <BookSearchResults books={bookList} /> : null}
+        </div>
+        <div id="booksByRatings" hidden>
+          {bookList ? <BookSearchResults books={bookList} /> : null}
         </div>
       </div>
     </div>
