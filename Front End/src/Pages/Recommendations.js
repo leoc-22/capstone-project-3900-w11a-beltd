@@ -5,7 +5,6 @@ import recs from "../Images/recommendations.svg";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
-// import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
@@ -41,6 +40,7 @@ export default function RecommendationsPage() {
   const [bookImg, setBookImg] = useState("");
   const [category, setCategory] = useState("");
   const [filter, setFilter] = React.useState("Random");
+  const [bookList, setBookList] = useState([]);
   // const [firstLoad, setFirstLoad] = useState(0);
 
   useEffect(() => {
@@ -52,6 +52,8 @@ export default function RecommendationsPage() {
   };
 
   async function getBook() {
+    let n = sessionStorage.getItem("name");
+
     if (filter === "Random") {
       let res = await axios({
         url: "http://localhost:8002/books",
@@ -65,15 +67,49 @@ export default function RecommendationsPage() {
       setRating("Rating: " + targetBook.rating);
       setBookImg(targetBook.image);
       document.getElementById("bookResult").hidden = false;
+    } else if (filter === "Authors") {
+      await axios
+        .get(`http://localhost:8001/recommendbyauthors/${n}`)
+        .then((res) => {
+          console.log(res.data);
+          setBookList(res.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else if (filter === "Genres") {
+      await axios
+        .get(`http://localhost:8001/recommendbygenres/${n}`)
+        .then((res) => {
+          console.log(res.data);
+          setBookList(res.data);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else if (filter === "4stars") {
+      getBooksByRatings(4);
+    } else if (filter === "3stars") {
+      getBooksByRatings(3);
+    } else if (filter === "2stars") {
+      getBooksByRatings(2);
+    } else if (filter === "1stars") {
+      getBooksByRatings(1);
     }
-    // else if (filter === "Authors") {
-    // } else if (filter === "Genres") {
-    // } else if (filter === "4stars") {
-    // } else if (filter === "3stars") {
-    // } else if (filter === "2stars") {
-    // } else if (filter === "1stars") {
-    // }
+    console.log(bookList);
     return;
+  }
+
+  async function getBooksByRatings(rating) {
+    await axios
+      .get(`http://localhost:8002/books/${rating}`)
+      .then((res) => {
+        console.log(res.data);
+        setBookList(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   function routeUser() {
