@@ -104,6 +104,7 @@ export default function SearchPage() {
       setBestResult(res.data[0]);
       setSearchResImg(res.data[0].image);
       setRating(res.data[0].rating);
+      setBarRes(barRes + 1);
     });
   };
 
