@@ -126,11 +126,16 @@ const bookProfilePage = () => {
   const [isRead, setIsRead] = useState(false);
   const [numTimesRead, setNumTimesRead] = useState(0);
   const [numColleThisIn, setNumColleThisIn] = useState(0);
+  const [ebayPrice, setEbayPrice] = useState(0);
+  const [ebayLink, setEbayLink] = useState(null);
 
   const classes = useStyles();
   const history = useHistory();
 
   const queryString = window.location.search.slice(1);
+
+  const eBayToken =
+    "v^1.1#i^1#f^0#p^1#I^3#r^0#t^H4sIAAAAAAAAAOVYa2wUVRTudttqxQIKIhBi1gEjqc7sPHZ2dwZ247aldqG0y24p0IA4jzvt2Hkxd5ZSfKT2BwQMJiovi0B5GDVKECMYjRH9YwgmYiAkvIwYooIPHgrBqIne2V3KthJe3cQm7p/NnHvuud/33XPui+wqK69cVrfscoXnjuLeLrKr2OOhhpHlZaWPDPcWjy8tIvMcPL1dk7pKur2np0JB1yw+CaBlGhD4luiaAfmMMYKlbYM3BahC3hB0AHlH4lOxmfU8TZC8ZZuOKZka5ovXRLAwyypA4kIhkQ5SkhxEVuNKzCYzgoVkRRFpTuEkTuQAS6F2CNMgbkBHMJwIRpM0jZMBnOKaKJoPsDwTIFgq2IL5moENVdNALgSJRTNw+UxfOw/r9aEKEALbQUGwaDxWm2qMxWumNTRN9efFiuZ0SDmCk4b9v6pNGfiaBS0Nrj8MzHjzqbQkAQgxfzQ7Qv+gfOwKmNuAn5VaIeUQQwlhiSEDFEMXRMpa09YF5/o4XIsq40rGlQeGozqdN1IUqSE+BSQn99WAQsRrfO7frLSgqYoK7Ag2rSo2L5ZIYNF6YFYLJl5lmu2aIOKJZA0eojmaFbkgicuhIKOIVCg3SjZUTuMBw1Sbhqy6ikFfg+lUAQQZDBSGyRMGOTUajXZMcVw4+X6BnICBENfizmh2CtNOm+FOKtCRCr7M543l7+vtOLYqph3QF2FgQ0afCCZYlipjAxsziZjLnSUwgrU5jsX7/R0dHUQHQ5h2q58mSco/d2Z9SmoDuoBlfd1aR/7qjTvgaoaKBFBPqPJOp4WwLEGJigAYrVg0wIZJhs3p3h9WdKD1X4Y8zv7+5VCo8hACqD7ClBIMUQIjhNhClEc0l6F+FwcQhU5cF+x24FiaIAFcQnmW1oGtyiipFJoJKwCXg5yCBzhFwUVWDuKUAgAJgChKXPh/UyU3m+cpINnAKVSiFybJk/Wz1do5tfVUCIZMLhlf3M7Om5tIteqBpGgH5TBTZZKLppm1ghWO3GwpXJN8taYiZZrQ+IUTwK31QohQZ0IHyIOil5JMCyRMTZU6h9YEM7acEGynMwU0DRkGRTJmWfGCLdSFoXcra8TtkS7o7vRf7EzXZAXdfB1arNz+EAUQLJVw9x5CMnW/KaBDh2tya31hBvWgeKvowDqkWCOSWbaqnD1pEhnKBFwsETaAZtpGh2yi0T17NZntwECbmWObmgbsZmrQxazraUcQNTDUqroACa4KQ2ynpYIsyYRohgkMipeU2UcXDrUlqaDrcMmUWzhN+/tf7KNFmR/V7dlNdnt2FXs8pJ98iJpIPljmnV3ivXs8VB1AqIJCQLXVQPdVGxDtoNMSVLu4zPPcTH7W4bynhN4F5Ni+x4RyLzUs72WBnHC1pZQacX8FTaN7KkfRAZYJtJATr7aWUGNKRm882jPptRl3rkgtvW/v6z1/rZgAH9tHVvQ5eTylRSXdnqInVh48ov8x8ui9w2v2nRHfOLxpsnRy9ysLlq9/yf7mg1963m85VOv3bx91z6X937c0rj6XwN48f2L/w4+//PayDytXbYv3PHoivXKyvmdR6s+fT6/YeuH4yOSeH5/B09WrnlQXnyj/7cCatb1lB+bM//Ww1Xzq+BFyke/kVtE6twlsOzZ5byVXN33333aQTU0fu/TpS2Fy/urf79p5OXXx4+ZjiV0vnLn83vKNTPKThlGfhz9auyc27osFL1I1myeWT/3h1BrrYPUDoz9dN87bs+Hsjikj2yZVPHvhyIZDn9V/1/LliEPt75a+ev58o7Gu8h1i+7quGVvK1zd8u/Gnr8du2Xxgx84ddW9dvPhVj/f5MfBsdvr+Ad3TpD3kEQAA";
 
   const handleClose = () => setOpenModal(false);
 
@@ -191,6 +196,7 @@ const bookProfilePage = () => {
           getSimilarBooks(res[i].categories[0].id);
         }
         handleStats(res[i]["_id"]);
+        handleEBay(res[i]["title"]);
         return;
       }
     }
@@ -216,8 +222,26 @@ const bookProfilePage = () => {
       });
   }
 
-  function amzPage() {
-    window.open(amzLink, "_blank").focus();
+  async function handleEBay(title) {
+    await axios({
+      method: "get",
+      url: `https://api.ebay.com/buy/browse/v1/item_summary/search?q=${title}&limit=1`,
+      headers: {
+        Authorization: "Bearer " + eBayToken,
+        "Content-Type": "application / json",
+        "X-EBAY-C-MARKETPLACE-ID": "EBAY_AU",
+        "X-EBAY-C-ENDUSERCTX":
+          "affiliateCampaignId=<ePNCampaignId>,affiliateReferenceId=<referenceId></referenceId>",
+      },
+    })
+      .then((res) => {
+        console.log(res.data.itemSummaries[0].price.value);
+        setEbayPrice(res.data.itemSummaries[0].price.value);
+        setEbayLink(res.data.itemSummaries[0].itemWebUrl);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   async function submitReview() {
@@ -263,13 +287,12 @@ const bookProfilePage = () => {
         averageRating += res.data[i].rating;
       }
     }
-    if (curBookReviews.length == 0){
+    if (curBookReviews.length == 0) {
       averageRating = "No reviews Yet";
     } else {
-      averageRating = averageRating/curBookReviews.length;
-      averageRating = averageRating.toFixed(1);  
+      averageRating = averageRating / curBookReviews.length;
+      averageRating = averageRating.toFixed(1);
     }
-    //console.log(averageRating);
     setAverageRating(averageRating);
     setBookReviews(curBookReviews);
   }
@@ -508,7 +531,12 @@ const bookProfilePage = () => {
                 </Typography>
               </CardContent>
               <CardActions>
-                <Button size="small" onClick={() => amzPage()}>
+                <Button
+                  size="small"
+                  onClick={() => {
+                    window.open(amzLink, "_blank").focus();
+                  }}
+                >
                   View on Amazon
                 </Button>
               </CardActions>
@@ -518,17 +546,24 @@ const bookProfilePage = () => {
             <Card>
               <CardContent>
                 <Typography sx={{ fontSize: 16 }} color="text.primary">
-                  Source
+                  eBay
                 </Typography>
-                {/* <Typography
+                <Typography
                   sx={{ fontSize: 14, textTransform: "uppercase" }}
                   color="text.secondary"
                 >
-                  $0.00
-                </Typography> */}
+                  Price: ${ebayPrice}
+                </Typography>
               </CardContent>
               <CardActions>
-                <Button size="small">purchase this book</Button>
+                <Button
+                  size="small"
+                  onClick={() => {
+                    window.open(ebayLink, "_blank").focus();
+                  }}
+                >
+                  View on eBay
+                </Button>
               </CardActions>
             </Card>
           </Grid>
