@@ -203,7 +203,7 @@ app.post("/forgetpassword", async (req, res) => {
   const msg = {
     from: "booklab3900@gmail.com",
     to: req.body.email,
-    subject: "Forget your email? - Booklab",
+    subject: "Forget your password? - Booklab",
     text: "Sup, this Booklab.",
     html: `<p>You requested for reset your password, </p><p>Click the link below to reset your password</p><p>${link}</p>`,
   };
