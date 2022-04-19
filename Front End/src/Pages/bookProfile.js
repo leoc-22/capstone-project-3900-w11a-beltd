@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import AuthenticatedNavbar from "../Components/AuthenticatedNavbar";
 import { makeStyles } from "@material-ui/core";
 import Grid from "@mui/material/Grid";
-import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
 import Card from "@mui/material/Card";
@@ -124,7 +123,7 @@ const bookProfilePage = () => {
   const [hideSuccessAlert, setHideSuccessAlert] = useState(true);
   const [targetCollection, setTargetCollection] = useState("");
   const [isRead, setIsRead] = useState(false);
-  const [numPeopleHasRead, setNumPeopleHasRead] = useState(0);
+  const [numTimesRead, setNumTimesRead] = useState(0);
   const [numColleThisIn, setNumColleThisIn] = useState(0);
 
   const classes = useStyles();
@@ -199,14 +198,22 @@ const bookProfilePage = () => {
 
   async function handleStats(bookId) {
     await axios
-      .get(`http://localhost:8001/numofpeoplehasread/${bookId}`)
+      .get(`http://localhost:8001/numoftimesread/${bookId}`)
       .then((res) => {
-        setNumPeopleHasRead(res.data);
+        setNumTimesRead(res.data);
       })
       .catch((error) => {
         console.log(error);
       });
-    setNumColleThisIn(0);
+
+    await axios
+      .get(`http://localhost:8001/numofcolle/${bookId}`)
+      .then((res) => {
+        setNumColleThisIn(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   function amzPage() {
@@ -452,13 +459,23 @@ const bookProfilePage = () => {
               {isRead ? "Read" : "Mark as Read"}
             </Button>
             <br />
-            <Chip label={category} sx={{ marginRight: "16px" }} />
+            <Chip
+              label={category}
+              sx={{ marginRight: "16px", marginBottom: "20px" }}
+            />
             <br />
-            <Stack direction="row" alignItems="center" spacing={2}>
-              <p>{bookRating}</p>
-              <p>Number of people read: {numPeopleHasRead}</p>
-              <p>Number of collections this book is in: {numColleThisIn}</p>
-            </Stack>
+            <Chip label={bookRating} sx={{ marginRight: "16px" }} />
+            <Chip
+              label={
+                "Number of times this book has been read by other people: " +
+                numTimesRead
+              }
+              sx={{ marginRight: "16px" }}
+            />
+            <Chip
+              label={"Number of collections this book is in: " + numColleThisIn}
+              sx={{ marginRight: "16px" }}
+            />
           </Grid>
         </Grid>
         <h2 className={classes.h2}>Compare pricing</h2>

@@ -255,6 +255,22 @@ app.patch("/readBook", async (req, res) => {
   res.send(updatedReadCollection);
 });
 
+// get number of collections a book is in
+app.get("/numofcolle/:bookid", async (req, res) => {
+  console.log(req.params.bookid);
+  await collectionModel
+    .find({ books: req.params.bookid })
+    .then((collections) => {
+      console.log(`${collections.length} collections have this book`);
+      // have to send it as string otherwise http treats numbers as status code
+      res.send(collections.length.toString());
+    })
+    .catch((error) => {
+      console.log(error);
+      res.sendStatus(500);
+    });
+});
+
 // Remove a collection
 app.delete("/collection", async (req, res) => {
   var query = { _id: req.body.c_id };

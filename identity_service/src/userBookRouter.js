@@ -17,12 +17,11 @@ app.get("/getUserBooks", async (req, res) => {
 app.patch("/markasread", async (req, res) => {
   let query = { bookid: req.body.b_id };
 
-  userBookModel.findOneAndUpdate(
+  userBookModel.updateMany(
     query,
     {
       read: true,
     },
-    { upsert: false },
     (err) => {
       if (err) return res.sendStatus(500);
       console.log("Read status updated");
@@ -31,12 +30,12 @@ app.patch("/markasread", async (req, res) => {
   );
 });
 
-app.get("/numofpeoplehasread/:bookid", async (req, res) => {
+app.get("/numoftimesread/:bookid", async (req, res) => {
   console.log(req.params.bookid);
   await userBookModel
     .find({ bookid: req.params.bookid, read: true })
     .then((books) => {
-      console.log(`${books.length} people have read this book`);
+      console.log(`this book is read ${books.length} times`);
       // have to send it as string otherwise http treats numbers as status code
       res.send(books.length.toString());
     })
