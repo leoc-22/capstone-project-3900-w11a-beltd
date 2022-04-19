@@ -106,7 +106,6 @@ const bookProfilePage = () => {
   const [title, setTitle] = useState(null);
   const [author, setAuthor] = useState(null);
   const [bookImg, setImg] = useState(null);
-  const [amzLink, setAmzLink] = useState(null);
   const [rating, setRating] = useState(null);
   const [bookRating, setBookRating] = useState(null);
   const [openModal, setOpenModal] = useState(false);
@@ -115,6 +114,8 @@ const bookProfilePage = () => {
   const [changed, setChanged] = useState(0);
   const [category, setCategory] = useState(null);
   const [bookId, setBookId] = useState(null);
+  const [amzPrice, setAmzPrice] = useState(null);
+  const [amzLink, setAmzLink] = useState(null);
   // eslint-disable-next-line no-unused-vars
   const [categoryId, setCategoryId] = useState(null);
   const [books, setBooks] = useState([]);
@@ -177,12 +178,13 @@ const bookProfilePage = () => {
         setTitle(res[i]["title"]);
         setAuthor(res[i]["authors"]);
         setImg(res[i]["image"]);
-        setAmzLink(res[i]["link"]);
         setBookRating("Rating: " + res[i]["rating"]);
         getReviews(res[i]["title"]);
         setCategory(res[i].categories[0].name);
         setCategoryId(res[i].categories[0].id);
         setBookId(res[i]["_id"]);
+        setAmzPrice(res[i]["price"]["value"]);
+        setAmzLink(res[i]["price"]["link"]);
         if (changed == 0) {
           getSimilarBooks(res[i].categories[0].id);
         }
@@ -449,12 +451,12 @@ const bookProfilePage = () => {
                 <Typography sx={{ fontSize: 16 }} color="text.primary">
                   Amazon
                 </Typography>
-                {/* <Typography
+                <Typography
                   sx={{ fontSize: 14, textTransform: "uppercase" }}
                   color="text.secondary"
                 >
-                  $0.00
-                </Typography> */}
+                  {amzPrice}
+                </Typography>
               </CardContent>
               <CardActions>
                 <Button size="small" onClick={() => amzPage()}>
@@ -596,11 +598,9 @@ const bookProfilePage = () => {
           <div key={index} className={classes.reviewDiv}>
             <Card sx={{ width: "60%" }}>
               <CardContent>
-                {/* Add user, date, rating */}
                 <Rating name="read-only" value={rev.rating} readOnly />
                 <Typography variant="body2">{rev.review}</Typography>
                 <br />
-
                 <Typography className={classes.reviewUser} variant="body2">
                   <Chip
                     label={rev.name}
@@ -608,7 +608,6 @@ const bookProfilePage = () => {
                     variant="outlined"
                     onClick={() => goToProfile(rev.user)}
                   />
-
                   {rev.date}
                 </Typography>
               </CardContent>
