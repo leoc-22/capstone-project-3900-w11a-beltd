@@ -1,14 +1,13 @@
 const express = require("express");
-const { UserBook } = require("./models/userModel");
-const bookModel = { UserBook };
+const userBookModel = require("./models/userBookModel");
+const collectionModel = require("./models/collectionModel");
 const app = express();
 
 // Get all books in the database
-app.get("/myBooks", async (req, res) => {
-  const books = await bookModel.find({});
+app.get("/getUserBooks", async (req, res) => {
+  const books = await userBookModel.find({});
 
   try {
-    // console.log(books.length);
     res.send(books);
   } catch (error) {
     res.status(500).send(error);
@@ -16,21 +15,50 @@ app.get("/myBooks", async (req, res) => {
 });
 
 // Mark a book as read, find by book id
-app.patch("/read", async (req, res) => {
-  var query = { b_id: req.body.b_id };
+app.patch("/markasread", async (req, res) => {
+  let collections = await collectionModel.find({
+    creator: req.body.username,
+    books: req.body.b_id,
+  });
 
-  bookModel.findOneAndUpdate(
-    query,
-    {
-      read: true,
-    },
-    { upsert: true },
-    (err) => {
-      if (err) return res.status(500).send(err);
-      console.log("Read status updated");
-      res.send("Successfully updated");
-    }
-  );
+  if (!collections.length) {
+    console.log("hey");
+    return;
+  }
+
+  for (let i = 0; i < collections.length; i++) {
+    console.log(`collection id: ${collections[i]._id}`);
+    let query = { bookid: req.body.b_id, userCollection: collections[i]._id };
+    await userBookModel
+      .updateMany(
+        query,
+        {
+          read: true,
+        },
+        { upsert: false }
+      )
+      .clone()
+      .catch((err) => {
+        if (err) return res.sendStatus(500);
+        console.log("Read status updated");
+        res.sendStatus(200);
+      });
+  }
+});
+
+app.get("/numoftimesread/:bookid", async (req, res) => {
+  console.log(req.params.bookid);
+  await userBookModel
+    .find({ bookid: req.params.bookid, read: true })
+    .then((books) => {
+      console.log(`this book is read ${books.length} times`);
+      // have to send it as string otherwise http treats numbers as status code
+      res.send(books.length.toString());
+    })
+    .catch((error) => {
+      console.log(error);
+      res.sendStatus(500);
+    });
 });
 
 module.exports = app;
