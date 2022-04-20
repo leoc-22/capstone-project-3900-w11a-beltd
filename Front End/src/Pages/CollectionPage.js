@@ -1,9 +1,7 @@
-/* eslint-disable */
-
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import AuthenticatedNavbar from "../Components/AuthenticatedNavbar";
-import { makeStyles, List, ListItemIcon, ListItemText,   Grid, ListItem, IconButton} from '@material-ui/core';
+import { makeStyles } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import AdjustedCollections from "../Components/AdjustedCollections";
 import TextField from "@mui/material/TextField";
@@ -12,9 +10,9 @@ import Checkbox from "@mui/material/Checkbox";
 import Card from "@mui/material/Card";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import {Alert} from "@mui/material";
-import Box from '@mui/material/Box';
-import CloseIcon from '@mui/icons-material/Close';
+import { Alert } from "@mui/material";
+import Box from "@mui/material/Box";
+import CloseIcon from "@mui/icons-material/Close";
 import Autocomplete from "@mui/material/Autocomplete";
 
 const useStyles = makeStyles({
@@ -22,18 +20,18 @@ const useStyles = makeStyles({
     minHeight: "80vh",
     minWidth: "500px",
     width: "80%",
-    marginLeft : "10%",
+    marginLeft: "10%",
     marginTop: "60px",
-    margin: "0 auto"  
+    margin: "0 auto",
   },
   subtitle: {
     marginTop: "50px",
   },
   success: {
-    marginBottom: "20px"
+    marginBottom: "20px",
   },
   error: {
-    marginBottom: "20px"
+    marginBottom: "20px",
   },
   modal: {
     position: "absolute",
@@ -43,53 +41,50 @@ const useStyles = makeStyles({
     minWidth: "400px",
     boxShadow: 24,
     p: 4,
-    padding: 40, 
+    padding: 40,
   },
 
-  searchCollectionBtn : {
-    marginLeft : "20px",
-    display : "inline"
+  searchCollectionBtn: {
+    marginLeft: "20px",
+    display: "inline",
   },
   modalBox: {
-    marginLeft: '25%',
-    marginTop: '10%',
-    minHeight : "250px",
-    width: '50%',
-    backgroundColor: 'white',
-    alignItems: 'center',
-    textAlign: 'center',
-    borderRadius: '20px'
+    marginLeft: "25%",
+    marginTop: "10%",
+    minHeight: "250px",
+    width: "50%",
+    backgroundColor: "white",
+    alignItems: "center",
+    textAlign: "center",
+    borderRadius: "20px",
   },
   modalContainer: {
-    alignItems: 'center',
-    textAlign: 'center',
-
+    alignItems: "center",
+    textAlign: "center",
   },
   closeIcon: {
-    marginLeft: '90%',
-    marginTop: '5px',
-    border: 'transparent',
-    background: 'transparent',
-    '&:hover': {
-      cursor: 'pointer',
+    marginLeft: "90%",
+    marginTop: "5px",
+    border: "transparent",
+    background: "transparent",
+    "&:hover": {
+      cursor: "pointer",
     },
   },
-  centerDiv : {
-    alignItems : "center",
+  centerDiv: {
+    alignItems: "center",
   },
-  collectionResults : {
-    marginLeft : '10%',
-    width : "80%",
-    marginTop : "20px",
-    borderRadius : "10px",
-    minHeight : '80px',
+  collectionResults: {
+    marginLeft: "10%",
+    width: "80%",
+    marginTop: "20px",
+    borderRadius: "10px",
+    minHeight: "80px",
     backgroundColor: "rgb(229, 229, 229)",
-    '&:hover': {
-      cursor: 'pointer',
+    "&:hover": {
+      cursor: "pointer",
     },
-
-  }
-
+  },
 });
 
 export default function CollectionPage() {
@@ -108,20 +103,18 @@ export default function CollectionPage() {
 
   const [openPublicSearch, setOpenPublicSearch] = useState(false);
   const [openUserSearch, setOpenUserSearch] = useState(false);
-  
 
   useEffect(() => {
     getCollectionData();
     document.title = "Collections | Booklab";
   }, [newCollection]);
 
-
-  function handleUserSearchOpen(){
+  function handleUserSearchOpen() {
     setOpenUserSearch(true);
     setPublicCollectionRes([]);
-  } 
+  }
 
-  function handlePublicSearchOpen(){
+  function handlePublicSearchOpen() {
     setOpenPublicSearch(true);
     setPublicCollectionRes([]);
   }
@@ -136,7 +129,7 @@ export default function CollectionPage() {
 
     let res = await axios({
       method: "get",
-      url: "http://localhost:8001/myCollections"
+      url: "http://localhost:8001/myCollections",
     });
 
     let allCollections = res.data;
@@ -146,14 +139,15 @@ export default function CollectionPage() {
     for (let i = 0; i < myCollectionsIds.length; i++) {
       let curId = myCollectionsIds[i];
       for (let j = 0; j < allCollections.length; j++) {
-        if (curId == allCollections[j]._id && allCollections[j].public == false) {
+        if (
+          curId == allCollections[j]._id &&
+          allCollections[j].public == false
+        ) {
           allCollections[j].public = "Private";
           allMycollection.push(allCollections[j]);
-          
-        } else if (curId == allCollections[j]._id){
+        } else if (curId == allCollections[j]._id) {
           allCollections[j].public = "Public";
           allMycollection.push(allCollections[j]);
-
         } else if (allCollections[j].public == true) {
           allCollections[j].public = "Public";
           publicCollections.push(allCollections[j]);
@@ -172,22 +166,21 @@ export default function CollectionPage() {
     }
   }
 
-  function handlePublicOptions(){
+  function handlePublicOptions() {
     let tmp = [];
-    for (let i =0; i < collectionArr.length; i++){
-      tmp.push(collectionArr[i].name)
+    for (let i = 0; i < collectionArr.length; i++) {
+      tmp.push(collectionArr[i].name);
     }
-    return tmp
+    return tmp;
   }
 
-  function handleUserOptions(){
+  function handleUserOptions() {
     let tmp = [];
-    for (let i =0; i < myCollections.length; i++){
-      
-      tmp.push(myCollections[i].name)
+    for (let i = 0; i < myCollections.length; i++) {
+      tmp.push(myCollections[i].name);
     }
 
-    return tmp
+    return tmp;
   }
 
   async function addCollection() {
@@ -206,8 +199,8 @@ export default function CollectionPage() {
         user: sessionStorage.getItem("id"),
         name: newName,
         public: collectionPublic,
-        creator : sessionStorage.getItem("name")
-      }
+        creator: sessionStorage.getItem("name"),
+      },
     });
     let tmp = collectionArr;
     tmp.unshift(res.data);
@@ -219,58 +212,63 @@ export default function CollectionPage() {
     document.getElementById("collectionSuccess").hidden = false;
     document.getElementById("collectionError").hidden = true;
     document.getElementById("newCollection").value = "";
-    history.push("/collection-detail?id=" +res.data._id);
+    history.push("/collection-detail?id=" + res.data._id);
     location.reload();
-
   }
 
-  async function search(val){
+  async function search(val) {
     let res = await axios({
       method: "get",
-      url: "http://localhost:8001/myCollections"
+      url: "http://localhost:8001/myCollections",
     });
     let tmp = [];
     console.log(res);
-    
-    
-    for(let i =0 ;i <res.data.length ;i++){
-      if (res.data[i].name === val){
-        tmp.push({name : res.data[i].name, id: res.data[i]._id, creator : res.data[i].creator});
+
+    for (let i = 0; i < res.data.length; i++) {
+      if (res.data[i].name === val) {
+        tmp.push({
+          name: res.data[i].name,
+          id: res.data[i]._id,
+          creator: res.data[i].creator,
+        });
       }
     }
     setPublicCollectionRes(tmp);
   }
 
-  function routeUser(id){
+  function routeUser(id) {
     history.push({
-      pathname: "/collection-detail?id=" +id,
+      pathname: "/collection-detail?id=" + id,
       //state: { user: props.user },
     });
     location.reload();
   }
-  
+
   return (
     <div>
       <AuthenticatedNavbar />
       <div className={classes.main}>
-
         <h1>Create collections and share your favourite books</h1>
-        <div hidden id="collectionSuccess" className={classes.success}><Alert severity="success">Collection created</Alert></div>
-        <div hidden id="collectionError" className={classes.error}><Alert severity="error">Collection name cannot be empty</Alert></div>
-        <Button variant="contained" onClick={handleOpen}>Create a new collection</Button>
-        
+        <div hidden id="collectionSuccess" className={classes.success}>
+          <Alert severity="success">Collection created</Alert>
+        </div>
+        <div hidden id="collectionError" className={classes.error}>
+          <Alert severity="error">Collection name cannot be empty</Alert>
+        </div>
+        <Button variant="contained" onClick={handleOpen}>
+          Create a new collection
+        </Button>
+
         <div className={classes.searchCollectionBtn}>
-        <Button 
-          variant="outlined" 
-          onClick={handlePublicSearchOpen}>
-          Find a Public Collection</Button>
-          </div>
-          <div className={classes.searchCollectionBtn}>
-          <Button 
-            variant="outlined" 
-            onClick={handleUserSearchOpen}>
-            Find Your collection</Button>
-          </div>
+          <Button variant="outlined" onClick={handlePublicSearchOpen}>
+            Find a Public Collection
+          </Button>
+        </div>
+        <div className={classes.searchCollectionBtn}>
+          <Button variant="outlined" onClick={handleUserSearchOpen}>
+            Find Your collection
+          </Button>
+        </div>
 
         <Modal
           open={open}
@@ -290,7 +288,8 @@ export default function CollectionPage() {
                 width: "100%",
               }}
             />
-            Public?<Checkbox
+            Public?
+            <Checkbox
               checked={collectionPublic}
               onClick={() => handlePublic()}
               style={{
@@ -298,132 +297,128 @@ export default function CollectionPage() {
               }}
             />
             <br />
-            <Button
-              variant="contained"
-              onClick={() => addCollection()}
-            >Create Collection
+            <Button variant="contained" onClick={() => addCollection()}>
+              Create Collection
             </Button>
           </Card>
         </Modal>
 
-      <Modal
-      open={openPublicSearch}
-      //onClose={handleCloseDelModal}
-      aria-labelledby='modal-modal-title'
-      aria-describedby='modal-modal-description'
-      >
-      <Box class={classes.modalBox}>
-        <Button class={classes.closeIcon}
-          onClick = { () => setOpenPublicSearch(false)}
-          disableRipple
-          >
-          <CloseIcon></CloseIcon>
-        </Button>
-          <div className={classes.centerDiv}>
-            <h2>Find a public collection</h2>
-            <Autocomplete
-              disablePortal
-              autoSelect = {false}
-              clearOnEscape
-              freeSolo
-              clearOnBlur={false}
-              options={handlePublicOptions()}
-              sx={{ width: "60%", marginLeft : "20%" }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Find Collection"
-                  variant="standard"
-                  style={{
-                    width: "100%",
-                    margin: "20px 0",
-                  }}
-      
-                />
-              )}
-              onChange={(e, value) => {
-                search(value);
-              }}
-            />
-        </div>
-          {publicCollectionRes.map((Item ,index) => (
-          <div 
-          key = {index}
-          onClick = {()=>routeUser(Item.id)}
-          className={classes.collectionResults}>
-            <h3>{Item.name}</h3>
-            <div>by: {Item.creator}</div>
-          </div>
-          ))}
-        <br/>
-      </Box>
-    </Modal>
+        <Modal
+          open={openPublicSearch}
+          //onClose={handleCloseDelModal}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box class={classes.modalBox}>
+            <Button
+              class={classes.closeIcon}
+              onClick={() => setOpenPublicSearch(false)}
+              disableRipple
+            >
+              <CloseIcon></CloseIcon>
+            </Button>
+            <div className={classes.centerDiv}>
+              <h2>Find a public collection</h2>
+              <Autocomplete
+                disablePortal
+                autoSelect={false}
+                clearOnEscape
+                freeSolo
+                clearOnBlur={false}
+                options={handlePublicOptions()}
+                sx={{ width: "60%", marginLeft: "20%" }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Find Collection"
+                    variant="standard"
+                    style={{
+                      width: "100%",
+                      margin: "20px 0",
+                    }}
+                  />
+                )}
+                onChange={(e, value) => {
+                  search(value);
+                }}
+              />
+            </div>
+            {publicCollectionRes.map((Item, index) => (
+              <div
+                key={index}
+                onClick={() => routeUser(Item.id)}
+                className={classes.collectionResults}
+              >
+                <h3>{Item.name}</h3>
+                <div>by: {Item.creator}</div>
+              </div>
+            ))}
+            <br />
+          </Box>
+        </Modal>
 
-
-
-    <Modal
-      open={openUserSearch}
-      //onClose={handleCloseDelModal}
-      aria-labelledby='modal-modal-title'
-      aria-describedby='modal-modal-description'
-      >
-      <Box class={classes.modalBox}>
-        <Button class={classes.closeIcon}
-          onClick = { () => setOpenUserSearch(false)}
-          disableRipple
-          >
-          <CloseIcon></CloseIcon>
-        </Button>
-          <div className={classes.centerDiv}>
-            <h2>Find Your Collection</h2>
-            <Autocomplete
-              disablePortal
-              autoSelect = {false}
-              clearOnEscape
-              freeSolo
-              clearOnBlur={false}
-              options={handleUserOptions()}
-              sx={{ width: "60%", marginLeft : "20%" }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  label="Find Collection"
-                  variant="standard"
-                  style={{
-                    width: "100%",
-                    margin: "20px 0",
-                  }}
-            
-                />
-              )}
-              onChange={(e, value) => {
-                search(value);
-              }}
-            />
-        </div>
-        {publicCollectionRes.map((Item ,index) => (
-        <div 
-        key = {index}
-        onClick = {()=>routeUser(Item.id)}
-        className={classes.collectionResults}>
-          <h3>{Item.name}</h3>
-          <div>by: {Item.creator}</div>
-        </div>
-        ))}
-        <br/>
-      </Box>
-    </Modal>
+        <Modal
+          open={openUserSearch}
+          //onClose={handleCloseDelModal}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box class={classes.modalBox}>
+            <Button
+              class={classes.closeIcon}
+              onClick={() => setOpenUserSearch(false)}
+              disableRipple
+            >
+              <CloseIcon></CloseIcon>
+            </Button>
+            <div className={classes.centerDiv}>
+              <h2>Find Your Collection</h2>
+              <Autocomplete
+                disablePortal
+                autoSelect={false}
+                clearOnEscape
+                freeSolo
+                clearOnBlur={false}
+                options={handleUserOptions()}
+                sx={{ width: "60%", marginLeft: "20%" }}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Find Collection"
+                    variant="standard"
+                    style={{
+                      width: "100%",
+                      margin: "20px 0",
+                    }}
+                  />
+                )}
+                onChange={(e, value) => {
+                  search(value);
+                }}
+              />
+            </div>
+            {publicCollectionRes.map((Item, index) => (
+              <div
+                key={index}
+                onClick={() => routeUser(Item.id)}
+                className={classes.collectionResults}
+              >
+                <h3>{Item.name}</h3>
+                <div>by: {Item.creator}</div>
+              </div>
+            ))}
+            <br />
+          </Box>
+        </Modal>
 
         <h2 className={classes.subtitle}>My Collections</h2>
         <AdjustedCollections collections={myCollections}></AdjustedCollections>
 
         <h2 className={classes.subtitle}>Popular Collections</h2>
         <AdjustedCollections collections={collectionArr}></AdjustedCollections>
-
       </div>
-      <br/>
-      <br/>
+      <br />
+      <br />
     </div>
-
   );
 }

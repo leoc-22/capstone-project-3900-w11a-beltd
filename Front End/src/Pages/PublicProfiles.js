@@ -1,9 +1,7 @@
-/* eslint-disable */
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import AuthenticatedNavbar from "../Components/AuthenticatedNavbar";
 import AdjustedCollections from "../Components/AdjustedCollections";
-import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
 import Avatar from "@mui/material/Avatar";
 //import Grid from "@mui/material/Grid";
@@ -29,7 +27,6 @@ const useStyles = makeStyles({
 
 const PublicProfiles = () => {
   const classes = useStyles();
-  const history = useHistory();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -44,29 +41,28 @@ const PublicProfiles = () => {
     document.title = "User Profile | Booklab";
   }, []);
 
-
   async function getUserData() {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
-    const userId = urlParams.get('id');
+    const userId = urlParams.get("id");
 
     let res = await axios({
-      method : "get",
-      url : "http://localhost:8001/users"
-    })
+      method: "get",
+      url: "http://localhost:8001/users",
+    });
     let user;
-    for(let i =0; i < res.data.length; i++){
-      if (res.data[i]._id == userId){
+    for (let i = 0; i < res.data.length; i++) {
+      if (res.data[i]._id == userId) {
         user = res.data[i];
         break;
       }
     }
     setName(user.name);
     setEmail(user.email);
-    if (user.image == null){
+    if (user.image == null) {
       setImgHidden(true);
       setAvatarHidden(false);
-    }else {
+    } else {
       setImg(user.image);
       setImgHidden(false);
       setAvatarHidden(true);
@@ -75,14 +71,12 @@ const PublicProfiles = () => {
     getCollectionData(user.collections);
   }
 
-
-
   async function getCollectionData(collectionIds) {
     let myCollectionsIds = collectionIds;
 
     let res = await axios({
       method: "get",
-      url: "http://localhost:8001/myCollections"
+      url: "http://localhost:8001/myCollections",
     });
 
     let allCollections = res.data;
@@ -91,10 +85,13 @@ const PublicProfiles = () => {
     for (let i = 0; i < myCollectionsIds.length; i++) {
       let curId = myCollectionsIds[i];
       for (let j = 0; j < allCollections.length; j++) {
-        if (curId == allCollections[j]._id && allCollections[j].public == true) {
+        if (
+          curId == allCollections[j]._id &&
+          allCollections[j].public == true
+        ) {
           allCollections[j].public = "Public";
           allMycollection.push(allCollections[j]);
-        } 
+        }
       }
     }
     setMyCollections(allMycollection);
@@ -105,17 +102,16 @@ const PublicProfiles = () => {
     <div>
       <AuthenticatedNavbar />
       <div className={classes.main}>
-
-        <div id="avatar" hidden = {avatarHidden}>
+        <div id="avatar" hidden={avatarHidden}>
           <Avatar sx={{ width: 80, height: 80 }}></Avatar>
         </div>
 
-        <div id="img" hidden = {imgHidden}>
-          <img className={classes.inputImage} src={img} alt ="user Img"/>
+        <div id="img" hidden={imgHidden}>
+          <img className={classes.inputImage} src={img} alt="user Img" />
         </div>
         <h1>{name}</h1>
         <p>{email}</p>
-        <h2 style={{ marginTop: "80px" }}>{name+ "\'s"} public collections</h2>
+        <h2 style={{ marginTop: "80px" }}>{name + "'s"} public collections</h2>
         <AdjustedCollections collections={myCollections}></AdjustedCollections>
       </div>
     </div>

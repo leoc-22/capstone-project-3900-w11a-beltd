@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core";
 import axios from "axios";
@@ -8,6 +7,7 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Typography from "@mui/material/Typography";
 import { useHistory } from "react-router-dom";
+import PropTypes from "prop-types";
 
 const useStyles = makeStyles({
   positionCard: {
@@ -15,12 +15,11 @@ const useStyles = makeStyles({
     borderRadius: "10px",
     width: "60%",
   },
-  media : {
+  media: {
     "&:hover": {
       cursor: "pointer",
-    }
-  }
-
+    },
+  },
 });
 
 export default function RankingItem(props) {
@@ -57,22 +56,33 @@ export default function RankingItem(props) {
       <Card sx={{ display: "flex", padding: "20px" }}>
         <CardMedia
           component="img"
-          sx={{ width: "100px", height: "100px", 
-          borderRadius: "50px",
-          marginRight: "30px" }}
+          sx={{
+            width: "100px",
+            height: "100px",
+            borderRadius: "50px",
+            marginRight: "30px",
+          }}
           image={img}
           onClick={goToProfile}
           alt="profile picture"
-          className={classes.media}/>
-        
+          className={classes.media}
+        />
+
         <Box sx={{ display: "flex", flexDirection: "column" }}>
           <CardContent sx={{ flex: "1 0 auto" }}>
-            <Typography component="div" variant="h5" 
-            className={classes.media}
-            onClick={goToProfile}>
+            <Typography
+              component="div"
+              variant="h5"
+              className={classes.media}
+              onClick={goToProfile}
+            >
               {props.rank + ". " + name}
             </Typography>
-            <Typography variant="subtitle1" color="text.secondary" component="div">
+            <Typography
+              variant="subtitle1"
+              color="text.secondary"
+              component="div"
+            >
               {"Completed " + props.data.count + " Goals"}
             </Typography>
           </CardContent>
@@ -81,3 +91,10 @@ export default function RankingItem(props) {
     </div>
   );
 }
+
+RankingItem.propTypes = {
+  data: {
+    user: PropTypes.any,
+  },
+  rank: PropTypes.any,
+};

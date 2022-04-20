@@ -82,7 +82,7 @@ const HomePage = () => {
   }
   // wait for axios to get book data, then render book shelves
   // TODO Beautify this
-  if (loadingBooks || loadingUser) return <Loading/>;
+  if (loadingBooks || loadingUser) return <Loading />;
   if (error) return <p>Error: {error.message}</p>;
 
   return (

@@ -1,11 +1,9 @@
-/* eslint-disable */ 
-
-import React, {useState, useEffect} from "react";
+import React from "react";
 import Carousel from "react-grid-carousel";
 import { makeStyles } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import Chip from "@mui/material/Chip";
-import axios from "axios";
+import PropTypes from "prop-types";
 
 const useStyles = makeStyles({
   cover: {
@@ -16,25 +14,24 @@ const useStyles = makeStyles({
       cursor: "pointer",
     },
   },
-  name : {
-    color :"black"
+  name: {
+    color: "black",
   },
-  creator : {
+  creator: {
     marginTop: "-15px",
-  }
+  },
 });
 
-const AdjustedCollections = (props => {
+const AdjustedCollections = (props) => {
   const classes = useStyles();
   const history = useHistory();
 
-  function collectionDetail(id){
+  function collectionDetail(id) {
     history.push({
-      pathname: "/collection-detail?id=" +id,
+      pathname: "/collection-detail?id=" + id,
       //state: { user: props.user },
     });
     location.reload();
-
   }
 
   const randomRgbColor = () => {
@@ -53,18 +50,27 @@ const AdjustedCollections = (props => {
         gap={20}
         loop
       >
-        {props.collections.map((Item) =>(
-          <Carousel.Item>
-            <div className={classes.cover} style={{backgroundColor: randomRgbColor()}} onClick = {()=>collectionDetail(Item._id)}></div>
-            <p><b>{Item.name}</b></p>
-            <div className={classes.creator}>{"By "+ Item.creator}</div>
+        {props.collections.map((Item, index) => (
+          <Carousel.Item key={index}>
+            <div
+              className={classes.cover}
+              style={{ backgroundColor: randomRgbColor() }}
+              onClick={() => collectionDetail(Item._id)}
+            ></div>
+            <p>
+              <b>{Item.name}</b>
+            </p>
+            <div className={classes.creator}>{"By " + Item.creator}</div>
             {/* Swap public tag or private tag depending on collection */}
             <Chip label={Item.public} size="small" />
-
           </Carousel.Item>
         ))}
       </Carousel>
     </div>
   );
-})
+};
 export default AdjustedCollections;
+
+AdjustedCollections.propTypes = {
+  collections: PropTypes.array,
+};
