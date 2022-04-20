@@ -91,24 +91,24 @@ const useStyles = makeStyles({
 });
 
 const UnAuthedBookProfile = () => {
-  // const location = useLocation();
-
   const [title, setTitle] = useState(null);
   const [author, setAuthor] = useState(null);
   const [bookImg, setImg] = useState(null);
-  const [amzLink, setAmzLink] = useState(null);
   const [bookRating, setBookRating] = useState(null);
   const [openModal, setOpenModal] = useState(false);
-
   const [bookReviews, setBookReviews] = useState([]);
   const [changed, setChanged] = useState(0);
   const [category, setCategory] = useState(null);
   const [books, setBooks] = useState([]);
+  const [amzPrice, setAmzPrice] = useState(null);
+  const [amzLink, setAmzLink] = useState(null);
+  const [ebayPrice, setEbayPrice] = useState(null);
+  const [ebayLink, setEbayLink] = useState(null);
+
   const classes = useStyles();
   const history = useHistory();
 
   const queryString = window.location.search.slice(1);
-  //console.log(queryString);
 
   useEffect(() => {
     document.title = "Book profile | Booklab";
@@ -155,20 +155,33 @@ const UnAuthedBookProfile = () => {
         setTitle(res[i]["title"]);
         setAuthor(res[i]["authors"]);
         setImg(res[i]["image"]);
-        setAmzLink(res[i]["link"]);
         setBookRating("Rating: " + res[i]["rating"]);
         getReviews(res[i]["title"]);
         setCategory(res[i].categories[0].name);
+        setAmzLink(res[i]["link"]);
+        setAmzPrice(res[i]["price"]["value"]);
+
         if (changed == 0) {
           getSimilarBooks(res[i].categories[0].id);
         }
+
+        handleEBay(res[i]["title"]);
         return;
       }
     }
   }
 
-  function amzPage() {
-    window.open(amzLink, "_blank").focus();
+  // get ebay stats
+  async function handleEBay(title) {
+    await axios
+      .get(`http://localhost:8002/ebay/${title}`)
+      .then((res) => {
+        setEbayLink(res.data.link);
+        setEbayPrice(res.data.value);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   // get book reviews
@@ -324,16 +337,46 @@ const UnAuthedBookProfile = () => {
                 <Typography sx={{ fontSize: 16 }} color="text.primary">
                   Amazon
                 </Typography>
-                {/* <Typography
+                <Typography
                   sx={{ fontSize: 14, textTransform: "uppercase" }}
                   color="text.secondary"
                 >
-                  $0.00
-                </Typography> */}
+                  Price: ${amzPrice}
+                </Typography>
               </CardContent>
               <CardActions>
-                <Button size="small" onClick={() => amzPage()}>
+                <Button
+                  size="small"
+                  onClick={() => {
+                    window.open(amzLink, "_blank").focus();
+                  }}
+                >
                   View on Amazon
+                </Button>
+              </CardActions>
+            </Card>
+          </Grid>
+          <Grid item xs={12} md={3}>
+            <Card>
+              <CardContent>
+                <Typography sx={{ fontSize: 16 }} color="text.primary">
+                  eBay
+                </Typography>
+                <Typography
+                  sx={{ fontSize: 14, textTransform: "uppercase" }}
+                  color="text.secondary"
+                >
+                  {ebayPrice == null ? "Not Found" : `Price: ${ebayPrice}`}
+                </Typography>
+              </CardContent>
+              <CardActions>
+                <Button
+                  size="small"
+                  onClick={() => {
+                    window.open(ebayLink, "_blank").focus();
+                  }}
+                >
+                  View on eBay
                 </Button>
               </CardActions>
             </Card>
