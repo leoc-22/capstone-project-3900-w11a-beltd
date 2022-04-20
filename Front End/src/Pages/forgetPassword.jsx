@@ -26,9 +26,6 @@ export default function ForgetPasswordPage() {
   const { id } = useParams();
   const { token } = useParams();
 
-  console.log(`id: ${id}`);
-  console.log(`token: ${token}`);
-
   // regex chrck for valid password
   const [passwordError, setPasswordError] = useState("");
   const validatePassword = (p) => {
@@ -68,14 +65,9 @@ export default function ForgetPasswordPage() {
           token: token,
           password: newPassword,
         },
-      }).then((res) => handleReset(res));
+      }).then((document.getElementById("successUpdate").hidden = false));
     }
     return;
-  }
-
-  function handleReset(data) {
-    console.log(data);
-    document.getElementById("successUpdate").hidden = false;
   }
 
   return (

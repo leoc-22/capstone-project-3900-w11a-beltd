@@ -68,7 +68,6 @@ const PublicProfiles = () => {
       setImgHidden(false);
       setAvatarHidden(true);
     }
-    console.log(user.image);
     getCollectionData(user.collections);
   }
 

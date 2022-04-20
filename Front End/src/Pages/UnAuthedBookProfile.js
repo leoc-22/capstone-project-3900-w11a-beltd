@@ -145,7 +145,6 @@ const UnAuthedBookProfile = () => {
         }
       }
     }
-    console.log(tmp);
   }
 
   // find targetbook and set states
@@ -190,7 +189,6 @@ const UnAuthedBookProfile = () => {
       method: "get",
       url: "http://localhost:8001/review",
     });
-    //console.log(res.data);
     let curBookReviews = [];
     for (let i = 0; i < res.data.length; i++) {
       if (res.data[i].title == bookTitle) {
@@ -373,7 +371,9 @@ const UnAuthedBookProfile = () => {
                 <Button
                   size="small"
                   onClick={() => {
-                    window.open(ebayLink, "_blank").focus();
+                    ebayLink != null
+                      ? window.open(ebayLink, "_blank").focus()
+                      : null;
                   }}
                 >
                   View on eBay

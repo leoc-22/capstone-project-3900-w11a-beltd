@@ -23,8 +23,6 @@ const useStyles = makeStyles({
 });
 
 const CollectionsCarousel = React.memo((props) => {
-  //console.log(props.collections);
-
   const [collectionArr, setCollectionArr] = useState([]);
   const [hasData, setHasData] = useState(false);
   const classes = useStyles();
@@ -46,7 +44,6 @@ const CollectionsCarousel = React.memo((props) => {
       tmp.push(props.collections[i]);
     }
     setCollectionArr(tmp);
-    console.log(tmp);
     setHasData(true);
   }
 

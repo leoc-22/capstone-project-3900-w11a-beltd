@@ -225,7 +225,6 @@ export default function CollectionPage() {
       url: "http://localhost:8001/myCollections",
     });
     let tmp = [];
-    console.log(res);
 
     for (let i = 0; i < res.data.length; i++) {
       if (res.data[i].name === val) {

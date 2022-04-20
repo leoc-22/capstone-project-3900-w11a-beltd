@@ -96,7 +96,6 @@ export default function SearchPage() {
   // get url param
   const searchUrl = async () => {
     const newQuery = window.location.search.slice(13);
-    console.log(newQuery);
     if (newQuery != null) {
       getResults(newQuery);
     }
@@ -104,7 +103,6 @@ export default function SearchPage() {
 
   // search by param
   const getResults = (data) => {
-    console.log("get Data");
     axios.get(`http://localhost:8002/books/search/${data}`).then((res) => {
       setSearchRes(res.data);
       setBestResult(res.data[0]);
@@ -123,7 +121,6 @@ export default function SearchPage() {
       .get("http://localhost:8002/books/autocomplete")
       .then((res) => {
         setBooks(res.data);
-        console.log(res);
       })
       .catch((error) => {
         console.error(`Error: ${error}`);
@@ -149,7 +146,6 @@ export default function SearchPage() {
         bookArr.push(data[i]);
       }
     }
-    console.log(bookArr);
     return bookArr;
   }
 
@@ -172,7 +168,6 @@ export default function SearchPage() {
         setSearchResImg(res.data[0].image);
         setBarRes(barRes + 1);
         setRating(res.data[0].rating);
-        //console.log(res.data[0].rating);
       } else {
         setSearchRes(getBooksAboveRating(res.data));
         let bestResFiltered = getBooksAboveRating(res.data)[0];

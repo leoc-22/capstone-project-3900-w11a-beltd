@@ -42,7 +42,6 @@ export default function ResetPassword() {
   async function handleForgetPassword(e) {
     e.preventDefault();
     var newEmail = document.getElementById("emailInput").value;
-    console.log(`newEmail ${newEmail}`);
     axios({
       method: "post",
       url: "http://localhost:8001/forgetpassword",
@@ -50,13 +49,8 @@ export default function ResetPassword() {
       data: {
         email: newEmail,
       },
-    }).then((res) => handleAlert(res));
+    }).then((document.getElementById("successUpdate").hidden = false));
     return;
-  }
-
-  function handleAlert(data) {
-    console.log(data);
-    document.getElementById("successUpdate").hidden = false;
   }
 
   return (

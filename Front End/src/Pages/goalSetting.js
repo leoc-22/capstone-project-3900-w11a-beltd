@@ -133,7 +133,6 @@ const GoalSettingPage = () => {
         break;
       }
     }
-    console.log(curGoal.current + 1 + "==" + curGoal.target);
     if (curGoal.current + 1 >= curGoal.target) {
       await axios({
         method: "patch",

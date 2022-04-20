@@ -28,7 +28,6 @@ export default function LeaderBoard() {
       method: "get",
       url: "http://localhost:8001/myGoals",
     });
-    console.log(res);
     let hashTable = [];
     for (let i = 0; i < res.data.length; i++) {
       var HasCompleted = res.data[i].completed;
@@ -46,7 +45,6 @@ export default function LeaderBoard() {
       method: "get",
       url: "http://localhost:8001/users",
     });
-    console.log(res2.data);
     for (let i = 0; i < res2.data.length; i++) {
       if (checkUserExists(res2.data[i]._id, hashTable) == false) {
         let userId = res2.data[i]._id;

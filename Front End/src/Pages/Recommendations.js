@@ -76,7 +76,6 @@ export default function RecommendationsPage() {
       await axios
         .get(`http://localhost:8001/recommendbyauthors/${n}`)
         .then((res) => {
-          console.log(res.data);
           setBookList(res.data);
         })
         .catch((error) => {
@@ -90,7 +89,6 @@ export default function RecommendationsPage() {
       await axios
         .get(`http://localhost:8001/recommendbygenres/${n}`)
         .then((res) => {
-          console.log(res.data);
           setBookList(res.data);
         })
         .catch((error) => {
@@ -123,7 +121,6 @@ export default function RecommendationsPage() {
       document.getElementById("booksByAuthors").hidden = true;
       document.getElementById("booksByGenres").hidden = true;
     }
-    console.log(bookList);
     return;
   }
 
@@ -132,7 +129,6 @@ export default function RecommendationsPage() {
     await axios
       .get(`http://localhost:8002/books/${rating}`)
       .then((res) => {
-        console.log(res.data);
         setBookList(res.data);
       })
       .catch((error) => {

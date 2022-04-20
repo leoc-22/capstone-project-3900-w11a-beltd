@@ -112,7 +112,6 @@ const UnAthuedCollectionDetailPage = () => {
     let res = await axios({
       url: "http://localhost:8001/users",
     });
-    console.log(res.data);
     let userCol;
 
     for (let i = 0; i < res.data.length; i++) {

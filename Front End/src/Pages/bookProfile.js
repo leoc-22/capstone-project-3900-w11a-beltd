@@ -457,7 +457,6 @@ const bookProfilePage = () => {
         _id: id,
       },
     });
-    console.log("added to collection");
   }
 
   if (changed == 0) {

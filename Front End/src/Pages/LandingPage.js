@@ -46,7 +46,6 @@ export default function LandingPage() {
   useEffect(() => {
     getData();
     document.title = "Welcome to Booklab";
-    console.log(books);
   }, []);
 
   // get book and collection data

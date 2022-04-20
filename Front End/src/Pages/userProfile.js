@@ -85,7 +85,6 @@ const userProfilePage = () => {
     await axios
       .get("http://localhost:8001/oneuser/" + userEmail)
       .then((res) => {
-        //console.log(`user info: ${JSON.stringify(res.data)}`);
         if (res.data.image !== null) {
           setImg(res.data.image);
           document.getElementById("avatar").hidden = true;
