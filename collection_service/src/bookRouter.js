@@ -26,7 +26,6 @@ app.get("/books", async (req, res) => {
   await bookModel
     .find({})
     .then((books) => {
-      console.log(`Retrieved ${books.length} books`);
       res.send(books);
     })
     .catch((error) => {
@@ -38,7 +37,6 @@ app.get("/book/:id", async (req, res) => {
   await bookModel
     .findById(req.params.id)
     .then((book) => {
-      console.log(`Retrieved ${book.title}`);
       res.send(book);
     })
     .catch((error) => {
@@ -52,7 +50,6 @@ app.get("/books/autocomplete", async (req, res) => {
     .find({})
     .select("title authors bookid categories")
     .then((books) => {
-      console.log(`Retrieved ${books.length} books`);
       res.send(books);
     })
     .catch((error) => {
@@ -87,7 +84,6 @@ app.get("/books/search/:q", async (req, res) => {
       ],
     })
     .then((books) => {
-      console.log(`Found ${books.length} books that match the query`);
       res.send(books);
     });
 });
@@ -99,7 +95,6 @@ app.get("/similar/:categoryID", async (req, res) => {
       categories: { $elemMatch: { id: { $eq: req.params.categoryID } } },
     })
     .then((books) => {
-      console.log(`Retrieved ${books.length} books with the target category`);
       res.send(books);
     })
     .catch((error) => {
@@ -128,7 +123,6 @@ app.get("/getbooksbyauthor", async (req, res) => {
       authors: { $regex: query, $options: "i" },
     })
     .then((books) => {
-      console.log(`Retrieved ${books.length} books with the target author`);
       res.send(books);
     })
     .catch((error) => {
@@ -141,9 +135,6 @@ app.get("/books/:rating", async (req, res) => {
   await bookModel
     .find({ rating: { $gte: req.params.rating } })
     .then((books) => {
-      console.log(
-        `Retrieved ${books.length} books with rating >= ${req.params.rating}`
-      );
       res.send(books);
     })
     .catch((error) => {
@@ -193,7 +184,6 @@ app.get("/updatebookdb", async () => {
   axios
     .get("https://api.rainforestapi.com/request", { params })
     .then((res) => {
-      console.log("retrieved data");
       res.data.category_results.map((e) => {
         const book = new bookModel({
           title: e.title,
@@ -212,7 +202,6 @@ app.get("/updatebookdb", async () => {
         });
         book.save();
         counter++;
-        console.log("A book is created");
       });
     })
     .catch((error) => {
