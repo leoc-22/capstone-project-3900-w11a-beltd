@@ -38,6 +38,7 @@ const useStyles = makeStyles({
   },
 });
 
+// small book component
 export default function TopBookItem(props) {
   const classes = useStyles();
   const history = useHistory();
@@ -63,7 +64,7 @@ export default function TopBookItem(props) {
         <span className="bookTitle">
           <b>{props.book.title}</b>
         </span>
-        <br/>
+        <br />
         <div className="bookTitle">{props.book.authors}</div>
         <div className="bookTitle">{"Rating: " + props.book.rating}</div>
       </div>

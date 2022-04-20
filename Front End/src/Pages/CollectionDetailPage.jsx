@@ -122,6 +122,7 @@ const CollectionDetailPage = () => {
   const urlParams = new URLSearchParams(queryString);
   const collectionId = urlParams.get("id");
 
+  // get collection detail
   async function getData() {
     let userEmail = sessionStorage.getItem("email");
     let myCols = await axios({
@@ -175,6 +176,7 @@ const CollectionDetailPage = () => {
     setLoading(false);
   }
 
+  // get the collection creator
   async function getCreator() {
     let res = await axios({
       url: "http://localhost:8001/users",
@@ -198,6 +200,7 @@ const CollectionDetailPage = () => {
     setShowPublicModal(true);
   }
 
+  // set collection to public or private
   async function makePublicOrPrivate() {
     if (isPublic == true) {
       await axios({
@@ -223,6 +226,7 @@ const CollectionDetailPage = () => {
     handleClose();
   }
 
+  // delete a collection
   async function deleteCollection() {
     await axios({
       method: "delete",
@@ -234,6 +238,7 @@ const CollectionDetailPage = () => {
     history.push("/collections");
   }
 
+  //remove a book from a collection
   async function removebook(val) {
     await axios({
       method: "delete",

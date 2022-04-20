@@ -141,6 +141,7 @@ const bookProfilePage = () => {
     getData();
   }, [changed]);
 
+  // get book data
   async function getData() {
     let userEmail = sessionStorage.getItem("email");
 
@@ -176,6 +177,7 @@ const bookProfilePage = () => {
     setCollections(tmp);
   }
 
+  // find the target book and set states
   function getTargetBook(res) {
     for (let i = 0; i < res.length; i++) {
       if (res[i]["_id"] == queryString) {
@@ -199,6 +201,7 @@ const bookProfilePage = () => {
     }
   }
 
+  // get book stats
   async function handleStats(bookId) {
     await axios
       .get(`http://localhost:8001/numoftimesread/${bookId}`)
@@ -219,6 +222,7 @@ const bookProfilePage = () => {
       });
   }
 
+  // get ebay stats
   async function handleEBay(title) {
     await axios
       .get(`http://localhost:8002/ebay/${title}`)
@@ -231,6 +235,7 @@ const bookProfilePage = () => {
       });
   }
 
+  // submit a review
   async function submitReview() {
     let today = new Date();
     let dd = String(today.getDate()).padStart(2, "0");
@@ -260,6 +265,7 @@ const bookProfilePage = () => {
     return;
   }
 
+  // get reviews of a book
   async function getReviews(bookTitle) {
     let res = await axios({
       method: "get",
@@ -284,6 +290,7 @@ const bookProfilePage = () => {
     setBookReviews(curBookReviews);
   }
 
+  // mark a book as read
   async function markRead(bookId) {
     let userEmail = sessionStorage.getItem("email");
     let res = await axios({
@@ -335,6 +342,7 @@ const bookProfilePage = () => {
       });
   }
 
+  // advance a goal
   async function advanceGoal(goalId) {
     let allGoals = await axios({
       method: "get",
@@ -378,6 +386,7 @@ const bookProfilePage = () => {
     return;
   }
 
+  // get books in the same category
   async function getSimilarBooks(categoryId) {
     let res = await axios({
       method: "get",
@@ -415,6 +424,7 @@ const bookProfilePage = () => {
     }
   }
 
+  // add book to a collection
   async function addToCollection(id) {
     let res = await axios({
       method: "get",

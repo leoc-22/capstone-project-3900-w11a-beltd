@@ -109,6 +109,7 @@ export default function AuthenicatedTopBar() {
     setAnchorElUser(null);
   };
 
+  // get book data
   const getBookData = () => {
     axios
       .get("http://localhost:8002/books/autocomplete")
@@ -138,6 +139,7 @@ export default function AuthenicatedTopBar() {
     return [...optionList];
   };
 
+  // show search bar
   function handleSeachOpen() {
     if (seachOpen == false) {
       document.getElementById("searchText").hidden = false;
@@ -148,6 +150,7 @@ export default function AuthenicatedTopBar() {
     }
   }
 
+  // route user to another page
   function routePage(page) {
     let sideBarPage = "";
 
@@ -179,6 +182,7 @@ export default function AuthenicatedTopBar() {
     }
   }
 
+  // route user to another page
   function routeSettingPage(page) {
     let targetPage = page;
     if (targetPage === "Profile") {
@@ -204,23 +208,19 @@ export default function AuthenicatedTopBar() {
     }
   }
 
+  // search on the navbar
   function search(val) {
-    //console.log(val);
-
     const urlString = String(window.location.pathname);
-
-    console.log(val);
-
     history.push("/search?searchQuery=" + val);
     if (urlString.includes("search")) {
       location.reload();
     }
   }
 
+  // get cur location
   function getLocation() {
     const urlString = String(window.location.pathname);
     if (urlString.includes("search")) {
-      //document.getElementById("Explore").textContent = "ef";
       setExploreBtn(classes.BtnTextActive);
     } else if (
       urlString.includes("collections") ||

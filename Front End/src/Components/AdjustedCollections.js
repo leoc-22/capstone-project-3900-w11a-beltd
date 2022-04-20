@@ -34,6 +34,7 @@ const AdjustedCollections = (props) => {
     location.reload();
   }
 
+  // generate a random color
   const randomRgbColor = () => {
     const r = Math.floor(Math.random() * 256);
     const g = Math.floor(Math.random() * 256);

@@ -38,6 +38,7 @@ const useStyles = makeStyles({
   },
 });
 
+// small book component
 export default function TopBookItem(props) {
   const classes = useStyles();
   const history = useHistory();

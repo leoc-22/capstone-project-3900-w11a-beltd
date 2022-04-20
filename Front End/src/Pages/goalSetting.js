@@ -46,6 +46,7 @@ const GoalSettingPage = () => {
     getData();
   }, [goalsCreated]);
 
+  // get all goals of a user
   async function getData() {
     let userEmail = sessionStorage.getItem("email");
     let res = await axios({
@@ -71,6 +72,7 @@ const GoalSettingPage = () => {
     setGoalsArr(allMygoals);
   }
 
+  // save a new goal
   async function saveGoal() {
     let newEndDate = document.getElementById("endDate").value;
     let newTarget = document.getElementById("target").value;
@@ -100,6 +102,7 @@ const GoalSettingPage = () => {
     return;
   }
 
+  // delete a goal
   async function deleteGoal(targetGoal) {
     let goalId = targetGoal.goal._id;
     await axios({
@@ -115,6 +118,7 @@ const GoalSettingPage = () => {
     return;
   }
 
+  // increment a goal
   async function advanceGoal(targetGoal) {
     let goalId = targetGoal.goal._id;
 
@@ -166,6 +170,7 @@ const GoalSettingPage = () => {
     return;
   }
 
+  // mark a goal as complete
   async function markComplete(targetGoal) {
     let goalId = targetGoal.goal._id;
     await axios({

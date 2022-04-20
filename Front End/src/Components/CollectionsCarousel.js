@@ -34,6 +34,7 @@ const CollectionsCarousel = React.memo((props) => {
     filterData();
   }, [hasData]);
 
+  // filter whether a collection is public or private
   function filterData() {
     let tmp = [];
     for (let i = 0; i < props.collections.length; i++) {

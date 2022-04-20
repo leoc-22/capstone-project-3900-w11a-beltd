@@ -22,6 +22,7 @@ const useStyles = makeStyles({
   },
 });
 
+// user ranking component on leaderboard
 export default function RankingItem(props) {
   const [name, setName] = useState("");
   const [img, setImg] = useState("");
@@ -33,6 +34,7 @@ export default function RankingItem(props) {
     getUserFromId(props.data.user);
   }, []);
 
+  // get user data
   async function getUserFromId(userId) {
     let res = await axios({
       method: "get",

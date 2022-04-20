@@ -119,6 +119,7 @@ export default function CollectionPage() {
     setPublicCollectionRes([]);
   }
 
+  // get collection data
   async function getCollectionData() {
     let userEmail = sessionStorage.getItem("email");
     let userData = await axios({
@@ -183,6 +184,7 @@ export default function CollectionPage() {
     return tmp;
   }
 
+  // create a new collection
   async function addCollection() {
     let newName = document.getElementById("newCollection").value;
     if (newName == "") {
@@ -216,6 +218,7 @@ export default function CollectionPage() {
     location.reload();
   }
 
+  // search for a collection
   async function search(val) {
     let res = await axios({
       method: "get",

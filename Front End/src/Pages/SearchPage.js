@@ -90,6 +90,7 @@ export default function SearchPage() {
     document.title = "Explore | Booklab";
   }, [barRes]);
 
+  // get url param
   const searchUrl = async () => {
     const newQuery = window.location.search.slice(13);
     console.log(newQuery);
@@ -98,6 +99,7 @@ export default function SearchPage() {
     }
   };
 
+  // search by param
   const getResults = (data) => {
     console.log("get Data");
     axios.get(`http://localhost:8002/books/search/${data}`).then((res) => {
@@ -105,13 +107,14 @@ export default function SearchPage() {
       setBestResult(res.data[0]);
       setSearchResImg(res.data[0].image);
       setRating(res.data[0].rating);
-      if (barRes == 0){
-        setBarRes(barRes+1);
+      if (barRes == 0) {
+        setBarRes(barRes + 1);
         document.getElementById("Results").hidden = false;
       }
     });
   };
 
+  // get search results
   const getBookData = async () => {
     axios
       .get("http://localhost:8002/books/autocomplete")
@@ -128,6 +131,7 @@ export default function SearchPage() {
       });
   };
 
+  // Filter by rating
   function getBooksAboveRating(data) {
     let bookArr = [];
     let targetRating;
@@ -146,6 +150,7 @@ export default function SearchPage() {
     return bookArr;
   }
 
+  // search by url param
   const handleSearch = () => {
     const newQuery = window.location.search.slice(13);
     if (newQuery != null) {
@@ -198,6 +203,7 @@ export default function SearchPage() {
     history.push("/book-profile?" + bookId);
   };
 
+  // filter by rating
   const handleRating = (val) => {
     if (val == 5) {
       setAllRatings(true);

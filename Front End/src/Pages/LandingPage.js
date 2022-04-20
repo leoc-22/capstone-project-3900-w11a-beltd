@@ -49,6 +49,7 @@ export default function LandingPage() {
     console.log(books);
   }, []);
 
+  // get book and collection data
   async function getData() {
     await axios
       .get("http://localhost:8002/books")

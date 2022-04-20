@@ -22,6 +22,7 @@ export default function LeaderBoard() {
     document.title = "Leaderboard | Booklab";
   }, []);
 
+  // get leaderboard data
   async function getData() {
     let res = await axios({
       method: "get",
@@ -56,6 +57,7 @@ export default function LeaderBoard() {
     setRankings(hashTable);
   }
 
+  // check if user exists in the hashmap
   function checkUserExists(userId, hashMap) {
     for (let i = 0; i < hashMap.length; i++) {
       if (userId === hashMap[i].user) {

@@ -41,6 +41,7 @@ const PublicProfiles = () => {
     document.title = "User Profile | Booklab";
   }, []);
 
+  // get data of a particular user
   async function getUserData() {
     const queryString = window.location.search;
     const urlParams = new URLSearchParams(queryString);
@@ -71,6 +72,7 @@ const PublicProfiles = () => {
     getCollectionData(user.collections);
   }
 
+  // get a collection data
   async function getCollectionData(collectionIds) {
     let myCollectionsIds = collectionIds;
 

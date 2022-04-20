@@ -36,6 +36,7 @@ const HomePage = () => {
     document.title = "Home | Booklab";
   }, []);
 
+  //get public collections
   async function getCollectionData() {
     let res = await axios({
       method: "get",
@@ -50,6 +51,7 @@ const HomePage = () => {
     setCollectionArr(tmp);
   }
 
+  // get book data
   async function getBookData() {
     await axios
       .get("http://localhost:8002/books")
@@ -65,6 +67,7 @@ const HomePage = () => {
       });
   }
 
+  // get user data
   async function getUserData() {
     let userEmail = sessionStorage.getItem("email");
     await axios

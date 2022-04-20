@@ -42,6 +42,7 @@ const BookItem = (props) => {
     getBook();
   }, []);
 
+  // get book data
   async function getBook() {
     let res = await axios({
       url: "http://localhost:8002/books",

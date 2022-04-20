@@ -37,6 +37,7 @@ export default function SignUpPage() {
     }
   };
 
+  // regex check for valid password
   const [passwordError, setPasswordError] = useState("");
   const validatePassword = (p) => {
     var reg = new RegExp("^(?=.*\\d).{6,}$");
@@ -61,6 +62,7 @@ export default function SignUpPage() {
     }
   };
 
+  // register a new user
   function registerUser() {
     var newEmail = document.getElementById("emailInput").value;
     var newUserName = document.getElementById("userNameInput").value;
@@ -100,6 +102,7 @@ export default function SignUpPage() {
     }
   }
 
+  // crete a default collection for a new user
   async function makeDefaultCollections(userId, userName) {
     await axios({
       method: "post",

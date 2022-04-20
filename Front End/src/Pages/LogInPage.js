@@ -22,7 +22,7 @@ const useStyles = makeStyles({
   },
   image: {
     width: "100%",
-    marginTop: "-10%"
+    marginTop: "-10%",
   },
 });
 
@@ -42,6 +42,7 @@ export default function LogInPage() {
     }
   };
 
+  // login a new user
   function loginUser() {
     var enteredEmail = document.getElementById("emailInput").value;
     var enteredPassword = document.getElementById("passwordInput").value;
@@ -131,7 +132,8 @@ export default function LogInPage() {
               <a
                 onClick={() => history.push("/signup")}
                 className={classes.link}
-              >Sign Up
+              >
+                Sign Up
               </a>
             </p>
             <p>

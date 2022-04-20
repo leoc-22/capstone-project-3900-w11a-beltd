@@ -23,6 +23,7 @@ const useStyles = makeStyles({
 export default function UserSettingsPage() {
   const classes = useStyles();
 
+  // check valid new password
   const [passwordError, setPasswordError] = useState("");
   const validatePassword = (p) => {
     var reg = new RegExp("^(?=.*\\d).{6,}$");
@@ -47,6 +48,7 @@ export default function UserSettingsPage() {
     }
   };
 
+  // update user password
   function updatePassword() {
     var newPassword = document.getElementById("passwordInput").value;
     if (matchError == "Passwords match!") {

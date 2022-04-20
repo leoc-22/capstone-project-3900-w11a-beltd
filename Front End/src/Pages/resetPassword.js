@@ -38,6 +38,7 @@ export default function ResetPassword() {
     }
   };
 
+  // function to reset user password
   async function handleForgetPassword(e) {
     e.preventDefault();
     var newEmail = document.getElementById("emailInput").value;

@@ -40,6 +40,7 @@ const userProfilePage = () => {
     document.title = name + " Profile | Booklab";
   }, [img]);
 
+  // get all the collections made by user
   async function getCollectionData() {
     let userEmail = sessionStorage.getItem("email");
     let userData = await axios({
@@ -74,6 +75,7 @@ const userProfilePage = () => {
     setMyCollections(allMycollection);
   }
 
+  // get user profile data
   async function getUserData() {
     setName(sessionStorage.getItem("name"));
     setEmail(sessionStorage.getItem("email"));
@@ -96,6 +98,7 @@ const userProfilePage = () => {
     setUploadingImg(e.target.files[0]);
   };
 
+  // upload a new image
   async function upload() {
     var formData = new FormData();
     formData.append("email", sessionStorage.getItem("email"));

@@ -71,6 +71,7 @@ const UnAthuedCollectionDetailPage = () => {
   const urlParams = new URLSearchParams(queryString);
   const collectionId = urlParams.get("id");
 
+  // get collection data
   async function getData() {
     let res = await axios({
       method: "get",
@@ -106,6 +107,7 @@ const UnAthuedCollectionDetailPage = () => {
     setLoading(false);
   }
 
+  // get the collection creator
   async function getCreator() {
     let res = await axios({
       url: "http://localhost:8001/users",

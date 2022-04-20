@@ -115,6 +115,7 @@ const UnAuthedBookProfile = () => {
     getData();
   }, [changed]);
 
+  // get book data
   async function getData() {
     let userEmail = sessionStorage.getItem("email");
 
@@ -126,11 +127,8 @@ const UnAuthedBookProfile = () => {
       .catch((error) => {
         console.error(`Error: ${error}`);
       });
-
     let res = await axios.get("http://localhost:8001/oneuser/" + userEmail);
-
     let myCol = res.data.collections;
-
     let res1 = await axios({
       url: "http://localhost:8001/myCollections",
       data: {
@@ -150,6 +148,7 @@ const UnAuthedBookProfile = () => {
     console.log(tmp);
   }
 
+  // find targetbook and set states
   function getTargetBook(res) {
     for (let i = 0; i < res.length; i++) {
       if (res[i]["_id"] == queryString) {
@@ -172,6 +171,7 @@ const UnAuthedBookProfile = () => {
     window.open(amzLink, "_blank").focus();
   }
 
+  // get book reviews
   async function getReviews(bookTitle) {
     let res = await axios({
       method: "get",
@@ -187,6 +187,7 @@ const UnAuthedBookProfile = () => {
     setBookReviews(curBookReviews);
   }
 
+  // mark a book as read
   async function markRead() {
     let userEmail = sessionStorage.getItem("email");
     let res = await axios({
@@ -218,6 +219,7 @@ const UnAuthedBookProfile = () => {
     setChanged(tmp);
   }
 
+  // increment a goal
   async function advanceGoal(goalId) {
     await axios({
       method: "patch",
@@ -229,6 +231,7 @@ const UnAuthedBookProfile = () => {
     return;
   }
 
+  // get books in the same category
   async function getSimilarBooks(categoryId) {
     let res = await axios({
       method: "get",

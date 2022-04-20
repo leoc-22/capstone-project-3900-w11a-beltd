@@ -52,6 +52,7 @@ export default function RecommendationsPage() {
     setFilter(event.target.value);
   };
 
+  // get book data
   async function getBook() {
     let n = sessionStorage.getItem("name");
 
@@ -126,6 +127,7 @@ export default function RecommendationsPage() {
     return;
   }
 
+  // filter by rating
   async function getBooksByRatings(rating) {
     await axios
       .get(`http://localhost:8002/books/${rating}`)

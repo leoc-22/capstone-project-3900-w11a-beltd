@@ -29,6 +29,7 @@ export default function ForgetPasswordPage() {
   console.log(`id: ${id}`);
   console.log(`token: ${token}`);
 
+  // regex chrck for valid password
   const [passwordError, setPasswordError] = useState("");
   const validatePassword = (p) => {
     var reg = new RegExp("^(?=.*\\d).{6,}$");
@@ -53,6 +54,7 @@ export default function ForgetPasswordPage() {
     }
   };
 
+  // update user password
   function updatePassword(e) {
     e.preventDefault();
     var newPassword = document.getElementById("passwordInput").value;
