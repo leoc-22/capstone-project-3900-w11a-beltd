@@ -233,7 +233,6 @@ export default function AuthenicatedTopBar() {
       setLeaderBoardBtn(classes.BtnTextActive);
     }
   }
-  // var userName = localStorage.getItem("name");
 
   return (
     <StyledAppBar position="static">
@@ -351,7 +350,7 @@ export default function AuthenicatedTopBar() {
           <Box sx={{ display: "flex", alignItems: "flex-end" }}>
             <IconButton
               onClick={handleSeachOpen}
-              class={classes.iconBtn}
+              className={classes.iconBtn}
               disableRipple
             >
               <SearchIcon />

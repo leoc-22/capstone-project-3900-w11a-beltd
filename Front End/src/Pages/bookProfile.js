@@ -660,7 +660,11 @@ const bookProfilePage = () => {
                 <Rating name="read-only" value={rev.rating} readOnly />
                 <Typography variant="body2">{rev.review}</Typography>
                 <br />
-                <Typography className={classes.reviewUser} variant="body2">
+                <Typography
+                  className={classes.reviewUser}
+                  component={"span"}
+                  variant="body2"
+                >
                   <Chip
                     label={rev.name}
                     sx={{ marginRight: "16px" }}

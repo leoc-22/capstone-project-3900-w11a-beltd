@@ -75,14 +75,13 @@ export default function LandingPage() {
   }
 
   // wait for axios to get book data, then render book shelves
-  // TODO Beautify this
   if (loading)
     return (
-      <p>
+      <div>
         <Loading />
-      </p>
+      </div>
     );
-  if (error) return <p>Error: {error.message}</p>;
+  if (error) return <div>Error: {error.message}</div>;
 
   return (
     <div>

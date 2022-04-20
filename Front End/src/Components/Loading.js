@@ -9,7 +9,7 @@ const useStyles = makeStyles({
   },
 });
 
-// laoding spinner
+// loading spinner
 export default function Loading() {
   const classes = useStyles();
 

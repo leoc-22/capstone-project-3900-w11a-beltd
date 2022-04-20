@@ -13,8 +13,6 @@ import Rating from "@mui/material/Rating";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 
-// import { useLocation } from "react-router-dom";
-
 const useStyles = makeStyles({
   main: {
     minHeight: "1100px",
@@ -117,8 +115,6 @@ const UnAuthedBookProfile = () => {
 
   // get book data
   async function getData() {
-    let userEmail = sessionStorage.getItem("email");
-
     await axios
       .get("http://localhost:8002/books")
       .then((res) => {
@@ -127,24 +123,6 @@ const UnAuthedBookProfile = () => {
       .catch((error) => {
         console.error(`Error: ${error}`);
       });
-    let res = await axios.get("http://localhost:8001/oneuser/" + userEmail);
-    let myCol = res.data.collections;
-    let res1 = await axios({
-      url: "http://localhost:8001/myCollections",
-      data: {
-        user: sessionStorage.getItem("id"),
-      },
-    });
-
-    let tmp = [];
-    for (let i = 0; i < myCol.length; i++) {
-      for (let j = 0; j < res1.data.length; j++) {
-        if (myCol[i] == res1.data[j]._id) {
-          tmp.push({ id: myCol[i], name: res1.data[j].name });
-          break;
-        }
-      }
-    }
   }
 
   // find targetbook and set states
@@ -420,13 +398,12 @@ const UnAuthedBookProfile = () => {
           <div key={index} className={classes.reviewDiv}>
             <Card sx={{ width: "60%" }}>
               <CardContent>
-                {/* Add user, date, rating */}
                 <Rating name="read-only" value={rev.rating} readOnly />
                 <Typography variant="body2">{rev.review}</Typography>
                 <br />
-
                 <Typography
                   className={classes.reviewUser}
+                  component={"span"}
                   variant="body2"
                   onClick={() => goToProfile()}
                 >

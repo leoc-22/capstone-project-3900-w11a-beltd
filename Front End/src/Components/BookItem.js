@@ -83,6 +83,6 @@ const BookItem = (props) => {
 export default BookItem;
 
 BookItem.propTypes = {
-  data: PropTypes.any,
-  index: PropTypes.any,
+  data: PropTypes.string,
+  index: PropTypes.number,
 };
