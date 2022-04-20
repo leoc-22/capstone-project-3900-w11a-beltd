@@ -157,19 +157,25 @@ export default function AuthenicatedTopBar() {
   }
 
   function routePage(page) {
-    if (page === "Explore") {
+    let sideBarPage = "";
+
+    if (page.page != null){
+      sideBarPage = page.page;
+    }
+
+    if (page === "Explore" || sideBarPage === "Explore") {
       history.push({
         pathname: "/search",
       });
-    } else if (page === "Collections") {
+    } else if (page === "Collections"  || sideBarPage === "Collections") {
       history.push({
         pathname: "/collections",
       });
-    } else if (page === "Recommendations") {
+    } else if (page === "Recommendations" || sideBarPage === "Recommendations") {
       history.push({
         pathname: "/recommendations",
       });
-    } else if (page === "Leaderboard") {
+    } else if (page === "Leaderboard" || sideBarPage === "Leaderboard") {
       history.push({
         pathname: "/LeaderBoard",
       });
@@ -177,6 +183,7 @@ export default function AuthenicatedTopBar() {
       return;
     }
   }
+
 
   function routeSettingPage(page) {
     let targetPage = page;
