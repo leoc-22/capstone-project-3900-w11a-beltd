@@ -159,7 +159,7 @@ export default function RecommendationsPage() {
                 label="Filter by"
                 onChange={handleChange}
               >
-                <MenuItem value="Popular">Popular books</MenuItem>
+                {/* <MenuItem value="Popular">Popular books</MenuItem> */}
                 <MenuItem value="Random">Random Book</MenuItem>
                 <MenuItem value="Authors">Authors in my collection</MenuItem>
                 <MenuItem value="Genres">Genres in my collection</MenuItem>
