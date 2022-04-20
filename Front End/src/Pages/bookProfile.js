@@ -116,11 +116,7 @@ const bookProfilePage = () => {
   const [bookId, setBookId] = useState(null);
   const [amzPrice, setAmzPrice] = useState(null);
   const [amzLink, setAmzLink] = useState(null);
-  // eslint-disable-next-line no-unused-vars
-  const [categoryId, setCategoryId] = useState(null);
   const [books, setBooks] = useState([]);
-  // eslint-disable-next-line no-unused-vars
-  const [goalsArr, setGoalsArr] = useState([]);
   const [hideSuccessAlert, setHideSuccessAlert] = useState(true);
   const [targetCollection, setTargetCollection] = useState("");
   const [isRead, setIsRead] = useState(false);
@@ -187,7 +183,6 @@ const bookProfilePage = () => {
         setBookRating("Rating: " + res[i]["rating"]);
         getReviews(res[i]["title"]);
         setCategory(res[i].categories[0].name);
-        setCategoryId(res[i].categories[0].id);
         setBookId(res[i]["_id"]);
         setAmzPrice(res[i]["price"]["value"]);
         setAmzLink(res[i]["price"]["link"]);
@@ -313,7 +308,6 @@ const bookProfilePage = () => {
         }
       }
     }
-    setGoalsArr(allMygoals);
 
     for (let i = 0; i < allMygoals.length; i++) {
       advanceGoal(allMygoals[i]._id);

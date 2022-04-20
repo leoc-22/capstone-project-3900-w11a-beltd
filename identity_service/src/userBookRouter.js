@@ -21,13 +21,9 @@ app.patch("/markasread", async (req, res) => {
     books: req.body.b_id,
   });
 
-  if (!collections.length) {
-    console.log("hey");
-    return;
-  }
+  if (!collections.length) return;
 
   for (let i = 0; i < collections.length; i++) {
-    console.log(`collection id: ${collections[i]._id}`);
     let query = { bookid: req.body.b_id, userCollection: collections[i]._id };
     await userBookModel
       .updateMany(
@@ -47,11 +43,9 @@ app.patch("/markasread", async (req, res) => {
 });
 
 app.get("/numoftimesread/:bookid", async (req, res) => {
-  console.log(req.params.bookid);
   await userBookModel
     .find({ bookid: req.params.bookid, read: true })
     .then((books) => {
-      console.log(`this book is read ${books.length} times`);
       // have to send it as string otherwise http treats numbers as status code
       res.send(books.length.toString());
     })

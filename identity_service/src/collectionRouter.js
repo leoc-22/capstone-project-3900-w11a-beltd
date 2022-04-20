@@ -26,10 +26,7 @@ app.get("/myCollections", async (req, res) => {
         console.log(docs);
       }
     })
-    .clone()
-    .catch(function (err) {
-      console.log(err);
-    });
+    .clone();
   res.send(collection);
 });
 
@@ -140,7 +137,6 @@ app.get("/recommendbyauthors/:creatorName", async (req, res) => {
         params: { author: bookList[i].authors },
       })
       .then((res) => {
-        console.log(res.data);
         recommendations = recommendations.concat(res.data);
       })
       .catch((error) => {
@@ -204,7 +200,7 @@ app.post("/addBook", async (req, res) => {
     { new: true }
   );
   res.send("Successfully added a book to collection");
-  console.log("Successfully added a book to collection");
+  console.log("added a book to collection");
 });
 
 // Remove a book from a collection
@@ -249,7 +245,6 @@ app.patch("/readBook", async (req, res) => {
     { new: true }
   );
 
-  console.log(updatedReadCollection);
   res.send(updatedReadCollection);
 });
 
@@ -259,7 +254,6 @@ app.get("/numofcolle/:bookid", async (req, res) => {
   await collectionModel
     .find({ books: req.params.bookid })
     .then((collections) => {
-      console.log(`${collections.length} collections have this book`);
       // have to send it as string otherwise http treats numbers as status code
       res.send(collections.length.toString());
     })
@@ -278,8 +272,6 @@ app.delete("/collection", async (req, res) => {
     console.log("Collection deleted");
     res.send("Successfully deleted");
   });
-
-  // remove collection objectID from user model
 });
 
 module.exports = app;

@@ -29,22 +29,12 @@ app.post("/review", async (req, res) => {
   // Link up with users model
   const _id = req.body.user;
   const updatedUser = await userModel.findByIdAndUpdate(
-    {_id},
-    { $push: { "reviews": review._id } },
+    { _id },
+    { $push: { reviews: review._id } },
     { new: true }
   );
   console.log(updatedUser);
-
-  // // Link up with book model
-  // const b_id = req.body.book;
-  // const updatedBook = await bookModel.findByIdAndUpdate(
-  //   {b_id},
-  //   { $push: { "reviews": review._id } },
-  //   { new: true }
-  // );
-  // console.log(updatedBook);
 });
-
 
 app.get("/review", async (req, res) => {
   const review = await reviewModel.find({});
@@ -55,7 +45,5 @@ app.get("/review", async (req, res) => {
     res.status(500).send(error);
   }
 });
-
-
 
 module.exports = app;
