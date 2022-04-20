@@ -42,12 +42,15 @@ const useStyles = makeStyles({
   },
   bestTitle: {
     position: "absolute",
-    marginTop: "-350px",
+    marginTop: "-400px",
+    fontSize: "25px",
     marginLeft: "400px",
+    minWidth: "350px",
+    fontWeight: "500",
   },
   bestAuthor: {
     position: "absolute",
-    marginTop: "-18%",
+    marginTop: "-15%",
     marginLeft: "400px",
     fontSize: "16pt",
   },
@@ -321,9 +324,9 @@ export default function SearchPage() {
             className={classes.bestResImg}
             onClick={() => gotoBook()}
           ></img>
-          <h2 className={classes.bestTitle}>
+          <div className={classes.bestTitle}>
             {bestResult != undefined ? bestResult.title : ""}
-          </h2>
+          </div>
           <br />
           <div className={classes.bestAuthor}>
             {bestResult != undefined ? bestResult.authors : ""}
