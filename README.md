@@ -29,12 +29,18 @@ Dev Port: 3000
 - git
 - node version 16+ (use [node version manager](https://github.com/nvm-sh/nvm) to install and use node versions)
 
-### 2. Clone Repository
+### 2. Clone/Download Repository
 
 ```
 git clone https://github.com/unsw-cse-comp3900-9900-22T1/capstone-project-3900-w11a-beltd.git
 cd capstone-project-3900-w11a-beltd
 ```
+
+or
+
+- Click `Download ZIP` in the green `Code` drop-down button
+- In the terminal, go to the directory where the zip file is located.
+- Run `unzip capstone-project-3900-w11a-beltd-main.zip`. This unzips the zip file downloaded.
 
 ### 3. Install Dependencies
 

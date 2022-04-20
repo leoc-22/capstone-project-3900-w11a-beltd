@@ -2,8 +2,24 @@ const express = require("express");
 const bookModel = require("./models/bookModel");
 const app = express();
 const axios = require("axios");
+const EbayAuthToken = require("ebay-oauth-nodejs-client");
 
-let counter = 0;
+let token = null;
+
+const ebayAuthToken = new EbayAuthToken({
+  filePath: "secrets.json",
+});
+
+const clientScope = "https://api.ebay.com/oauth/api_scope";
+
+ebayAuthToken
+  .getApplicationToken("PRODUCTION", clientScope)
+  .then((data) => {
+    token = JSON.parse(data).access_token;
+  })
+  .catch((error) => {
+    console.log(`Error to get Access token :${JSON.stringify(error)}`);
+  });
 
 // Get all books in the database
 app.get("/books", async (req, res) => {
@@ -139,10 +155,36 @@ app.get("/books/:rating", async (req, res) => {
     });
 });
 
+app.get("/ebay/:title", async (req, res) => {
+  await axios({
+    method: "get",
+    url: `https://api.ebay.com/buy/browse/v1/item_summary/search?q=${req.params.title}&limit=1`,
+    headers: {
+      Authorization: "Bearer " + token,
+      "Content-Type": "application/json",
+      "X-EBAY-C-MARKETPLACE-ID": "EBAY_AU",
+      "X-EBAY-C-ENDUSERCTX":
+        "affiliateCampaignId=<ePNCampaignId>,affiliateReferenceId=<referenceId></referenceId>",
+    },
+  })
+    .then((result) => {
+      console.log(result.data);
+      res.send({
+        value: result.data.itemSummaries[0].price.value,
+        link: result.data.itemSummaries[0].itemWebUrl,
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+});
+
 // WARNING: Calling this API will use Rainforest API for multiple times,
 // which costs api usage in the account
 // Get books from 4 categories from Rainforest API and store them in the database
 // Category API overview: https://www.rainforestapi.com/docs/categories-api/overview
+let counter = 0;
+
 app.get("/updatebookdb1", async () => {
   const params = {
     api_key: "6BE45BB0BE0F4BCA8DD46F0EC1B10B78",

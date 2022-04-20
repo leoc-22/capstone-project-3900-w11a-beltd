@@ -15,6 +15,7 @@
   "dependencies": {
     "axios": "^0.26.1",
     "cors": "^2.8.5",
+    "ebay-oauth-nodejs-client": "^1.2.1",
     "express": "^4.17.3",
     "mongoose": "^6.2.8"
   },
