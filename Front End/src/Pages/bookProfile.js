@@ -126,7 +126,7 @@ const bookProfilePage = () => {
   const [isRead, setIsRead] = useState(false);
   const [numTimesRead, setNumTimesRead] = useState(0);
   const [numColleThisIn, setNumColleThisIn] = useState(0);
-  const [ebayPrice, setEbayPrice] = useState(0);
+  const [ebayPrice, setEbayPrice] = useState(null);
   const [ebayLink, setEbayLink] = useState(null);
 
   const classes = useStyles();
@@ -549,7 +549,7 @@ const bookProfilePage = () => {
                   sx={{ fontSize: 14, textTransform: "uppercase" }}
                   color="text.secondary"
                 >
-                  Price: ${ebayPrice}
+                  {ebayPrice == null ? "Not Found" : `Price: ${ebayPrice}`}
                 </Typography>
               </CardContent>
               <CardActions>
