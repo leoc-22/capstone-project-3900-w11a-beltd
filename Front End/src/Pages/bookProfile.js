@@ -116,17 +116,13 @@ const bookProfilePage = () => {
   const [bookId, setBookId] = useState(null);
   const [amzPrice, setAmzPrice] = useState(null);
   const [amzLink, setAmzLink] = useState(null);
-  // eslint-disable-next-line no-unused-vars
-  const [categoryId, setCategoryId] = useState(null);
   const [books, setBooks] = useState([]);
-  // eslint-disable-next-line no-unused-vars
-  const [goalsArr, setGoalsArr] = useState([]);
   const [hideSuccessAlert, setHideSuccessAlert] = useState(true);
   const [targetCollection, setTargetCollection] = useState("");
   const [isRead, setIsRead] = useState(false);
   const [numTimesRead, setNumTimesRead] = useState(0);
   const [numColleThisIn, setNumColleThisIn] = useState(0);
-  const [ebayPrice, setEbayPrice] = useState(0);
+  const [ebayPrice, setEbayPrice] = useState(null);
   const [ebayLink, setEbayLink] = useState(null);
 
   const classes = useStyles();
@@ -141,6 +137,7 @@ const bookProfilePage = () => {
     getData();
   }, [changed]);
 
+  // get book data
   async function getData() {
     let userEmail = sessionStorage.getItem("email");
 
@@ -176,6 +173,7 @@ const bookProfilePage = () => {
     setCollections(tmp);
   }
 
+  // find the target book and set states
   function getTargetBook(res) {
     for (let i = 0; i < res.length; i++) {
       if (res[i]["_id"] == queryString) {
@@ -185,7 +183,6 @@ const bookProfilePage = () => {
         setBookRating("Rating: " + res[i]["rating"]);
         getReviews(res[i]["title"]);
         setCategory(res[i].categories[0].name);
-        setCategoryId(res[i].categories[0].id);
         setBookId(res[i]["_id"]);
         setAmzPrice(res[i]["price"]["value"]);
         setAmzLink(res[i]["price"]["link"]);
@@ -199,6 +196,7 @@ const bookProfilePage = () => {
     }
   }
 
+  // get book stats
   async function handleStats(bookId) {
     await axios
       .get(`http://localhost:8001/numoftimesread/${bookId}`)
@@ -219,6 +217,7 @@ const bookProfilePage = () => {
       });
   }
 
+  // get ebay stats
   async function handleEBay(title) {
     await axios
       .get(`http://localhost:8002/ebay/${title}`)
@@ -231,6 +230,7 @@ const bookProfilePage = () => {
       });
   }
 
+  // submit a review
   async function submitReview() {
     let today = new Date();
     let dd = String(today.getDate()).padStart(2, "0");
@@ -260,6 +260,7 @@ const bookProfilePage = () => {
     return;
   }
 
+  // get reviews of a book
   async function getReviews(bookTitle) {
     let res = await axios({
       method: "get",
@@ -284,6 +285,7 @@ const bookProfilePage = () => {
     setBookReviews(curBookReviews);
   }
 
+  // mark a book as read
   async function markRead(bookId) {
     let userEmail = sessionStorage.getItem("email");
     let res = await axios({
@@ -306,7 +308,6 @@ const bookProfilePage = () => {
         }
       }
     }
-    setGoalsArr(allMygoals);
 
     for (let i = 0; i < allMygoals.length; i++) {
       advanceGoal(allMygoals[i]._id);
@@ -335,6 +336,7 @@ const bookProfilePage = () => {
       });
   }
 
+  // advance a goal
   async function advanceGoal(goalId) {
     let allGoals = await axios({
       method: "get",
@@ -378,6 +380,7 @@ const bookProfilePage = () => {
     return;
   }
 
+  // get books in the same category
   async function getSimilarBooks(categoryId) {
     let res = await axios({
       method: "get",
@@ -415,6 +418,7 @@ const bookProfilePage = () => {
     }
   }
 
+  // add book to a collection
   async function addToCollection(id) {
     let res = await axios({
       method: "get",
@@ -447,7 +451,6 @@ const bookProfilePage = () => {
         _id: id,
       },
     });
-    console.log("added to collection");
   }
 
   if (changed == 0) {
@@ -539,7 +542,7 @@ const bookProfilePage = () => {
                   sx={{ fontSize: 14, textTransform: "uppercase" }}
                   color="text.secondary"
                 >
-                  Price: ${ebayPrice}
+                  {ebayPrice == null ? "Not Found" : `Price: ${ebayPrice}`}
                 </Typography>
               </CardContent>
               <CardActions>
@@ -657,7 +660,11 @@ const bookProfilePage = () => {
                 <Rating name="read-only" value={rev.rating} readOnly />
                 <Typography variant="body2">{rev.review}</Typography>
                 <br />
-                <Typography className={classes.reviewUser} variant="body2">
+                <Typography
+                  className={classes.reviewUser}
+                  component={"span"}
+                  variant="body2"
+                >
                   <Chip
                     label={rev.name}
                     sx={{ marginRight: "16px" }}

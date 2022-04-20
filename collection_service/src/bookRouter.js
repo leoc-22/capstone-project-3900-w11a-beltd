@@ -26,7 +26,6 @@ app.get("/books", async (req, res) => {
   await bookModel
     .find({})
     .then((books) => {
-      console.log(`Retrieved ${books.length} books`);
       res.send(books);
     })
     .catch((error) => {
@@ -38,7 +37,6 @@ app.get("/book/:id", async (req, res) => {
   await bookModel
     .findById(req.params.id)
     .then((book) => {
-      console.log(`Retrieved ${book.title}`);
       res.send(book);
     })
     .catch((error) => {
@@ -52,7 +50,6 @@ app.get("/books/autocomplete", async (req, res) => {
     .find({})
     .select("title authors bookid categories")
     .then((books) => {
-      console.log(`Retrieved ${books.length} books`);
       res.send(books);
     })
     .catch((error) => {
@@ -74,8 +71,6 @@ app.get("/books/search/:q", async (req, res) => {
   query = query.replaceAll("?", "\\?");
   query = query.replaceAll(".", "\\.");
 
-  console.log(query);
-
   await bookModel
     .find({
       $or: [
@@ -89,20 +84,17 @@ app.get("/books/search/:q", async (req, res) => {
       ],
     })
     .then((books) => {
-      console.log(`Found ${books.length} books that match the query`);
       res.send(books);
     });
 });
 
 // Get similar books by its genre (category)
 app.get("/similar/:categoryID", async (req, res) => {
-  console.log(req.params.categoryID);
   await bookModel
     .find({
       categories: { $elemMatch: { id: { $eq: req.params.categoryID } } },
     })
     .then((books) => {
-      console.log(`Retrieved ${books.length} books with the target category`);
       res.send(books);
     })
     .catch((error) => {
@@ -113,7 +105,6 @@ app.get("/similar/:categoryID", async (req, res) => {
 
 // Get books by author
 app.get("/getbooksbyauthor", async (req, res) => {
-  console.log(`author: ${req.query.author}`);
   let query = req.query.author;
 
   query = query.replaceAll("(", "\\(");
@@ -132,7 +123,6 @@ app.get("/getbooksbyauthor", async (req, res) => {
       authors: { $regex: query, $options: "i" },
     })
     .then((books) => {
-      console.log(`Retrieved ${books.length} books with the target author`);
       res.send(books);
     })
     .catch((error) => {
@@ -145,9 +135,6 @@ app.get("/books/:rating", async (req, res) => {
   await bookModel
     .find({ rating: { $gte: req.params.rating } })
     .then((books) => {
-      console.log(
-        `Retrieved ${books.length} books with rating >= ${req.params.rating}`
-      );
       res.send(books);
     })
     .catch((error) => {
@@ -168,7 +155,6 @@ app.get("/ebay/:title", async (req, res) => {
     },
   })
     .then((result) => {
-      console.log(result.data);
       res.send({
         value: result.data.itemSummaries[0].price.value,
         link: result.data.itemSummaries[0].itemWebUrl,
@@ -185,7 +171,7 @@ app.get("/ebay/:title", async (req, res) => {
 // Category API overview: https://www.rainforestapi.com/docs/categories-api/overview
 let counter = 0;
 
-app.get("/updatebookdb1", async () => {
+app.get("/updatebookdb", async () => {
   const params = {
     api_key: "6BE45BB0BE0F4BCA8DD46F0EC1B10B78",
     type: "category",
@@ -198,9 +184,7 @@ app.get("/updatebookdb1", async () => {
   axios
     .get("https://api.rainforestapi.com/request", { params })
     .then((res) => {
-      console.log("retrieved data");
       res.data.category_results.map((e) => {
-        // console.log(JSON.stringify(e));
         const book = new bookModel({
           title: e.title,
           image: e.image,
@@ -218,130 +202,6 @@ app.get("/updatebookdb1", async () => {
         });
         book.save();
         counter++;
-        console.log("A book is created");
-      });
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-});
-
-app.get("/updatebookdb2", async () => {
-  const params = {
-    api_key: "6BE45BB0BE0F4BCA8DD46F0EC1B10B78",
-    type: "category",
-    category_id: "48",
-    amazon_domain: "amazon.com",
-    output: "json",
-    include_html: "false",
-  };
-
-  axios
-    .get("https://api.rainforestapi.com/request", { params })
-    .then((res) => {
-      console.log("retrieved data");
-      res.data.category_results.map((e) => {
-        // console.log(JSON.stringify(e));
-        const book = new bookModel({
-          title: e.title,
-          image: e.image,
-          authors: e.authors[0].name,
-          rating: e.rating,
-          price: {
-            value: e.price.value,
-            currency: e.price.currency,
-            link: e.price.link,
-          },
-          link: e.link,
-          asin: e.asin,
-          bookid: counter,
-          categories: e.categories,
-        });
-        book.save();
-        counter++;
-        console.log("A book is created");
-      });
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-});
-
-app.get("/updatebookdb3", async () => {
-  const params = {
-    api_key: "6BE45BB0BE0F4BCA8DD46F0EC1B10B78",
-    type: "category",
-    category_id: "5",
-    amazon_domain: "amazon.com",
-    output: "json",
-    include_html: "false",
-  };
-
-  axios
-    .get("https://api.rainforestapi.com/request", { params })
-    .then((res) => {
-      console.log("retrieved data");
-      res.data.category_results.map((e) => {
-        // console.log(JSON.stringify(e));
-        const book = new bookModel({
-          title: e.title,
-          image: e.image,
-          authors: e.authors[0].name,
-          rating: e.rating,
-          price: {
-            value: e.price.value,
-            currency: e.price.currency,
-            link: e.price.link,
-          },
-          link: e.link,
-          asin: e.asin,
-          bookid: counter,
-          categories: e.categories,
-        });
-        book.save();
-        counter++;
-        console.log("A book is created");
-      });
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-});
-
-app.get("/updatebookdb4", async () => {
-  const params = {
-    api_key: "6BE45BB0BE0F4BCA8DD46F0EC1B10B78",
-    type: "category",
-    category_id: "25",
-    amazon_domain: "amazon.com",
-    output: "json",
-    include_html: "false",
-  };
-
-  axios
-    .get("https://api.rainforestapi.com/request", { params })
-    .then((res) => {
-      console.log("retrieved data");
-      res.data.category_results.map((e) => {
-        // console.log(JSON.stringify(e));
-        const book = new bookModel({
-          title: e.title,
-          image: e.image,
-          authors: e.authors[0].name,
-          price: {
-            value: e.price.value,
-            currency: e.price.currency,
-            link: e.price.link,
-          },
-          rating: e.rating,
-          link: e.link,
-          asin: e.asin,
-          bookid: counter,
-          categories: e.categories,
-        });
-        book.save();
-        counter++;
-        console.log("A book is created");
       });
     })
     .catch((error) => {

@@ -1,4 +1,3 @@
-/* eslint-disable */
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import AppBar from "@mui/material/AppBar";
@@ -42,19 +41,15 @@ const useStyles = makeStyles({
     marginRight: "20px",
     minWidth: "100px",
     maxWidth: "175px",
-    marginLeft : "5px"
+    marginLeft: "5px",
   },
-  divider : {
-    minWidth : '50px'
+  divider: {
+    minWidth: "50px",
   },
-  goBtn : {
-    marginLeft : "90%",
-    position : "absolute"
+  goBtn: {
+    marginLeft: "90%",
+    position: "absolute",
   },
-  divider : {
-    minWidth : '50px'
-  },
-
 });
 
 const ButtonLink = styled(Button)(() => ({
@@ -90,7 +85,6 @@ export default function AuthenicatedTopBar() {
   const [RecommendationsBtn, setRecommendationsBtn] = useState(null);
   const [LeaderBoardBtn, setLeaderBoardBtn] = useState(null);
   const [books, setBooks] = useState([]);
-  const [query, setQuery] = useState("");
   const [seachOpen, setSeachOpen] = useState(false);
 
   const history = useHistory();
@@ -99,8 +93,6 @@ export default function AuthenicatedTopBar() {
     getLocation();
     getBookData();
   }, []);
-
-
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -117,6 +109,7 @@ export default function AuthenicatedTopBar() {
     setAnchorElUser(null);
   };
 
+  // get book data
   const getBookData = () => {
     axios
       .get("http://localhost:8002/books/autocomplete")
@@ -125,7 +118,7 @@ export default function AuthenicatedTopBar() {
       })
       .catch((error) => {
         console.error(`Error: ${error}`);
-        setError(error);
+        //setError(error);
       });
   };
 
@@ -146,6 +139,7 @@ export default function AuthenicatedTopBar() {
     return [...optionList];
   };
 
+  // show search bar
   function handleSeachOpen() {
     if (seachOpen == false) {
       document.getElementById("searchText").hidden = false;
@@ -156,10 +150,11 @@ export default function AuthenicatedTopBar() {
     }
   }
 
+  // route user to another page
   function routePage(page) {
     let sideBarPage = "";
 
-    if (page.page != null){
+    if (page.page != null) {
       sideBarPage = page.page;
     }
 
@@ -167,11 +162,14 @@ export default function AuthenicatedTopBar() {
       history.push({
         pathname: "/search",
       });
-    } else if (page === "Collections"  || sideBarPage === "Collections") {
+    } else if (page === "Collections" || sideBarPage === "Collections") {
       history.push({
         pathname: "/collections",
       });
-    } else if (page === "Recommendations" || sideBarPage === "Recommendations") {
+    } else if (
+      page === "Recommendations" ||
+      sideBarPage === "Recommendations"
+    ) {
       history.push({
         pathname: "/recommendations",
       });
@@ -184,7 +182,7 @@ export default function AuthenicatedTopBar() {
     }
   }
 
-
+  // route user to another page
   function routeSettingPage(page) {
     let targetPage = page;
     if (targetPage === "Profile") {
@@ -210,39 +208,31 @@ export default function AuthenicatedTopBar() {
     }
   }
 
-  function search(val){
-    //console.log(val);
-
+  // search on the navbar
+  function search(val) {
     const urlString = String(window.location.pathname);
-    
-    console.log(val);
-    
     history.push("/search?searchQuery=" + val);
-    if (urlString.includes("search")){
+    if (urlString.includes("search")) {
       location.reload();
     }
-    
   }
 
-
-  function getLocation(){
-  const urlString = String(window.location.pathname);
-    if(urlString.includes("search")){
-      //document.getElementById("Explore").textContent = "ef";
+  // get cur location
+  function getLocation() {
+    const urlString = String(window.location.pathname);
+    if (urlString.includes("search")) {
       setExploreBtn(classes.BtnTextActive);
     } else if (
       urlString.includes("collections") ||
       urlString.includes("collection-detail")
     ) {
       setCollectionsBtn(classes.BtnTextActive);
-
     } else if (urlString.includes("recommendations")) {
       setRecommendationsBtn(classes.BtnTextActive);
     } else if (urlString.includes("LeaderBoard")) {
       setLeaderBoardBtn(classes.BtnTextActive);
     }
   }
-  // var userName = localStorage.getItem("name");
 
   return (
     <StyledAppBar position="static">
@@ -253,9 +243,13 @@ export default function AuthenicatedTopBar() {
             noWrap
             component="div"
             sx={{
-              mr: 2, display: { xs: "none", md: "flex" }, "&:hover": {
-                cursor: "pointer"
-              }, flexGrow: 0, color: "#1976d2"
+              mr: 2,
+              display: { xs: "none", md: "flex" },
+              "&:hover": {
+                cursor: "pointer",
+              },
+              flexGrow: 0,
+              color: "#1976d2",
             }}
             onClick={() =>
               history.push({
@@ -307,7 +301,11 @@ export default function AuthenicatedTopBar() {
             variant="h6"
             noWrap
             component="div"
-            sx={{ flexGrow: 1, display: { xs: "flex", md: "none" }, color: "#1976d2" }}
+            sx={{
+              flexGrow: 1,
+              display: { xs: "flex", md: "none" },
+              color: "#1976d2",
+            }}
             onClick={() =>
               history.push({
                 pathname: "/home",
@@ -349,51 +347,45 @@ export default function AuthenicatedTopBar() {
               <div className={LeaderBoardBtn}>Leaderboard</div>
             </ButtonLink>
           </Box>
-          <Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
-            
-            
-          <IconButton
-            onClick={handleSeachOpen}
-            class={classes.iconBtn}
-            disableRipple
-          >
-            <SearchIcon/>
+          <Box sx={{ display: "flex", alignItems: "flex-end" }}>
+            <IconButton
+              onClick={handleSeachOpen}
+              className={classes.iconBtn}
+              disableRipple
+            >
+              <SearchIcon />
             </IconButton>
             <div className={classes.textItem} id="searchText" hidden>
-            <Autocomplete
-              disablePortal
-              autoSelect = {false}
-              freeSolo
-              clearOnBlur={false}
-              options={handleOptions()}
-              sx={{ width: 230 }}
-              renderInput={(params) => (
-                <TextField 
-                label = "Search Books, Authors, Genres"
-                InputProps={{ style: { fontSize: 5 }}
-                }
-                  {...params}
-                  placeholder="Search"
-                  variant="standard"
-                  onChange={(e) => {
-                    setQuery(e.target.value);
-                  }}
-                />
-              )}
-              onChange={(e, value) => {
-                //setQuery1(value);
-                search(value)
-              }}
-              
-            />
-          </div> 
-          <div class={classes.divider}/>
-
-
+              <Autocomplete
+                disablePortal
+                autoSelect={false}
+                freeSolo
+                clearOnBlur={false}
+                options={handleOptions()}
+                sx={{ width: 230 }}
+                renderInput={(params) => (
+                  <TextField
+                    label="Search Books, Authors, Genres"
+                    InputProps={{ style: { fontSize: 5 } }}
+                    {...params}
+                    placeholder="Search"
+                    variant="standard"
+                  />
+                )}
+                onChange={(e, value) => {
+                  //setQuery1(value);
+                  search(value);
+                }}
+              />
+            </div>
+            <div className={classes.divider} />
           </Box>
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ marginLeft: "20px" }}>
+              <IconButton
+                onClick={handleOpenUserMenu}
+                sx={{ marginLeft: "20px" }}
+              >
                 <Avatar
                   //alt={props.user.name}
                   src={sessionStorage.getItem("image")}

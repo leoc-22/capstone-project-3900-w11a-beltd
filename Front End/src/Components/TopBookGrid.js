@@ -12,6 +12,7 @@ const useStyles = makeStyles({
   },
 });
 
+// main book grid component
 export default function TopBooksGrid(props) {
   const classes = useStyles();
   const numBooks = props.books.length;

@@ -42,12 +42,15 @@ const useStyles = makeStyles({
   },
   bestTitle: {
     position: "absolute",
-    marginTop: "-350px",
+    marginTop: "-400px",
+    fontSize: "25px",
     marginLeft: "400px",
+    minWidth: "350px",
+    fontWeight: "500",
   },
   bestAuthor: {
     position: "absolute",
-    marginTop: "-18%",
+    marginTop: "-15%",
     marginLeft: "400px",
     fontSize: "16pt",
   },
@@ -90,34 +93,34 @@ export default function SearchPage() {
     document.title = "Explore | Booklab";
   }, [barRes]);
 
+  // get url param
   const searchUrl = async () => {
     const newQuery = window.location.search.slice(13);
-    console.log(newQuery);
     if (newQuery != null) {
       getResults(newQuery);
     }
   };
 
+  // search by param
   const getResults = (data) => {
-    console.log("get Data");
     axios.get(`http://localhost:8002/books/search/${data}`).then((res) => {
       setSearchRes(res.data);
       setBestResult(res.data[0]);
       setSearchResImg(res.data[0].image);
       setRating(res.data[0].rating);
-      if (barRes == 0){
-        setBarRes(barRes+1);
+      if (barRes == 0) {
+        setBarRes(barRes + 1);
         document.getElementById("Results").hidden = false;
       }
     });
   };
 
+  // get search results
   const getBookData = async () => {
     axios
       .get("http://localhost:8002/books/autocomplete")
       .then((res) => {
         setBooks(res.data);
-        console.log(res);
       })
       .catch((error) => {
         console.error(`Error: ${error}`);
@@ -128,6 +131,7 @@ export default function SearchPage() {
       });
   };
 
+  // Filter by rating
   function getBooksAboveRating(data) {
     let bookArr = [];
     let targetRating;
@@ -142,10 +146,10 @@ export default function SearchPage() {
         bookArr.push(data[i]);
       }
     }
-    console.log(bookArr);
     return bookArr;
   }
 
+  // search by url param
   const handleSearch = () => {
     const newQuery = window.location.search.slice(13);
     if (newQuery != null) {
@@ -164,7 +168,6 @@ export default function SearchPage() {
         setSearchResImg(res.data[0].image);
         setBarRes(barRes + 1);
         setRating(res.data[0].rating);
-        //console.log(res.data[0].rating);
       } else {
         setSearchRes(getBooksAboveRating(res.data));
         let bestResFiltered = getBooksAboveRating(res.data)[0];
@@ -198,6 +201,7 @@ export default function SearchPage() {
     history.push("/book-profile?" + bookId);
   };
 
+  // filter by rating
   const handleRating = (val) => {
     if (val == 5) {
       setAllRatings(true);
@@ -315,9 +319,9 @@ export default function SearchPage() {
             className={classes.bestResImg}
             onClick={() => gotoBook()}
           ></img>
-          <h2 className={classes.bestTitle}>
+          <div className={classes.bestTitle}>
             {bestResult != undefined ? bestResult.title : ""}
-          </h2>
+          </div>
           <br />
           <div className={classes.bestAuthor}>
             {bestResult != undefined ? bestResult.authors : ""}

@@ -50,6 +50,7 @@ export default function UpdatePasswordPage() {
     }
   };
 
+  // update user password
   const [matchError, setMatchError] = useState("");
   const passwordMatch = (p) => {
     var password = document.getElementById("passwordInput").value;

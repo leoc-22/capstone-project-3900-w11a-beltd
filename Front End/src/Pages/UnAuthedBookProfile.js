@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import React, { useEffect, useState } from "react";
 import Navbar from "../Components/Navbar";
 import { makeStyles } from "@material-ui/core";
@@ -7,22 +5,13 @@ import Grid from "@mui/material/Grid";
 import Stack from "@mui/material/Stack";
 import Button from "@mui/material/Button";
 import Chip from "@mui/material/Chip";
-import login from "../Images/login.svg";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
-import TextField from "@mui/material/TextField";
 import Rating from "@mui/material/Rating";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
-import Modal from '@mui/material/Modal';
-import Box from '@mui/material/Box';
-import CloseIcon from '@mui/icons-material/Close';
-import Alert from '@mui/material/Alert';
-import { styled } from "@mui/material/styles";
-
-// import { useLocation } from "react-router-dom";
 
 const useStyles = makeStyles({
   main: {
@@ -68,88 +57,64 @@ const useStyles = makeStyles({
     },
   },
   modalBox: {
-    marginLeft: '25%',
-    marginTop: '10%',
-    width: '50%',
-    backgroundColor: 'white',
-    alignItems: 'center',
-    textAlign: 'center',
-    borderRadius: '20px'
+    marginLeft: "25%",
+    marginTop: "10%",
+    width: "50%",
+    backgroundColor: "white",
+    alignItems: "center",
+    textAlign: "center",
+    borderRadius: "20px",
   },
   modalContainer: {
-    alignItems: 'center',
-    textAlign: 'center',
-
+    alignItems: "center",
+    textAlign: "center",
   },
   closeIcon: {
-    marginLeft: '90%',
-    marginTop: '5px',
-    border: 'transparent',
-    background: 'transparent',
-    '&:hover': {
-      cursor: 'pointer',
+    marginLeft: "90%",
+    marginTop: "5px",
+    border: "transparent",
+    background: "transparent",
+    "&:hover": {
+      cursor: "pointer",
     },
   },
-  collectionsDiv : {
-    alignItems : 'center',
-    textAlign : 'center'
+  collectionsDiv: {
+    alignItems: "center",
+    textAlign: "center",
   },
-  alert : {
-    marginLeft : "20%",
-    width : "60%"
-  }
-
+  alert: {
+    marginLeft: "20%",
+    width: "60%",
+  },
 });
 
-
-const CollectionsBtn = styled(Button)(() => ({
-  textTransform: "none",
-  maxHeight: "50px",
-  "&:hover": {
-    cursor: "pointer",
-  },
-}));
-
 const UnAuthedBookProfile = () => {
-  // const location = useLocation();
-
   const [title, setTitle] = useState(null);
   const [author, setAuthor] = useState(null);
   const [bookImg, setImg] = useState(null);
-  const [amzLink, setAmzLink] = useState(null);
-  const [rating, setRating] = useState(null);
   const [bookRating, setBookRating] = useState(null);
   const [openModal, setOpenModal] = useState(false);
-  const [collections, setCollections] = useState([]);
-
   const [bookReviews, setBookReviews] = useState([]);
   const [changed, setChanged] = useState(0);
   const [category, setCategory] = useState(null);
-  const [categoryId, setCategoryId] = useState(null);
   const [books, setBooks] = useState([]);
-
-  const [goalsArr, setGoalsArr] = useState([]);
-  const [hideSuccessAlert, setHideSuccessAlert] = useState(true);
-
-  const [targetCollection, setTargetCollection] = useState("");
+  const [amzPrice, setAmzPrice] = useState(null);
+  const [amzLink, setAmzLink] = useState(null);
+  const [ebayPrice, setEbayPrice] = useState(null);
+  const [ebayLink, setEbayLink] = useState(null);
 
   const classes = useStyles();
   const history = useHistory();
 
   const queryString = window.location.search.slice(1);
-  //console.log(queryString);
-
-  const handleClose = () => setOpenModal(false);
-
 
   useEffect(() => {
     document.title = "Book profile | Booklab";
     getData();
   }, [changed]);
 
+  // get book data
   async function getData() {
-    let userEmail = sessionStorage.getItem("email");
-
     await axios
       .get("http://localhost:8002/books")
       .then((res) => {
@@ -158,91 +123,50 @@ const UnAuthedBookProfile = () => {
       .catch((error) => {
         console.error(`Error: ${error}`);
       });
+  }
 
-      let res = await axios
-      .get("http://localhost:8001/oneuser/" + userEmail)
-
-      let myCol = res.data.collections;
-
-      let res1 = await axios({
-        url : "http://localhost:8001/myCollections",
-        data : {
-          user : sessionStorage.getItem("id")
-        }
-      })
-
-      let tmp = [];
-      for (let i =0 ; i < myCol.length ; i++){
-        for (let j = 0; j < res1.data.length ; j++){
-          if (myCol[i] == res1.data[j]._id){
-            tmp.push({id: myCol[i], name: res1.data[j].name});
-            break;
-          }
-        }
-      }
-      console.log(tmp);
-      setCollections(tmp);
-
-    }
-
+  // find targetbook and set states
   function getTargetBook(res) {
     for (let i = 0; i < res.length; i++) {
       if (res[i]["_id"] == queryString) {
         setTitle(res[i]["title"]);
         setAuthor(res[i]["authors"]);
         setImg(res[i]["image"]);
-        setAmzLink(res[i]["link"]);
         setBookRating("Rating: " + res[i]["rating"]);
         getReviews(res[i]["title"]);
         setCategory(res[i].categories[0].name);
-        setCategoryId(res[i].categories[0].id);
+        setAmzLink(res[i]["link"]);
+        setAmzPrice(res[i]["price"]["value"]);
+
         if (changed == 0) {
           getSimilarBooks(res[i].categories[0].id);
         }
+
+        handleEBay(res[i]["title"]);
         return;
       }
     }
   }
 
-  function amzPage() {
-    window.open(amzLink, "_blank").focus();
+  // get ebay stats
+  async function handleEBay(title) {
+    await axios
+      .get(`http://localhost:8002/ebay/${title}`)
+      .then((res) => {
+        setEbayLink(res.data.link);
+        setEbayPrice(res.data.value);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
-  async function submitReview() {
-    let today = new Date();
-    let dd = String(today.getDate()).padStart(2, "0");
-    let mm = String(today.getMonth() + 1).padStart(2, "0");
-    let yyyy = today.getFullYear();
-    let dateString = dd + "/" + mm + "/" + yyyy;
-    let newRating = rating;
-    if (newRating == null) {
-      newRating = 0;
-    }
-    await axios({
-      method: "post",
-      url: "http://localhost:8001/review",
-      data: {
-        user: sessionStorage.getItem("id"),
-        name: sessionStorage.getItem("name"),
-        date: dateString,
-        rating: newRating,
-        title: title,
-        review: document.getElementById("myReview").value,
-      },
-    });
-    document.getElementById("myReview").value = "";
-    let tmp = changed;
-    tmp += 1;
-    setChanged(tmp);
-    return;
-  }
-
+  // get book reviews
   async function getReviews(bookTitle) {
     let res = await axios({
       method: "get",
       url: "http://localhost:8001/review",
     });
-    //console.log(res.data);
     let curBookReviews = [];
     for (let i = 0; i < res.data.length; i++) {
       if (res.data[i].title == bookTitle) {
@@ -252,6 +176,7 @@ const UnAuthedBookProfile = () => {
     setBookReviews(curBookReviews);
   }
 
+  // mark a book as read
   async function markRead() {
     let userEmail = sessionStorage.getItem("email");
     let res = await axios({
@@ -274,17 +199,16 @@ const UnAuthedBookProfile = () => {
         }
       }
     }
-    setGoalsArr(allMygoals);
     for (let i = 0; i < allMygoals.length; i++) {
       advanceGoal(allMygoals[i]);
     }
-
 
     let tmp = changed;
     tmp += 1;
     setChanged(tmp);
   }
 
+  // increment a goal
   async function advanceGoal(goalId) {
     await axios({
       method: "patch",
@@ -296,20 +220,21 @@ const UnAuthedBookProfile = () => {
     return;
   }
 
+  // get books in the same category
   async function getSimilarBooks(categoryId) {
     let res = await axios({
       method: "get",
       url: "http://localhost:8002/similar/" + categoryId,
     });
-    
+
     let tmp = [];
-    let start = Math.floor(Math.random() * (res.data.length - 6 + 1) + 0)
+    let start = Math.floor(Math.random() * (res.data.length - 6 + 1) + 0);
     let maxsize = res.data.length;
     for (let i = 0; i < res.data.length; i++) {
-      if (i == 6 || i  == maxsize) {
+      if (i == 6 || i == maxsize) {
         break;
       }
-      tmp.push(res.data[start+i]);
+      tmp.push(res.data[start + i]);
     }
     setBooks(tmp);
     return;
@@ -325,14 +250,13 @@ const UnAuthedBookProfile = () => {
     history.push("/login");
   }
 
-  function handleModal(){
-    if (openModal == false){
-      setOpenModal(true)
+  function handleModal() {
+    if (openModal == false) {
+      setOpenModal(true);
     } else {
-      setOpenModal(false)
+      setOpenModal(false);
     }
   }
-
 
   if (changed == 0) {
     window.scrollTo(0, 0);
@@ -389,15 +313,20 @@ const UnAuthedBookProfile = () => {
                 <Typography sx={{ fontSize: 16 }} color="text.primary">
                   Amazon
                 </Typography>
-                {/* <Typography
+                <Typography
                   sx={{ fontSize: 14, textTransform: "uppercase" }}
                   color="text.secondary"
                 >
-                  $0.00
-                </Typography> */}
+                  Price: ${amzPrice}
+                </Typography>
               </CardContent>
               <CardActions>
-                <Button size="small" onClick={() => amzPage()}>
+                <Button
+                  size="small"
+                  onClick={() => {
+                    window.open(amzLink, "_blank").focus();
+                  }}
+                >
                   View on Amazon
                 </Button>
               </CardActions>
@@ -407,35 +336,26 @@ const UnAuthedBookProfile = () => {
             <Card>
               <CardContent>
                 <Typography sx={{ fontSize: 16 }} color="text.primary">
-                  Source
+                  eBay
                 </Typography>
-                {/* <Typography
+                <Typography
                   sx={{ fontSize: 14, textTransform: "uppercase" }}
                   color="text.secondary"
                 >
-                  $0.00
-                </Typography> */}
-              </CardContent>
-              <CardActions>
-                <Button size="small">purchase this book</Button>
-              </CardActions>
-            </Card>
-          </Grid>
-          <Grid item xs={12} md={3}>
-            <Card>
-              <CardContent>
-                <Typography sx={{ fontSize: 16 }} color="text.primary">
-                  Source
+                  {ebayPrice == null ? "Not Found" : `Price: ${ebayPrice}`}
                 </Typography>
-                {/* <Typography
-                  sx={{ fontSize: 14, textTransform: "uppercase" }}
-                  color="text.secondary"
-                >
-                  $0.00
-                </Typography> */}
               </CardContent>
               <CardActions>
-                <Button size="small">purchase this book</Button>
+                <Button
+                  size="small"
+                  onClick={() => {
+                    ebayLink != null
+                      ? window.open(ebayLink, "_blank").focus()
+                      : null;
+                  }}
+                >
+                  View on eBay
+                </Button>
               </CardActions>
             </Card>
           </Grid>
@@ -443,8 +363,15 @@ const UnAuthedBookProfile = () => {
         <br />
         <h2 className={classes.h2}>{"Other " + category + " books"}</h2>
         <Grid container spacing={2}>
-          {books.map((item) => (
-            <Grid item xs={4} sm={3} md={2} className={classes.gridClass}>
+          {books.map((item, index) => (
+            <Grid
+              key={index}
+              item
+              xs={4}
+              sm={3}
+              md={2}
+              className={classes.gridClass}
+            >
               <img
                 key={item._id}
                 onClick={() => routeUser({ item })}
@@ -465,22 +392,18 @@ const UnAuthedBookProfile = () => {
 
         <h2>Login to write a review</h2>
 
-
-
-     
         <br />
         <h2>Community reviews</h2>
         {bookReviews.map((rev, index) => (
           <div key={index} className={classes.reviewDiv}>
             <Card sx={{ width: "60%" }}>
               <CardContent>
-                {/* Add user, date, rating */}
                 <Rating name="read-only" value={rev.rating} readOnly />
                 <Typography variant="body2">{rev.review}</Typography>
                 <br />
-
                 <Typography
                   className={classes.reviewUser}
+                  component={"span"}
                   variant="body2"
                   onClick={() => goToProfile()}
                 >

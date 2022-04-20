@@ -5,9 +5,9 @@ const userModel = require("./models/userModel");
 
 const app = express();
 
-// Get all goals 
+// Get all goals
 app.get("/myGoals", async (req, res) => {
-  const goals = await goalModel.find({}); 
+  const goals = await goalModel.find({});
 
   try {
     res.send(goals);
@@ -16,17 +16,11 @@ app.get("/myGoals", async (req, res) => {
   }
 });
 
-
 // Create goal
 // Create goal
 app.post("/goal", async (req, res) => {
-
   // Find user
   const _id = req.body.user;
-  // const currentUser = userModel.findById({_id}, function(err,doc) {
-  //   console.log(doc)
-  // });
-
   // Create new goal
   var goal = new goalModel({
     user: req.body.user,
@@ -35,9 +29,6 @@ app.post("/goal", async (req, res) => {
     current: 0,
     completed: false,
   });
-  console.log(req.body.endDate);
-  console.log(req.body.target);
-  console.log(req.body.user);
 
   try {
     await goal.save();
@@ -46,25 +37,14 @@ app.post("/goal", async (req, res) => {
   } catch (error) {
     res.status(500).send(error);
   }
-  
+
   // Link up with users model (push to array)
-  const updatedUser = await userModel.findByIdAndUpdate(
-    {_id},
-    { $push: { "goals": goal._id } },
+  await userModel.findByIdAndUpdate(
+    { _id },
+    { $push: { goals: goal._id } },
     { new: true }
   );
-
-  console.log(updatedUser);
-
-  // // TODO might need populate later on/// or just query
-  // const populated = userModel.findById({_id}).populate("goals").exec((err, user) => {
-  //   console.log("goals populated");
-  // });
-
-  // console.log(populated)
-
 });
-
 
 // UPDATE current read books /advance goal forward when user marks a book as read
 app.patch("/goal", async (req, res) => {
@@ -72,7 +52,7 @@ app.patch("/goal", async (req, res) => {
 
   goalModel.updateOne(
     query,
-    { $inc: { current : 1}},
+    { $inc: { current: 1 } },
     { upsert: true },
     (err) => {
       if (err) return res.status(500).send(err);
@@ -110,7 +90,5 @@ app.delete("/goal", async (req, res) => {
     res.send("Successfully deleted");
   });
 });
-
-// TODO UPDATE GOAL
 
 module.exports = app;

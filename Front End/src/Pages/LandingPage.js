@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
@@ -44,14 +42,13 @@ export default function LandingPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [collectionArr, setCollectionArr] = useState([]);
-  const [countData, setCountData] = useState();
 
   useEffect(() => {
     getData();
     document.title = "Welcome to Booklab";
-    console.log(books);
   }, []);
 
+  // get book and collection data
   async function getData() {
     await axios
       .get("http://localhost:8002/books")
@@ -61,7 +58,7 @@ export default function LandingPage() {
       .catch((error) => {
         console.error(`Error: ${error}`);
         setError(error);
-      })
+      });
 
     let res = await axios({
       method: "get",
@@ -78,9 +75,13 @@ export default function LandingPage() {
   }
 
   // wait for axios to get book data, then render book shelves
-  // TODO Beautify this
-  if (loading) return <p><Loading/></p>;
-  if (error) return <p>Error: {error.message}</p>;
+  if (loading)
+    return (
+      <div>
+        <Loading />
+      </div>
+    );
+  if (error) return <div>Error: {error.message}</div>;
 
   return (
     <div>

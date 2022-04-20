@@ -7,7 +7,6 @@ const multer = require("multer");
 const nodemailer = require("nodemailer");
 const userModel = require("./models/userModel");
 const tokenModel = require("./models/tokenModel");
-// const tokenModel = require("./models/tokenModel");
 
 // Get all users in the database
 app.get("/users", async (req, res) => {
@@ -22,14 +21,12 @@ app.get("/users", async (req, res) => {
 
 // Get a user by email
 app.get("/oneuser/:email", async (req, res) => {
-  console.log(req.params.email);
   const user = await userModel.findOne({ email: req.params.email });
 
   try {
-    // console.log(user);
     res.send(user);
   } catch (error) {
-    console.log("Cannot find this user");
+    console.log(error);
     res.status(500).send(error);
   }
 });
@@ -141,7 +138,6 @@ const upload = multer({
 // and send the stored image route as res
 app.patch("/upload", upload.single("image"), async (req, res) => {
   let query = { email: req.body.email };
-  console.log(req.file);
 
   let imgPath = "http://localhost:8001/" + req.file.path;
   userModel.findOneAndUpdate(
@@ -160,7 +156,6 @@ app.patch("/upload", upload.single("image"), async (req, res) => {
 
 // Send a url to the user's email to reset the password
 app.post("/forgetpassword", async (req, res) => {
-  // can mute this function during testing
   let query = { email: req.body.email };
   let user = await userModel.findOne(query);
 
@@ -228,8 +223,6 @@ app.patch("/verifyandreset", async (req, res) => {
     throw new Error("Invalid or expired password reset token");
   }
 
-  console.log(`req: ${req.body.token}`);
-  console.log(`resetToken: ${resetToken.token}`);
   const isValid = await bcrypt.compare(req.body.token, resetToken.token);
   if (!isValid) {
     throw new Error("Invalid or expired password reset token");

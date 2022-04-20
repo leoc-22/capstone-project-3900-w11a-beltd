@@ -1,12 +1,9 @@
-/* eslint-disable */ 
-
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core";
 import update from "../Images/update.svg";
 import { Grid, TextField, Button, Alert } from "@mui/material";
 import axios from "axios";
 import AuthenticatedNavbar from "../Components/AuthenticatedNavbar";
-import { useLocation } from "react-router-dom";
 
 const useStyles = makeStyles({
   body: {
@@ -25,8 +22,8 @@ const useStyles = makeStyles({
 
 export default function UserSettingsPage() {
   const classes = useStyles();
-  const location = useLocation();
 
+  // check valid new password
   const [passwordError, setPasswordError] = useState("");
   const validatePassword = (p) => {
     var reg = new RegExp("^(?=.*\\d).{6,}$");
@@ -51,6 +48,7 @@ export default function UserSettingsPage() {
     }
   };
 
+  // update user password
   function updatePassword() {
     var newPassword = document.getElementById("passwordInput").value;
     if (matchError == "Passwords match!") {
@@ -63,12 +61,12 @@ export default function UserSettingsPage() {
           name: sessionStorage.getItem("name"),
           password: newPassword,
         },
-      }).then((res) => handleReset(res));
+      }).then(() => handleReset());
     }
     return;
   }
 
-  function handleReset(data) {
+  function handleReset() {
     document.getElementById("successUpdate").hidden = false;
   }
 

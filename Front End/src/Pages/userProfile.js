@@ -1,17 +1,10 @@
-/* eslint-disable */
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import AuthenticatedNavbar from "../Components/AuthenticatedNavbar";
 import AdjustedCollections from "../Components/AdjustedCollections";
-import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core";
 import Avatar from "@mui/material/Avatar";
-import Grid from "@mui/material/Grid";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 //import { useLocation } from "react-router-dom";
 
 const useStyles = makeStyles({
@@ -34,7 +27,6 @@ const useStyles = makeStyles({
 
 const userProfilePage = () => {
   const classes = useStyles();
-  const history = useHistory();
 
   const [name, setName] = useState(null);
   const [email, setEmail] = useState(null);
@@ -48,6 +40,7 @@ const userProfilePage = () => {
     document.title = name + " Profile | Booklab";
   }, [img]);
 
+  // get all the collections made by user
   async function getCollectionData() {
     let userEmail = sessionStorage.getItem("email");
     let userData = await axios({
@@ -58,7 +51,7 @@ const userProfilePage = () => {
 
     let res = await axios({
       method: "get",
-      url: "http://localhost:8001/myCollections"
+      url: "http://localhost:8001/myCollections",
     });
 
     let allCollections = res.data;
@@ -67,18 +60,22 @@ const userProfilePage = () => {
     for (let i = 0; i < myCollectionsIds.length; i++) {
       let curId = myCollectionsIds[i];
       for (let j = 0; j < allCollections.length; j++) {
-        if (curId == allCollections[j]._id && allCollections[j].public == false) {
+        if (
+          curId == allCollections[j]._id &&
+          allCollections[j].public == false
+        ) {
           allCollections[j].public = "Private";
           allMycollection.push(allCollections[j]);
-        } else if (curId == allCollections[j]._id){
+        } else if (curId == allCollections[j]._id) {
           allCollections[j].public = "Public";
           allMycollection.push(allCollections[j]);
-        } 
+        }
       }
     }
     setMyCollections(allMycollection);
   }
 
+  // get user profile data
   async function getUserData() {
     setName(sessionStorage.getItem("name"));
     setEmail(sessionStorage.getItem("email"));
@@ -88,7 +85,6 @@ const userProfilePage = () => {
     await axios
       .get("http://localhost:8001/oneuser/" + userEmail)
       .then((res) => {
-        //console.log(`user info: ${JSON.stringify(res.data)}`);
         if (res.data.image !== null) {
           setImg(res.data.image);
           document.getElementById("avatar").hidden = true;
@@ -101,6 +97,7 @@ const userProfilePage = () => {
     setUploadingImg(e.target.files[0]);
   };
 
+  // upload a new image
   async function upload() {
     var formData = new FormData();
     formData.append("email", sessionStorage.getItem("email"));
@@ -146,7 +143,12 @@ const userProfilePage = () => {
               onChange={(e) => handleImg(e)}
             />
           </Button>
-          <Button variant="outlined" sx={{ marginLeft: "20px" }} size="small" onClick={() => upload()}>
+          <Button
+            variant="outlined"
+            sx={{ marginLeft: "20px" }}
+            size="small"
+            onClick={() => upload()}
+          >
             Submit
           </Button>
         </div>

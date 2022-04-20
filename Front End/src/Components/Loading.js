@@ -1,23 +1,21 @@
-/* eslint-disable */ 
-
 import React from "react";
 import { makeStyles } from "@material-ui/core";
-import CircularProgress from '@mui/material/CircularProgress';
-
+import CircularProgress from "@mui/material/CircularProgress";
 
 const useStyles = makeStyles({
   main: {
-    marginTop : "10%",
-    marginLeft : "47%"
+    marginTop: "10%",
+    marginLeft: "47%",
   },
-})
+});
 
-export default function Loading(){
+// loading spinner
+export default function Loading() {
   const classes = useStyles();
 
   return (
     <div className={classes.main}>
-      <CircularProgress  />
+      <CircularProgress />
     </div>
-  )
+  );
 }

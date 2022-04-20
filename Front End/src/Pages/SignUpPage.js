@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import React, { useState } from "react";
 import Navbar from "../Components/Navbar";
 import { useHistory } from "react-router-dom";
@@ -39,6 +37,7 @@ export default function SignUpPage() {
     }
   };
 
+  // regex check for valid password
   const [passwordError, setPasswordError] = useState("");
   const validatePassword = (p) => {
     var reg = new RegExp("^(?=.*\\d).{6,}$");
@@ -63,6 +62,7 @@ export default function SignUpPage() {
     }
   };
 
+  // register a new user
   function registerUser() {
     var newEmail = document.getElementById("emailInput").value;
     var newUserName = document.getElementById("userNameInput").value;
@@ -91,7 +91,8 @@ export default function SignUpPage() {
 
           history.push("/home");
         } else {
-          document.getElementById("userError").innerText = "ERROR: " + res.status;
+          document.getElementById("userError").innerText =
+            "ERROR: " + res.status;
           document.getElementById("signUpFailed").hidden = false;
         }
       });
@@ -101,18 +102,19 @@ export default function SignUpPage() {
     }
   }
 
-  async function makeDefaultCollections(userId, userName){
+  // crete a default collection for a new user
+  async function makeDefaultCollections(userId, userName) {
     await axios({
-      method : "post",
-      url : "http://localhost:8001/collection",
-      data : {
-        user : userId,
-        name : "Main",
-        public : false,
-        creator : userName
-      }
+      method: "post",
+      url: "http://localhost:8001/collection",
+      data: {
+        user: userId,
+        name: "Main",
+        public: false,
+        creator: userName,
+      },
     });
-    
+
     return;
   }
 
@@ -191,7 +193,8 @@ export default function SignUpPage() {
                   Sign Up
                 </Button>
               </form>
-              <p>Already have an account?{" "}
+              <p>
+                Already have an account?{" "}
                 <a
                   onClick={() => history.push("/login")}
                   className={classes.link}

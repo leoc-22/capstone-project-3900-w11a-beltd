@@ -1,11 +1,9 @@
-/* eslint-disable */ 
-
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import Carousel from "react-grid-carousel";
 import { makeStyles } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import Chip from "@mui/material/Chip";
-import collectionDetailPage from "../Pages/CollectionDetailPage";
+import PropTypes from "prop-types";
 
 const useStyles = makeStyles({
   cover: {
@@ -16,18 +14,15 @@ const useStyles = makeStyles({
       cursor: "pointer",
     },
   },
-  name : {
-    color :"black"
+  name: {
+    color: "black",
   },
-  creator : {
+  creator: {
     marginTop: "-15px",
-  }
-
+  },
 });
 
-const CollectionsCarousel = React.memo(props => {
-  //console.log(props.collections);
-
+const CollectionsCarousel = React.memo((props) => {
   const [collectionArr, setCollectionArr] = useState([]);
   const [hasData, setHasData] = useState(false);
   const classes = useStyles();
@@ -37,34 +32,32 @@ const CollectionsCarousel = React.memo(props => {
     filterData();
   }, [hasData]);
 
-  function filterData(){
+  // filter whether a collection is public or private
+  function filterData() {
     let tmp = [];
-    for (let i = 0; i <props.collections.length ;i++){
-      if (props.collections[i].public == false){
-        props.collections[i].public = "Private"
-      }else if (props.collections[i].public == true ){
-        props.collections[i].public = "Public"
+    for (let i = 0; i < props.collections.length; i++) {
+      if (props.collections[i].public == false) {
+        props.collections[i].public = "Private";
+      } else if (props.collections[i].public == true) {
+        props.collections[i].public = "Public";
       }
-      tmp.push(props.collections[i]); 
+      tmp.push(props.collections[i]);
     }
     setCollectionArr(tmp);
-    console.log(tmp);
     setHasData(true);
   }
 
-  function collectionDetail(id){
-    if (sessionStorage.getItem("id") == null){
+  function collectionDetail(id) {
+    if (sessionStorage.getItem("id") == null) {
       history.push({
-        pathname: "/un-Authed-collection-detail?id=" +id,
-      });      
-
+        pathname: "/un-Authed-collection-detail?id=" + id,
+      });
     } else {
       history.push({
-        pathname: "/collection-detail?id=" +id,
-      });      
+        pathname: "/collection-detail?id=" + id,
+      });
     }
     location.reload();
-
   }
 
   const randomRgbColor = () => {
@@ -83,11 +76,17 @@ const CollectionsCarousel = React.memo(props => {
         gap={20}
         loop
       >
-        {collectionArr.map((Item) =>(
-          <Carousel.Item>
-            <div className={classes.cover} style={{backgroundColor: randomRgbColor()}} onClick = {()=>collectionDetail(Item._id)}></div>
-            <p><b>{Item.name}</b></p>
-            <div className={classes.creator}>{"By "+ Item.creator}</div>
+        {collectionArr.map((Item, index) => (
+          <Carousel.Item key={index}>
+            <div
+              className={classes.cover}
+              style={{ backgroundColor: randomRgbColor() }}
+              onClick={() => collectionDetail(Item._id)}
+            ></div>
+            <p>
+              <b>{Item.name}</b>
+            </p>
+            <div className={classes.creator}>{"By " + Item.creator}</div>
             {/* Swap public tag or private tag depending on collection */}
             <Chip label={Item.public} size="small" />
           </Carousel.Item>
@@ -95,5 +94,10 @@ const CollectionsCarousel = React.memo(props => {
       </Carousel>
     </div>
   );
-})
+});
 export default CollectionsCarousel;
+CollectionsCarousel.displayName = "CollectionsCarousel";
+
+CollectionsCarousel.propTypes = {
+  collections: PropTypes.array,
+};

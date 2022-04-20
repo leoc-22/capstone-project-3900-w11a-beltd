@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import React, { useEffect, useState } from "react";
 import AuthenticatedNavbar from "../Components/AuthenticatedNavbar";
 import { makeStyles } from "@material-ui/core";
@@ -22,17 +20,17 @@ const useStyles = makeStyles({
     margin: "0 auto",
     marginTop: "100px",
   },
-  subGoals : {
-    marginLeft : "20px",
-    marginTop: "-20px"
+  subGoals: {
+    marginLeft: "20px",
+    marginTop: "-20px",
   },
-  inline : {
-    position:"absolute",
-    marginLeft : "40%",
-    marginTop: "-75px"
+  inline: {
+    position: "absolute",
+    marginLeft: "40%",
+    marginTop: "-75px",
   },
-  curGoals : {
-    marginTop : "50px",
+  curGoals: {
+    marginTop: "50px",
   },
 });
 
@@ -48,25 +46,25 @@ const GoalSettingPage = () => {
     getData();
   }, [goalsCreated]);
 
-
-  async function getData(){
+  // get all goals of a user
+  async function getData() {
     let userEmail = sessionStorage.getItem("email");
     let res = await axios({
-      method : "get",
-      url : "http://localhost:8001/oneuser/" + userEmail,
+      method: "get",
+      url: "http://localhost:8001/oneuser/" + userEmail,
     });
     let myGoals = res.data.goals;
 
     let allGoals = await axios({
-      method : "get",
-      url : "http://localhost:8001/myGoals",
+      method: "get",
+      url: "http://localhost:8001/myGoals",
     });
     let allMygoals = [];
 
-    for (let i =0 ;i < allGoals.data.length ; i++){
+    for (let i = 0; i < allGoals.data.length; i++) {
       let curGoal = allGoals.data[i]["_id"];
-      for (let j = 0; j<myGoals.length ; j ++ ){
-        if (myGoals[j] == curGoal){
+      for (let j = 0; j < myGoals.length; j++) {
+        if (myGoals[j] == curGoal) {
           allMygoals.push(allGoals.data[i]);
         }
       }
@@ -74,114 +72,115 @@ const GoalSettingPage = () => {
     setGoalsArr(allMygoals);
   }
 
-  async function saveGoal(){
+  // save a new goal
+  async function saveGoal() {
     let newEndDate = document.getElementById("endDate").value;
     let newTarget = document.getElementById("target").value;
 
-    if (newEndDate == ""|| newTarget == ""){
+    if (newEndDate == "" || newTarget == "") {
       document.getElementById("goalSuccess").hidden = true;
       document.getElementById("goalError").hidden = false;
       return;
     }
     //let date = parseInt(document.getElementById("target").value);
-    await  axios({
-      method : "post",
-      url : "http://localhost:8001/goal",
+    await axios({
+      method: "post",
+      url: "http://localhost:8001/goal",
       data: {
         user: sessionStorage.getItem("id"),
         endDate: document.getElementById("endDate").value,
-        target : document.getElementById("target").value,
-      }
+        target: document.getElementById("target").value,
+      },
     });
-    document.getElementById("target").value ="";
+    document.getElementById("target").value = "";
     document.getElementById("endDate").value = "";
     document.getElementById("goalSuccess").hidden = false;
     document.getElementById("goalError").hidden = true;
     let tmp = goalsCreated;
-    tmp +=1;
-    setGoalsCreated(tmp);
-    return; 
-  }
-
-  async function deleteGoal(targetGoal){
-    let goalId = targetGoal.goal._id;
-    await axios({
-      method : "delete",
-      url : "http://localhost:8001/goal",
-      data:{
-        _id : goalId
-      }
-    });
-    let tmp = goalsCreated;
-    tmp +=1;
+    tmp += 1;
     setGoalsCreated(tmp);
     return;
   }
-  
-  async function advanceGoal(targetGoal){
+
+  // delete a goal
+  async function deleteGoal(targetGoal) {
+    let goalId = targetGoal.goal._id;
+    await axios({
+      method: "delete",
+      url: "http://localhost:8001/goal",
+      data: {
+        _id: goalId,
+      },
+    });
+    let tmp = goalsCreated;
+    tmp += 1;
+    setGoalsCreated(tmp);
+    return;
+  }
+
+  // increment a goal
+  async function advanceGoal(targetGoal) {
     let goalId = targetGoal.goal._id;
 
-
     let allGoals = await axios({
-      method : "get",
-      url : "http://localhost:8001/myGoals",
-    }); 
+      method: "get",
+      url: "http://localhost:8001/myGoals",
+    });
     let curGoal;
-    for (let i = 0; i< allGoals.data.length ; i++){
-      if (allGoals.data[i]["_id"] == goalId){
+    for (let i = 0; i < allGoals.data.length; i++) {
+      if (allGoals.data[i]["_id"] == goalId) {
         curGoal = allGoals.data[i];
         break;
       }
     }
-    console.log(curGoal.current +1 + "==" +curGoal.target);
-    if(curGoal.current + 1 >= curGoal.target){
+    if (curGoal.current + 1 >= curGoal.target) {
       await axios({
-        method : "patch",
-        url : "http://localhost:8001/goalComplete",
-        data:{
-          _id : goalId
-        }
+        method: "patch",
+        url: "http://localhost:8001/goalComplete",
+        data: {
+          _id: goalId,
+        },
       });
       let tmp = goalsCreated;
-      tmp +=1;
+      tmp += 1;
       setGoalsCreated(tmp);
-      if (curGoal.current + 1  == curGoal.target){
-        let res = await axios({
-          method : "patch",
-          url : "http://localhost:8001/goal",
-          data:{
-            _id : goalId
-          }
-        });  
+      if (curGoal.current + 1 == curGoal.target) {
+        await axios({
+          method: "patch",
+          url: "http://localhost:8001/goal",
+          data: {
+            _id: goalId,
+          },
+        });
       }
       return;
-
     } else {
-      let res = await axios({ 
-        method : "patch",
-        url : "http://localhost:8001/goal",
-        data:{
-          _id : goalId
-        }
+      await axios({
+        method: "patch",
+        url: "http://localhost:8001/goal",
+        data: {
+          _id: goalId,
+        },
       });
     }
     let tmp = goalsCreated;
-    tmp +=1;
+    tmp += 1;
     setGoalsCreated(tmp);
     return;
   }
 
-  async function markComplete(targetGoal){
+  // mark a goal as complete
+  async function markComplete(targetGoal) {
     let goalId = targetGoal.goal._id;
     await axios({
-      method : "patch",
-      url : "http://localhost:8001/goalComplete",
-      data:{
-        _id : goalId
-      }
+      method: "patch",
+      url: "http://localhost:8001/goalComplete",
+      data: {
+        _id: goalId,
+      },
     });
     let tmp = goalsCreated;
-    tmp +=1;
+    tmp += 1;
     setGoalsCreated(tmp);
     return;
   }
@@ -191,57 +190,66 @@ const GoalSettingPage = () => {
       <AuthenticatedNavbar></AuthenticatedNavbar>
       <div className={classes.main}>
         <h1>Set your reading goal for this month!</h1>
-        <div hidden id="goalSuccess" className={classes.success}><Alert severity="success">Goal created</Alert></div>
-        <div hidden id="goalError" className={classes.error}><Alert severity="error">Fields cannot be empty</Alert></div>
+        <div hidden id="goalSuccess" className={classes.success}>
+          <Alert severity="success">Goal created</Alert>
+        </div>
+        <div hidden id="goalError" className={classes.error}>
+          <Alert severity="error">Fields cannot be empty</Alert>
+        </div>
         <Grid container spacing={3}>
           <Grid item xs={12} md={8}>
             <h2>
-              I want to read <TextField id="target" variant="standard" placeholder="10" />{" "}
-              books by <TextField type="date" id="endDate" variant="standard" placeholder="dd/mm/yyyy" />
+              I want to read{" "}
+              <TextField id="target" variant="standard" placeholder="10" />{" "}
+              books by{" "}
+              <TextField
+                type="date"
+                id="endDate"
+                variant="standard"
+                placeholder="dd/mm/yyyy"
+              />
             </h2>
-            <br/>
-            <Button 
-              onClick = {()=>saveGoal()}
-              variant="contained">Add reading goal</Button>
+            <br />
+            <Button onClick={() => saveGoal()} variant="contained">
+              Add reading goal
+            </Button>
           </Grid>
         </Grid>
         <h2 className={classes.curGoals}>Current Goals</h2>
         {goalsArr.map((goal, index) => (
           <div key={index}>
-            <Card style = {{ width: "80%", marginBottom: "20px"}} >
+            <Card style={{ width: "80%", marginBottom: "20px" }}>
               <CardHeader
                 action={
                   <IconButton>
-                    <ClearIcon
-                      onClick = {()=>deleteGoal({goal})}
-                    />
-                  </IconButton> 
+                    <ClearIcon onClick={() => deleteGoal({ goal })} />
+                  </IconButton>
                 }
-                title = {"Read " + goal.target + " books by " + goal.endDate}
+                title={"Read " + goal.target + " books by " + goal.endDate}
               />
-              { <div className={classes.inline}>
-                <IconButton
-                >
-                  <PlayCircleOutlineIcon
-                    style = {{
-                      width: 50,
-                      height: 50,
-
-                    }}
-                    onClick = {()=>advanceGoal({goal})}
-                  ></PlayCircleOutlineIcon>
-                </IconButton> 
-                <div></div>
-                <IconButton>
-                  <CheckCircleOutlineIcon
-                    style = {{
-                      width: 50,
-                      height: 50,
-                    }}
-                    onClick = {()=>markComplete({goal})}
-                  ></CheckCircleOutlineIcon>
-                </IconButton> 
-              </div>}
+              {
+                <div className={classes.inline}>
+                  <IconButton>
+                    <PlayCircleOutlineIcon
+                      style={{
+                        width: 50,
+                        height: 50,
+                      }}
+                      onClick={() => advanceGoal({ goal })}
+                    ></PlayCircleOutlineIcon>
+                  </IconButton>
+                  <div></div>
+                  <IconButton>
+                    <CheckCircleOutlineIcon
+                      style={{
+                        width: 50,
+                        height: 50,
+                      }}
+                      onClick={() => markComplete({ goal })}
+                    ></CheckCircleOutlineIcon>
+                  </IconButton>
+                </div>
+              }
               <div className={classes.subGoals}>
                 <p>Progress: {goal.current}</p>
                 <p id="completed">Completed: {String(goal.completed)}</p>

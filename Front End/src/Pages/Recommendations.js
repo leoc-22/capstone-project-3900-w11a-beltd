@@ -52,6 +52,7 @@ export default function RecommendationsPage() {
     setFilter(event.target.value);
   };
 
+  // get book data
   async function getBook() {
     let n = sessionStorage.getItem("name");
 
@@ -75,7 +76,6 @@ export default function RecommendationsPage() {
       await axios
         .get(`http://localhost:8001/recommendbyauthors/${n}`)
         .then((res) => {
-          console.log(res.data);
           setBookList(res.data);
         })
         .catch((error) => {
@@ -89,7 +89,6 @@ export default function RecommendationsPage() {
       await axios
         .get(`http://localhost:8001/recommendbygenres/${n}`)
         .then((res) => {
-          console.log(res.data);
           setBookList(res.data);
         })
         .catch((error) => {
@@ -122,15 +121,14 @@ export default function RecommendationsPage() {
       document.getElementById("booksByAuthors").hidden = true;
       document.getElementById("booksByGenres").hidden = true;
     }
-    console.log(bookList);
     return;
   }
 
+  // filter by rating
   async function getBooksByRatings(rating) {
     await axios
       .get(`http://localhost:8002/books/${rating}`)
       .then((res) => {
-        console.log(res.data);
         setBookList(res.data);
       })
       .catch((error) => {
