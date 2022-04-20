@@ -134,8 +134,6 @@ const bookProfilePage = () => {
 
   const queryString = window.location.search.slice(1);
 
-  const eBayToken =
-    "v^1.1#i^1#f^0#p^1#I^3#r^0#t^H4sIAAAAAAAAAOVYe2wURRjv9UVKqUBoBAmJ5wKR197O7u3e3i3chevLNl4f3JVKG7XO7s61a/d2lt29PkSw6R81ohFDwBiiETEx8Q9ChApK46NooiQkxCdiVBSjiI8ARiQYfMxdH1wr4dVLbOL9c5lvvvnm9/vN983MDugtLFrWX91/ocQ1LXdnL+jNdbnYYlBUWLD8lrzc+QU5IMPBtbN3UW9+X94Pq2yY0E0pimwTGzZydyd0w5bSxiCVtAwJQ1uzJQMmkC05ihQL10YkzgMk08IOVrBOuWsqghTnRywvcwIURBQP8CyxGqMxG3GQ8os+kY/zPhHxgqgGAqTftpOoxrAdaDhkPOA4GvA0BxoBkDhREoBHZIUWyt2ELFvDBnHxACqUhiulx1oZWK8OFdo2shwShArVhKti9eGaisq6xlVMRqzQiA4xBzpJe3yrHKvI3QT1JLr6NHbaW4olFQXZNsWEhmcYH1QKj4K5Cfhpqb1+VVEDROhAAAkqj7IiZRW2EtC5Oo6URVPpeNpVQoajOT3XUpSoIT+IFGekVUdC1FS4U39rklDX4hqyglRlWbg53NBAhSIIl0NMl2HcoUOZbohW0CIX4AQ54AO0Kvq8cZkVR2YZDjWi8YRpyrGhainFbHcddsoQgYwmCsNmCEOc6o16Kxx3UnAy/bhRAQHxY0aXMOm0G6lFRQmigjvdvLb8Y6Mdx9LkpIPGIkzsSOsTpKBpaio1sTOdiCO5020HqXbHMSWG6erq8nR5PdhqYzgAWGZdbSSmtKMEpIZ9U7VO/LVrD6C1NBWFJBbxl5wek2DpJolKABhtVIgX/MArjOg+HlZoovVfhgzOzPhyyFZ5CAD6ZI6HPjauQNkPs1EeoZEMZVI4kAx76AS0OpBj6lBBtELyLJlAlqZKXiHOef1xRKu+QJzmA/E4LQuqj2bjCAGEZFkJ+P83VXK9eR5DioWcbCV6dpI8GlmrVd1TFWFFW8SBaE1nh9C8riHWluCjsuVT/d4yDNZX4ipo+oPXWwpXJF+ua0SZRjJ/9gRI1Xo2RKjGtoPUSdGLKdhEDVjXlJ6ptcBeS22AltMTQ7pODJMiGTbNmqxt1NmhdyN7xM2Rzurp9F+cTFdkZafydWqxSo23SQBoap7U2eNRcILBkFw6UqZUrbemUU+Kt0YurFOKNSE5zFZTh2+anjRlj92peCxk46RFLtme+tTdqxF3IIMcZo6FdR1ZTeykizmRSDpQ1tFUq+osJLgGp9hJy/oEwLM8L4JJ8VLS52jrVNuSsroP56+8gds0M/7DPpST/rF9rldBn+uVXJcLMGAxuxDcUZi3Nj9vxnxbc5BHg3GPrbUZ5HvVQp4O1GNCzcotdG2qldZ8kvGUsPM+MG/sMaEojy3OeFkACy73FLAz55ZwHOCJaoATBdACFl7uzWdvzS/1t57e6k0uWzL0y2AR3Xdiz6FFF4pByZiTy1WQk9/nyuksWDrItG966dLJgXOzTp3dePTPp/b0Pz2rcsWCO+s/3HOMOZy8sG3X47Hmn988tHHx4mp9/5llMx4tls2Vt73V+usDbVrpIxt2D3z23BG4eu9rz2ytXTj3vZ8Oznzj5QPczMjJ0mcD0dmf33Wsbsun8pY5f817e9v+Bbt8kUWuIfDHDv2L3nO3z+ka6J726Pquw0c243sv1j/hfejs8X0/VraEt797pvTh4t/vZnpe37z96NK25dq2XcXNTXuxMXC/UDp9+onnhY+Hlnzz7bE5Gy4W5ajB7pKDLe8MfvB99LHfEu/v3tf/VeHX4kcvJJ/8cuj4xs3S3ydWnJp9+vCOovOr3Z2Mv/r8qqMHBpkX5UvfmcPL9w8Vd9zp5BEAAA==";
   const handleClose = () => setOpenModal(false);
 
   useEffect(() => {
@@ -222,24 +220,11 @@ const bookProfilePage = () => {
   }
 
   async function handleEBay(title) {
-    await axios({
-      method: "get",
-      url: `https://api.ebay.com/buy/browse/v1/item_summary/search?q=${title}&limit=1`,
-      headers: {
-        Authorization: "Bearer " + eBayToken,
-        "Content-Type": "application / json",
-        "X-EBAY-C-MARKETPLACE-ID": "EBAY_AU",
-        "X-EBAY-C-ENDUSERCTX":
-          "affiliateCampaignId=<ePNCampaignId>,affiliateReferenceId=<referenceId></referenceId>",
-      },
-    })
+    await axios
+      .get(`http://localhost:8002/ebay/${title}`)
       .then((res) => {
-        console.log(res.data);
-        if (res.data.itemSummaries.length != 0) {
-          console.log(res.data);
-          setEbayPrice(res.data.itemSummaries[0].price.value);
-          setEbayLink(res.data.itemSummaries[0].itemWebUrl);
-        }
+        setEbayLink(res.data.link);
+        setEbayPrice(res.data.value);
       })
       .catch((error) => {
         console.log(error);
