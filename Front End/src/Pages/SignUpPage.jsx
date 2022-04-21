@@ -109,7 +109,7 @@ export default function SignUpPage() {
       url: "http://localhost:8001/collection",
       data: {
         user: userId,
-        name: "Main",
+        name: userName + "'s  Main",
         public: false,
         creator: userName,
       },
